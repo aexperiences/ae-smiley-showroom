@@ -1071,12 +1071,66 @@
       return '<a class="'+(n.h===active?"on":"")+'" href="'+n.h+'"><i>'+n.i+'</i>'+esc(n.l)+'</a>'; }).join("");
     return el('<nav class="mobilebar">'+h+'</nav>');
   }
+  /* The tier pill was static — there was nothing to click, so the showroom could not
+     be re-priced. It is now a real menu: switch package, or add and remove any single
+     room, with the price recomputing as you go. */
   function renderTopbar(crumb){
-    var p=db().practice;
-    return el('<header class="topbar"><div class="crumb">'+esc(crumb||"")+'</div>'+
-      '<div class="who"><span class="tierpill" id="tierPillStatic">'+esc((TIERS[tier()]||TIERS.grandsuite).name)+' '+priceLabel()+'</span>'+
-      '<span class="avatar">'+esc((p.name||"C").slice(0,2).toUpperCase())+'</span>'+
-      '<span class="whoami"><b>'+esc(p.name)+'</b><small>'+esc(p.city)+'</small></span></div></header>');
+    var pr=priceNow(), t=TIERS[tier()]||TIERS[Object.keys(TIERS)[0]];
+    var d=db(), adds=(d.adds||[]), offs=(d.offs||[]);
+    var changed=adds.length||offs.length;
+    var bar=document.createElement("div"); bar.className="topbar";
+    bar.innerHTML='<div class="crumbs">'+esc(crumb||"")+'</div><div class="spacer"></div>'+
+      '<div class="tierpill" id="tierPill" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">'+
+        '<span class="dot"></span><div><b>'+esc(t.name)+(changed?' <i class="cfg">configured</i>':'')+'</b> '+
+        '<span class="price">'+money(pr.mo)+'/mo · '+money(pr.build)+' setup</span></div><span class="chev">▾</span></div>'+
+      '<div class="who"><div class="av">'+esc("RO")+'</div><div>'+esc("Roslyn Mbeki")+'<br>'+
+        '<span class="muted small">'+esc("Office manager")+'</span></div></div>';
+
+    var menu=document.createElement("div"); menu.className="tiermenu"; menu.id="tierMenu";
+    menu.appendChild(el('<div class="tm-head">Start from a package, then <b>add or take off any single room</b>. Each one is priced on its own, so the build fits the business instead of the business fitting the build.</div>'));
+    Object.keys(TIERS).forEach(function(k){
+      var tt=TIERS[k];
+      var opt=el('<div class="tieropt '+(k===tier()?"on":"")+'">'+
+        '<div class="to-top"><span class="to-name">'+esc(tt.name)+'</span>'+
+        '<span class="to-price">'+money(tt.mo)+'/mo · '+money(tt.build)+' setup</span></div>'+
+        '<div class="to-desc">'+esc(tt.blurb)+'</div>'+
+        '<div class="to-base">'+tt.includes.length+' rooms included</div></div>');
+      opt.addEventListener("click", function(e){ e.stopPropagation(); setTier(k); location.reload(); });
+      menu.appendChild(opt);
+    });
+    menu.appendChild(el('<div class="tm-sub">Rooms — toggle any one on or off</div>'));
+    var on=activeRooms(), list=document.createElement("div"); list.className="roomlist";
+    Object.keys(ROOMS).forEach(function(k){
+      var r=ROOMS[k], isOn=on.indexOf(k)>=0, inPack=t.includes.indexOf(k)>=0;
+      var row=el('<div class="roomrow '+(isOn?"on":"")+'"><span class="rr-box">'+(isOn?"✓":"+")+'</span>'+
+        '<span class="rr-name">'+esc(r.name)+(isOn&&!inPack?' <i class="rr-flag add">added</i>':'')+
+        (!isOn&&inPack?' <i class="rr-flag off">removed</i>':'')+'</span>'+
+        '<span class="rr-price">'+money(r.mo)+'/mo<i>'+money(r.build)+' setup</i></span></div>');
+      row.addEventListener("click", function(e){ e.stopPropagation(); toggleRoom(k);
+        toast(r.name+(activeRooms().indexOf(k)>=0?" added — ":" removed — ")+priceLabel());
+        setTimeout(function(){ location.reload(); },550); });
+      list.appendChild(row);
+    });
+    menu.appendChild(list);
+    menu.appendChild(el('<div class="tm-total"><div class="tt-line"><span>'+esc(t.name)+' package</span>'+
+      '<b>'+money(t.mo)+'/mo</b></div>'+
+      (adds.length?'<div class="tt-line add"><span>+ '+adds.length+' room'+(adds.length>1?'s':'')+' added</span><b>+'+money(pr.mo-t.mo>0?pr.mo-t.mo:0)+'/mo</b></div>':'')+
+      (offs.length?'<div class="tt-line off"><span>− '+offs.length+' room'+(offs.length>1?'s':'')+' removed</span><b>−'+money(t.mo-pr.mo>0?t.mo-pr.mo:0)+'/mo</b></div>':'')+
+      '<div class="tt-line grand"><span>Your build</span><b>'+money(pr.mo)+'/mo · '+money(pr.build)+' setup</b></div></div>'));
+    bar.appendChild(menu);
+
+    var pill=bar.querySelector("#tierPill");
+    function close(){ menu.classList.remove("open"); pill.setAttribute("aria-expanded","false"); }
+    pill.addEventListener("click", function(e){
+      e.stopPropagation();
+      var open=menu.classList.toggle("open");
+      pill.setAttribute("aria-expanded", String(open));
+    });
+    pill.addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); pill.click(); } });
+    menu.addEventListener("click", function(e){ e.stopPropagation(); });
+    document.addEventListener("click", close);
+    document.addEventListener("keydown", function(e){ if(e.key==="Escape") close(); });
+    return bar;
   }
   function ribbon(){
     if(!isSample()) return null;
