@@ -638,6 +638,9 @@ body.signer{background:var(--paper);margin:0}
   border:0;background:var(--tang);color:#fff;font-size:21px;font-weight:800;cursor:pointer;box-shadow:var(--sh-lg)}
 .manualpanel{position:fixed;right:0;top:0;bottom:0;width:min(430px,100%);z-index:90;background:var(--card);
   border-left:1px solid var(--line);box-shadow:var(--sh-lg);display:flex;flex-direction:column}
+/* display:flex overrides the hidden attribute, so the panel opened on every page
+   load. The attribute has to be re-asserted or the help panel IS the interface. */
+.manualpanel[hidden]{display:none!important}
 .mp-head{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid var(--line)}
 .mp-x{border:0;background:none;font-size:24px;cursor:pointer;color:var(--mut);line-height:1}
 .mp-ask{padding:14px 18px;border-bottom:1px solid var(--line)}
