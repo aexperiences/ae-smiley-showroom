@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sterilisation & OSHA · Smiley OS</title>
+<meta name="description" content="Only the compliance items with a real inspector and a real penalty behind them.">
+<link rel="canonical" href="https://www.aexperiences.com/apps/smiley/sterile.html">
+<meta property="og:title" content="Sterilisation & OSHA · Smiley OS">
+<meta property="og:description" content="Only the compliance items with a real inspector and a real penalty behind them.">
+<meta property="og:image" content="https://www.aexperiences.com/Smiley_OS.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<link rel="apple-touch-icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<meta name="theme-color" content="#0e7c93">
+<link rel="stylesheet" href="smiley.css">
+</head>
+<body>
+<script src="smiley.js"></script>
+<script src="manual.js"></script>
+<script>
+(function(){
+  var S = window.Smiley;
+  var content = S.mount({ active:"sterile.html", crumb:"Sterilisation & OSHA" });
+
+  content.appendChild(S.page("Sterilisation & OSHA","We left out everything nobody inspects. What is left has an inspector, a finding, and in one case a fine."));
+  var st=S.complianceState(), bad=S.complianceOverdue();
+  content.appendChild(S.card('<h2>Status</h2><div class="stats">'+
+    S.stat("Overdue", bad.length, "do these today", bad.length?"bad":"good")+
+    S.stat("Due within 14 days", st.filter(function(c){return c.state==="soon";}).length, "", "watch")+
+    S.stat("Current", st.filter(function(c){return c.state==="ok";}).length, "", "good")+
+    '</div>'));
+  function draw(){
+    var host=document.getElementById("comp"); host.innerHTML="";
+    S.complianceState().forEach(function(c){
+      var band={overdue:"bad",never:"bad",soon:"watch",ok:"good"}[c.state];
+      var label={overdue:Math.abs(c.days)+" days overdue",never:"never recorded",soon:"due in "+c.days+" days",ok:"current"}[c.state];
+      host.appendChild(S.el('<div class="rowitem"><div class="ri-main"><b>'+S.esc(c.def.label)+'</b> '+S.tag(label,band)+
+        '<div class="mut">'+S.esc(c.def.cadence)+(c.last?' · last done '+S.dayLabel(c.last)+(c.by?' by '+S.esc(S.memberName(c.by)):''):'')+'</div>'+
+        '<div class="mods"><b>If it lapses:</b> '+S.esc(c.def.penalty)+'</div>'+
+        '<div class="ri-act"><button class="btn small primary" data-log="'+c.def.k+'">Record it done today</button></div></div></div>'));
+    });
+    [].forEach.call(host.querySelectorAll("[data-log]"),function(b){
+      b.addEventListener("click",function(){ S.logCompliance(b.dataset.log,"t7"); S.toast("Logged with today's date and your name on it."); draw(); }); });
+  }
+  content.appendChild(S.card('<h2>The log</h2><div id="comp"></div>'));
+  draw();
+
+})();
+</script>
+</body>
+</html>

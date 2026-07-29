@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Records · Smiley OS</title>
+<meta name="description" content="Cedar Ridge Dental — the filing system and single source of truth. Powered by Accelerated Experiences LLC.">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="smiley.css">
+<style>
+.rc-crumb{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:13px;color:var(--mut);margin-bottom:12px}
+.rc-crumb a{color:var(--blue-2);cursor:pointer;font-weight:600}
+.rc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));gap:14px}
+.rc-fold{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:15px 16px;cursor:pointer;transition:.14s;position:relative}
+.rc-fold:hover{transform:translateY(-2px);border-color:var(--blue-3);box-shadow:var(--sh)}
+.rc-fold .ic{font-size:23px;line-height:1}
+.rc-fold b{display:block;margin-top:9px;font-size:14.5px}
+.rc-fold span{font-size:11.5px;color:var(--mut);display:block;margin-top:2px;line-height:1.45}
+.rc-count{position:absolute;top:13px;right:14px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mut);background:var(--sunk);border-radius:999px;padding:2px 8px}
+.rc-tools{display:flex;gap:9px;flex-wrap:wrap;margin:2px 0 13px}
+.rc-tools input{flex:1;min-width:210px;border:1px solid var(--line);border-radius:9px;padding:10px 12px;font:inherit;font-size:13.5px;background:var(--card)}
+.rc-file{display:flex;align-items:center;gap:12px;padding:11px 6px;border-top:1px solid var(--line-2)}
+.rc-file:first-child{border-top:none}
+.rc-fi{width:36px;height:36px;border-radius:9px;background:var(--sunk);display:flex;align-items:center;justify-content:center;font-size:16px;flex:none}
+.rc-fname{font-weight:600;font-size:14px}
+.rc-fmeta{font-size:11.5px;color:var(--mut);font-family:'IBM Plex Mono',monospace}
+.rc-badge{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px;margin-left:auto;flex:none}
+.rc-badge.sot{background:var(--amber-wash);color:var(--amber-2);border:1px solid var(--amber-3)}
+.rc-badge.fin{background:#eaf3ee;color:#2f5220}
+.rc-badge.wip{background:var(--blue-wash);color:var(--blue-2)}
+.rc-drop{border:1.5px dashed var(--line);border-radius:12px;padding:22px;text-align:center;color:var(--mut);font-size:13.5px;background:var(--sunk);margin-top:14px;cursor:pointer}
+.rc-drop.hot{border-color:var(--blue);background:var(--blue-wash);color:var(--blue-2)}
+.rc-sot{background:linear-gradient(160deg,var(--rail),#22384c);color:#e7eef4;border-radius:14px;padding:18px 20px;margin-bottom:16px}
+.rc-sot h3{margin:0 0 5px;color:#fff;font-size:17px}
+.rc-sot p{margin:0;font-size:13px;color:#b9cbd8;line-height:1.55}
+.rc-sot .pill{display:inline-block;background:var(--amber-3);color:#241a08;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;margin-bottom:8px}
+</style>
+</head>
+<body>
+<script src="smiley.js"></script>
+<script>
+(function () {
+  var T=window.Smiley;
+  var c=T.mount({active:"records.html",crumb:"Records"});
+  var KEY="smiley_records_v1";
+
+  /* The filing plan — one cabinet per real thing the firm keeps. */
+  var CABINETS=[
+    {k:"waivers",ic:"📄",name:"Waivers & consent",desc:"Signed per-session waivers, health screenings, ID copies."},
+    {k:"licences",ic:"⛨",name:"Licences & certs",desc:"Bloodborne cards, artist registrations, shop licence."},
+    {k:"health",ic:"♥",name:"Health department",desc:"Inspections, spore test results, corrective actions."},
+    {k:"booth",ic:"⚖",name:"Booth agreements",desc:"Artist rental contracts, splits, guest-artist terms."},
+    {k:"flash",ic:"◉",name:"Flash & designs",desc:"Flash sheets, custom drawings, who owns what."},
+    {k:"portfolio",ic:"📷",name:"Portfolio",desc:"Healed photos and releases to publish them."},
+    {k:"insurance",ic:"🛡",name:"Insurance",desc:"Liability policy, COIs, incident reports."},
+    {k:"money",ic:"💵",name:"Money",desc:"Price list, deposits, booth-rent ledger, tax filings."}
+  ];
+
+  /* Seeded records — real McArthur artifacts where they exist, honestly labeled. */
+  var SEED=[
+    {cab:"waivers",name:"Signed waiver — Tegan Moreau",kind:"pdf",tag:"sot",who:"Mira Halloway",when:"2026-07-24",note:""},
+    {cab:"licences",name:"Bloodborne cert — S. Bell",kind:"pdf",tag:"",who:"Mira Halloway",when:"2025-06-14",note:"EXPIRED"},
+    {cab:"health",name:"Panhandle Health inspection — pass",kind:"pdf",tag:"sot",who:"Mira Halloway",when:"2026-04-18",note:""},
+    {cab:"health",name:"Autoclave spore test — weekly log",kind:"csv",tag:"sot",who:"Mira Halloway",when:"2026-07-27",note:""},
+    {cab:"booth",name:"Booth rental — Wren Ashby",kind:"pdf",tag:"sot",who:"Mira Halloway",when:"2026-02-03",note:""},
+    {cab:"flash",name:"Flash wall inventory — current",kind:"csv",tag:"sot",who:"Mira Halloway",when:"2026-07-26",note:""},
+    {cab:"insurance",name:"Liability policy — 2026",kind:"pdf",tag:"sot",who:"Mira Halloway",when:"2026-01-08",note:""},
+    {cab:"money",name:"Price list & deposit policy — 2026",kind:"pdf",tag:"sot",who:"Mira Halloway",when:"2026-03-02",note:""}
+  ];
+
+  function load(){ try{ var d=JSON.parse(sessionStorage.getItem(KEY)); if(d&&d.length) return d; }catch(e){} return SEED.slice(); }
+  function persist(){ try{ sessionStorage.setItem(KEY,JSON.stringify(FILES)); }catch(e){} }
+  var FILES=load(), CAB=null, Q="";
+  var ICON={pdf:"📕",doc:"📄",xls:"📊",dwg:"📐",img:"🖼️",other:"📎"};
+  var BADGE={sot:"Source of truth",fin:"Final",wip:"Working"};
+
+  c.appendChild(T.page("Records — the Hall of Records",
+    "The filing system, and the single source of truth. If a document governs a job, a client, a contract or the business, it lives in one of these cabinets — one place, one current version, so nobody is guessing which copy is right."));
+
+  var host=document.createElement("div"); c.appendChild(host);
+
+  function counts(k){ return FILES.filter(function(f){return f.cab===k;}).length; }
+  function esc(s){ return T.esc(s); }
+
+  function render(){
+    var sot=FILES.filter(function(f){return f.tag==="sot";}).length;
+    var head=
+      '<div class="rc-sot"><span class="pill">Source of truth</span>'+
+      '<h3>One place. One current version.</h3>'+
+      '<p>Anything marked <b>Source of truth</b> is the version that governs — the signed agreement, the issued set, the license, the insurance certificate. Working copies live beside it, clearly marked, so the current one is never in question. '+sot+' record'+(sot===1?"":"s")+' currently carry the mark.</p></div>';
+
+    if(!CAB){
+      host.innerHTML=head+
+        '<div class="rc-tools"><input id="rcQ" placeholder="Search every cabinet — file, project, person…" value="'+esc(Q)+'"></div>'+
+        (Q?renderResults():'<div class="rc-grid">'+CABINETS.map(function(cb){
+          return '<div class="rc-fold" data-cab="'+cb.k+'"><span class="rc-count">'+counts(cb.k)+'</span>'+
+            '<div class="ic">'+cb.ic+'</div><b>'+cb.name+'</b><span>'+cb.desc+'</span></div>';
+        }).join("")+'</div>');
+    } else {
+      var cb=CABINETS.filter(function(x){return x.k===CAB;})[0];
+      var list=FILES.filter(function(f){return f.cab===CAB;});
+      host.innerHTML=head+
+        '<div class="rc-crumb"><a id="rcBack">← All cabinets</a> <span>/</span> <b style="color:var(--ink)">'+cb.ic+' '+cb.name+'</b></div>'+
+        '<div class="card">'+
+          (list.length?list.map(fileRow).join(""):'<div style="color:var(--mut);padding:16px 4px;font-size:13.5px">This cabinet is empty. Drop a file below to start it.</div>')+
+        '</div>'+
+        '<div class="rc-drop" id="rcDrop">Drop a file here, or click to add a record — it files into <b>'+esc(cb.name)+'</b>.</div>';
+      wireDrop();
+      document.getElementById("rcBack").onclick=function(){ CAB=null; render(); };
+    }
+    var q=document.getElementById("rcQ");
+    if(q) q.oninput=function(){ Q=this.value; render(); var e2=document.getElementById("rcQ"); if(e2){e2.focus(); e2.setSelectionRange(e2.value.length,e2.value.length);} };
+    Array.prototype.forEach.call(host.querySelectorAll("[data-cab]"),function(d){
+      d.onclick=function(){ CAB=this.dataset.cab; Q=""; render(); };
+    });
+  }
+  function fileRow(f){
+    var cb=CABINETS.filter(function(x){return x.k===f.cab;})[0]||{name:""};
+    return '<div class="rc-file"><span class="rc-fi">'+(ICON[f.kind]||ICON.other)+'</span>'+
+      '<span><span class="rc-fname">'+esc(f.name)+'</span>'+
+      '<div class="rc-fmeta">'+esc(f.who||"—")+' · '+esc(f.when||"—")+(f.note?' · '+esc(f.note):'')+'</div></span>'+
+      '<span class="rc-badge '+(f.tag||"wip")+'">'+(BADGE[f.tag]||"Working")+'</span></div>';
+  }
+  function renderResults(){
+    var q=Q.toLowerCase();
+    var hits=FILES.filter(function(f){ return (f.name+" "+(f.who||"")+" "+(f.note||"")).toLowerCase().indexOf(q)>-1; });
+    return '<div class="card">'+(hits.length?hits.map(function(f){
+      var cb=CABINETS.filter(function(x){return x.k===f.cab;})[0]||{name:"",ic:""};
+      return fileRow(f).replace('</div></span>',' · <b>'+cb.ic+' '+esc(cb.name)+'</b></div></span>');
+    }).join(""):'<div style="color:var(--mut);padding:16px 4px;font-size:13.5px">Nothing matches “'+esc(Q)+'”.</div>')+'</div>';
+  }
+  function addFile(name,kind){
+    FILES.unshift({cab:CAB,name:name,kind:kind,tag:"wip",who:"You",when:new Date().toISOString().slice(0,10),note:"Added in this session"});
+    persist(); render();
+    T.toast("Filed in "+(CABINETS.filter(function(x){return x.k===CAB;})[0]||{}).name+". (Preview — resets when you leave.)","ok");
+  }
+  function kindOf(n){ n=(n||"").toLowerCase();
+    if(/\.pdf$/.test(n))return"pdf"; if(/\.(docx?|txt|rtf)$/.test(n))return"doc";
+    if(/\.(xlsx?|csv)$/.test(n))return"xls"; if(/\.(dwg|dxf)$/.test(n))return"dwg";
+    if(/\.(png|jpe?g|gif|heic)$/.test(n))return"img"; return"other"; }
+  function wireDrop(){
+    var d=document.getElementById("rcDrop"); if(!d)return;
+    d.onclick=function(){ var n=prompt("Name this record (e.g. “The Arc — 90% plan set”):"); if(n) addFile(n.trim(),kindOf(n)); };
+    ["dragenter","dragover"].forEach(function(ev){ d.addEventListener(ev,function(e){ e.preventDefault(); d.classList.add("hot"); }); });
+    ["dragleave","drop"].forEach(function(ev){ d.addEventListener(ev,function(e){ e.preventDefault(); d.classList.remove("hot"); }); });
+    d.addEventListener("drop",function(e){
+      var fs=(e.dataTransfer&&e.dataTransfer.files)||[];
+      if(!fs.length)return;
+      Array.prototype.forEach.call(fs,function(f){ addFile(f.name,kindOf(f.name)); });
+    });
+  }
+  render();
+})();
+</script>
+</body>
+</html>

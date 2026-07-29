@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Production & Collection · Smiley OS</title>
+<meta name="description" content="Three numbers kept apart: what you produced, what you may ever collect, and what actually arrived.">
+<link rel="canonical" href="https://www.aexperiences.com/apps/smiley/money.html">
+<meta property="og:title" content="Production & Collection · Smiley OS">
+<meta property="og:description" content="Three numbers kept apart: what you produced, what you may ever collect, and what actually arrived.">
+<meta property="og:image" content="https://www.aexperiences.com/Smiley_OS.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<link rel="apple-touch-icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<meta name="theme-color" content="#0e7c93">
+<link rel="stylesheet" href="smiley.css">
+</head>
+<body>
+<script src="smiley.js"></script>
+<script src="manual.js"></script>
+<script>
+(function(){
+  var S = window.Smiley;
+  var content = S.mount({ active:"money.html", crumb:"Production & collection" });
+
+  content.appendChild(S.page("Production & collection","The three numbers a practice most often adds together by accident."));
+  var wk=S.lastWeek(), m=S.weekMoney(wk,"completed");
+  content.appendChild(S.card('<h2>Week of '+S.dayLabel(wk)+'</h2><div class="moneysplit">'+
+    '<div class="ms"><b>'+S.money(m.fee)+'</b><span>Production</span></div>'+
+    '<div class="ms neg"><b>−'+S.money(m.writeOff)+'</b><span>PPO write-off</span></div>'+
+    '<div class="ms"><b>'+S.money(m.fee-m.writeOff)+'</b><span>Collectable</span></div>'+
+    '<div class="ms"><b>'+S.money(m.planPays)+'</b><span>Plan pays</span></div>'+
+    '<div class="ms"><b>'+S.money(m.patient)+'</b><span>Patient owes</span></div>'+
+    '</div><p class="sub">Plan plus patient always equals collectable. If those ever stop reconciling, something is wrong with the fee schedule and not with your staff.</p>'));
+
+  var rows=S.productionByProvider(wk,"completed");
+  content.appendChild(S.card('<h2>By provider</h2><p class="sub">Completed work only — scheduled production is a forecast, not an achievement.</p>'+
+    '<div class="tablewrap"><table><thead><tr><th>Provider</th><th>Role</th><th class="right">Production</th><th>Share</th></tr></thead><tbody>'+
+    rows.map(function(r){ var tot=rows.reduce(function(a,x){return a+x.v;},0);
+      return '<tr><td><b>'+S.esc(r.name)+'</b></td><td class="mut">'+({dds:"Dentist",rdh:"Hygienist",da:"Assistant",admin:"Admin"}[r.kind]||r.kind)+'</td>'+
+        '<td class="right mono">'+S.money(r.v)+'</td><td>'+S.bar(tot?Math.round(r.v/tot*100):0)+'</td></tr>'; }).join("")+
+    '</tbody></table></div>'));
+
+  content.appendChild(S.card('<h2>Hygiene share</h2><div class="stats">'+
+    S.stat("Hygiene production", S.pct(S.hygieneShare(wk,"completed")), "benchmark "+S.BENCH.hygieneShare.v+"% (30–33%)", S.hygieneShare(wk,"completed")>=30?"good":"watch")+
+    S.stat("Broken appointments", S.brokenAppointments(wk).length, S.money(S.brokenCost(wk))+" of production", S.brokenAppointments(wk).length?"watch":"good")+
+    '</div>'+S.srcNote(S.BENCH.hygieneShare.src)+
+    '<p class="sub">A cancelled appointment normally just vanishes from the book. Here it keeps its production value, so you can see what the week actually cost.</p>'));
+
+  content.appendChild(S.card('<h2>Fee schedule</h2><p class="sub">Real CDT codes. Change a fee here and every estimate, treatment plan and claim in the system moves with it.</p>'+
+    '<div class="tablewrap"><table><thead><tr><th>Code</th><th>Plain English</th><th>Category</th><th class="right">Fee</th><th>Limits</th></tr></thead><tbody>'+
+    S.CDT.map(function(c){ return '<tr><td class="mono">'+c.c+'</td><td>'+S.esc(c.n)+'</td><td class="mut">'+S.esc(c.cat)+'</td>'+
+      '<td class="right mono">'+(c.fee?S.money(c.fee):"in contract")+'</td><td class="mut">'+S.esc(c.freq||(c.inContract?"included in the ortho contract":"—"))+
+      (c.downgradeTo?' · often downgraded':'')+'</td></tr>'; }).join("")+'</tbody></table></div>'));
+
+})();
+</script>
+</body>
+</html>

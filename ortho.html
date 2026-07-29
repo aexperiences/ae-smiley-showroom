@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ortho · Smiley OS</title>
+<meta name="description" content="Contracts, not procedures — recognised monthly in arrears against a lifetime maximum.">
+<link rel="canonical" href="https://www.aexperiences.com/apps/smiley/ortho.html">
+<meta property="og:title" content="Ortho · Smiley OS">
+<meta property="og:description" content="Contracts, not procedures — recognised monthly in arrears against a lifetime maximum.">
+<meta property="og:image" content="https://www.aexperiences.com/Smiley_OS.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<link rel="apple-touch-icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<meta name="theme-color" content="#0e7c93">
+<link rel="stylesheet" href="smiley.css">
+</head>
+<body>
+<script src="smiley.js"></script>
+<script src="manual.js"></script>
+<script>
+(function(){
+  var S = window.Smiley;
+  var content = S.mount({ active:"ortho.html", crumb:"Ortho contracts" });
+
+  content.appendChild(S.page("Ortho contracts","A signed case is not production. A $5,800 case is $5,800 of treatment you now owe, earned back monthly across the term. Booking it on signing day is how a practice reads a record month and then cannot make payroll."));
+  var t=S.orthoTotals();
+  content.appendChild(S.card('<h2>The ledger</h2><div class="stats">'+
+    S.stat("Active cases", t.active, "of "+t.cases+" on the books")+
+    S.stat("Contracted", S.money(t.contracted), "total signed value")+
+    S.stat("Recognised", S.money(t.recognised), "earned so far, straight-line")+
+    S.stat("Unearned", S.money(t.unearned), "treatment still owed", "watch")+
+    S.stat("Collected", S.money(t.collected), "actually banked")+
+    S.stat("Behind", S.money(t.behind), "owed against work already done", t.behind>0?"bad":"good")+
+    '</div><p class="sub">Contracted is not revenue and never was. The number that pays your staff is <b>recognised</b>, and the number that tells you who to call is <b>behind</b>.</p>'));
+
+  function draw(){
+    var host=document.getElementById("cases"); host.innerHTML="";
+    S.db().ortho_cases.forEach(function(o){
+      var p=S.ptById(o.pt); if(!p) return;
+      var ben=S.orthoBenefit(p.plan), iss=S.orthoIssues(o), m=S.monthsElapsed(o);
+      var band={Active:"good",Retention:"",Overdue:"bad"}[o.status]||"";
+      var h='<div class="rowitem"><div class="ri-main"><b>'+S.esc(p.name)+'</b> '+S.tag(o.status,band)+
+        ' <span class="mut">'+S.esc(S.codeName(o.code))+' · started '+S.dayLabel(o.started)+'</span>'+
+        '<div class="mut">'+S.esc(o.wire)+' · next visit '+S.dayLabel(o.nextVisit)+'</div>'+
+        S.bar(Math.round(m/o.months*100))+
+        '<div class="mut">month '+m+' of '+o.months+'</div>'+
+        '<div class="moneysplit">'+
+          '<div class="ms"><b>'+S.money(o.contract)+'</b><span>Contract</span></div>'+
+          '<div class="ms"><b>'+S.money(S.orthoRecognised(o))+'</b><span>Recognised</span></div>'+
+          '<div class="ms"><b>'+S.money(S.orthoUnearned(o))+'</b><span>Unearned</span></div>'+
+          '<div class="ms"><b>'+S.money(o.paid)+'</b><span>Collected</span></div>'+
+          '<div class="ms'+(S.orthoBehind(o)>0?" neg":"")+'"><b>'+S.money(S.orthoBehind(o))+'</b><span>Behind</span></div>'+
+        '</div>'+
+        '<div class="mut">Lifetime ortho benefit: '+(ben.lifetime?S.money(ben.lifetime)+' — '+S.money(o.planPaid)+' used, '+S.money(S.orthoLifetimeLeft(o))+' left':'none on this plan')+
+        ' · monthly due '+S.money(S.orthoMonthlyDue(o))+'</div>';
+      if(iss.length) h+='<div class="blockers"><b>Needs attention:</b><ul><li>'+iss.map(S.esc).join('</li><li>')+'</li></ul></div>';
+      h+='<div class="ri-act"><button class="btn small primary" data-pay="'+o.id+'">Post this month\'s payment ('+S.money(S.orthoMonthlyDue(o))+')</button></div></div></div>';
+      host.appendChild(S.el('<div>'+h+'</div>'));
+    });
+    [].forEach.call(host.querySelectorAll("[data-pay]"),function(b){
+      b.addEventListener("click",function(){ var o=S.orthoById(b.dataset.pay);
+        S.postOrthoPayment(o.id, S.orthoMonthlyDue(o)); S.toast("Payment posted."); setTimeout(function(){location.reload();},600); }); });
+  }
+  content.appendChild(S.card('<h2>Cases</h2><div id="cases"></div>'));
+  draw();
+
+  content.appendChild(S.card('<h2>Why ortho sits in its own ledger</h2><p class="sub">'+
+    'General dentistry produces a fee per procedure against an <b>annual</b> maximum that resets every year. '+
+    'An ortho case is one contract delivered over 18 to 30 months against a <b>lifetime</b> maximum the plan pays in instalments and never renews. '+
+    'The two do not share a money engine, so Smiley OS does not pretend they do. Ortho is a module — a practice that does not do it never sees this room.</p>'));
+
+})();
+</script>
+</body>
+</html>

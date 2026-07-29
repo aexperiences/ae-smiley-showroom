@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Schedule & Chairs · Smiley OS</title>
+<meta name="description" content="A dental book is a column per operatory, not a single list — and an empty hygiene chair has a price.">
+<link rel="canonical" href="https://www.aexperiences.com/apps/smiley/schedule.html">
+<meta property="og:title" content="Schedule & Chairs · Smiley OS">
+<meta property="og:description" content="A dental book is a column per operatory, not a single list — and an empty hygiene chair has a price.">
+<meta property="og:image" content="https://www.aexperiences.com/Smiley_OS.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<link rel="apple-touch-icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<meta name="theme-color" content="#0e7c93">
+<link rel="stylesheet" href="smiley.css">
+</head>
+<body>
+<script src="smiley.js"></script>
+<script src="manual.js"></script>
+<script>
+(function(){
+  var S = window.Smiley;
+  var content = S.mount({ active:"schedule.html", crumb:"Schedule & Chairs" });
+
+  content.appendChild(S.page("Schedule & Chairs","A dental book is one column per operatory, because two people are working at once and only one of them is the dentist."));
+  var wk=S.thisWeek(), days=[1,2,3,4,5];
+  var open=S.openHygieneSlots(wk);
+  content.appendChild(S.card('<h2>This week</h2><div class="stats">'+
+    S.stat("Appointments", S.visitsInWeek(wk).filter(function(v){return v.pt;}).length, "with a patient in the chair")+
+    S.stat("Open hygiene hours", open.length, "worth "+S.money(S.openHygieneCost(wk)), open.length>6?"bad":"watch")+
+    S.stat("Scheduled production", S.money(S.weekProduction(wk,"scheduled")), "if every one of them shows")+
+    S.stat("Already completed", S.money(S.weekProduction(wk,"completed")), "checked out")+
+    '</div><p class="sub">An unfilled hygiene hour is the most expensive empty hour in the building: the hygienist is paid either way, and hygiene is where the doctor\'s restorative work gets found.</p>'));
+
+  days.forEach(function(d){
+    var date=S.iso(S.addDays(S.dISO(wk), d));
+    var vs=S.visitsInWeek(wk).filter(function(v){ return v.date===date; });
+    if(!vs.length) return;
+    var h='<h2>'+S.dayLabel(date)+'</h2><div class="tablewrap"><table><thead><tr><th>Time</th>'+
+      S.OPERATORIES.map(function(o){ return '<th>'+S.esc(o)+'</th>'; }).join('')+'</tr></thead><tbody>';
+    var times={}; vs.forEach(function(v){ times[v.start]=1; });
+    Object.keys(times).sort().forEach(function(t){
+      h+='<tr><td class="mono">'+S.hhmm(t)+'</td>';
+      S.OPERATORIES.forEach(function(o,oi){
+        var v=vs.filter(function(x){ return x.start===t && x.op===oi; })[0];
+        if(!v){ h+='<td></td>'; return; }
+        if(!v.pt){ h+='<td><span class="tag watch">open — '+S.money(S.recallFee())+' of hygiene time</span></td>'; return; }
+        var prov=S.memberById(v.prov)||{};
+        h+='<td><b>'+S.esc(S.ptName(v.pt))+'</b><br><span class="mut">'+S.esc(v.type)+'</span><br>'+
+           '<span class="mut">'+S.esc((prov.name||"").split(",")[0])+' · '+S.money(S.visitProduction(v))+'</span>'+
+           (v.state==="broken"?' '+S.tag("broken","bad"):'')+
+           (v.checkedOut?' '+S.tag("out","good"):'')+'</td>';
+      });
+      h+='</tr>';
+    });
+    content.appendChild(S.card(h+'</tbody></table></div>'));
+  });
+
+})();
+</script>
+</body>
+</html>

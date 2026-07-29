@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Recall · Smiley OS</title>
+<meta name="description" content="Who is due, who has lapsed, and what the empty hygiene chairs cost this week.">
+<link rel="canonical" href="https://www.aexperiences.com/apps/smiley/recall.html">
+<meta property="og:title" content="Recall · Smiley OS">
+<meta property="og:description" content="Who is due, who has lapsed, and what the empty hygiene chairs cost this week.">
+<meta property="og:image" content="https://www.aexperiences.com/Smiley_OS.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<link rel="apple-touch-icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<meta name="theme-color" content="#0e7c93">
+<link rel="stylesheet" href="smiley.css">
+</head>
+<body>
+<script src="smiley.js"></script>
+<script src="manual.js"></script>
+<script>
+(function(){
+  var S = window.Smiley;
+  var content = S.mount({ active:"recall.html", crumb:"Recall & reactivation" });
+
+  content.appendChild(S.page("Recall & reactivation","The hygienist is paid whether the chair is full or not, and hygiene is where the doctor's restorative work gets found. That is why this room has a dollar figure on it."));
+  var wk=S.thisWeek(), open=S.openHygieneSlots(wk), lap=S.lapsed(), nr=S.seenNotReappointed();
+  content.appendChild(S.card('<h2>The cost of the holes</h2><div class="stats">'+
+    S.stat("Open hygiene hours", open.length, "this week", open.length>6?"bad":"watch")+
+    S.stat("What they are worth", S.money(S.openHygieneCost(wk)), "priced at a real recall visit ("+S.money(S.recallFee())+")")+
+    S.stat("Overdue, nothing booked", lap.length, "these are the ones you lose", lap.length?"bad":"good")+
+    S.stat("Reappointment", S.pct(S.reappointRate()), "benchmark "+S.BENCH.reappoint.v+"%", S.reappointRate()>=85?"good":"watch")+
+    '</div>'+S.srcNote(S.BENCH.reappoint.src)));
+
+  if(nr.length) content.appendChild(S.card('<h2>Seen in the last month and left without booking</h2><p class="sub">This is the leak. Somebody sat in your chair, you did the work, and they walked out with no next appointment.</p>'+
+    '<div class="tablewrap"><table><thead><tr><th>Patient</th><th>Plan</th><th>Next recall due</th><th class="right">Worth</th></tr></thead><tbody>'+
+    nr.map(function(p){ return '<tr><td><b>'+S.esc(p.name)+'</b></td><td>'+S.esc(S.planById(p.plan).carrier)+'</td>'+
+      '<td>'+(p.nextRecall?S.dayLabel(p.nextRecall):"—")+'</td><td class="right mono">'+S.money(S.recallFee())+'</td></tr>'; }).join("")+
+    '</tbody></table></div>'));
+
+  var due=S.recallDue(45);
+  content.appendChild(S.card('<h2>Due in the next 45 days</h2>'+
+    '<div class="tablewrap"><table><thead><tr><th>Patient</th><th>Due</th><th>Status</th><th>Plan</th><th>Note</th></tr></thead><tbody>'+
+    due.map(function(r){
+      var st = r.booked ? S.tag("booked","good") : r.overdue ? S.tag(Math.abs(r.days)+" days overdue","bad") : S.tag("in "+r.days+" days","watch");
+      return '<tr><td><b>'+S.esc(r.pt.name)+'</b>'+(r.pt.perio?' '+S.tag("perio"):'')+'</td>'+
+        '<td class="mono">'+S.dayLabel(r.pt.nextRecall)+'</td><td>'+st+'</td>'+
+        '<td>'+S.esc(S.planById(r.pt.plan).carrier)+'</td><td class="mut">'+S.esc(r.pt.note||"")+'</td></tr>';
+    }).join("")+'</tbody></table></div>'));
+
+  if(open.length) content.appendChild(S.card('<h2>Fill a chair</h2><p class="sub">Pick an open hygiene slot and seat somebody who is overdue.</p><div id="fill"></div>'));
+  function drawFill(){
+    var host=document.getElementById("fill"); if(!host) return; host.innerHTML="";
+    S.openHygieneSlots(S.thisWeek()).forEach(function(v){
+      var opts=S.recallDue(9999).filter(function(r){ return !r.booked; }).slice(0,12);
+      host.appendChild(S.el('<div class="rowitem"><div class="ri-main"><b>'+S.dayLabel(v.date)+' '+S.hhmm(v.start)+'</b> <span class="mut">'+S.esc(S.OPERATORIES[v.op])+'</span>'+
+        '<div class="ri-act"><select data-slot="'+v.id+'"><option value="">Choose an overdue patient…</option>'+
+        opts.map(function(r){ return '<option value="'+r.pt.id+'">'+S.esc(r.pt.name)+' — '+(r.overdue?Math.abs(r.days)+"d overdue":"due in "+r.days+"d")+'</option>'; }).join("")+
+        '</select> <button class="btn small primary" data-book="'+v.id+'">Book it</button></div></div></div>'));
+    });
+    [].forEach.call(host.querySelectorAll("[data-book]"),function(b){
+      b.addEventListener("click",function(){
+        var sel=host.querySelector('[data-slot="'+b.dataset.book+'"]');
+        if(!sel.value){ S.toast("Pick a patient first."); return; }
+        S.bookOpen(b.dataset.book, sel.value); S.toast("Booked. That is "+S.money(S.recallFee())+" back on the schedule.");
+        setTimeout(function(){ location.reload(); },700); }); });
+  }
+  drawFill();
+
+})();
+</script>
+</body>
+</html>

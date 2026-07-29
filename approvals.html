@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Approval Desk · Smiley OS</title>
+<meta name="description" content="Nothing spends, sends or changes a fee without a named person saying yes.">
+<link rel="canonical" href="https://www.aexperiences.com/apps/smiley/approvals.html">
+<meta property="og:title" content="Approval Desk · Smiley OS">
+<meta property="og:description" content="Nothing spends, sends or changes a fee without a named person saying yes.">
+<meta property="og:image" content="https://www.aexperiences.com/Smiley_OS.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<link rel="apple-touch-icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<meta name="theme-color" content="#0e7c93">
+<link rel="stylesheet" href="smiley.css">
+</head>
+<body>
+<script src="smiley.js"></script>
+<script src="manual.js"></script>
+<script>
+(function(){
+  var S = window.Smiley;
+  var content = S.mount({ active:"approvals.html", crumb:"Approval desk" });
+
+  content.appendChild(S.page("Approval desk","Anything that spends money, sends to a patient, or changes a fee waits here for a named person. Nothing leaves the building on its own."));
+  var a=S.approvals();
+  if(!a.length) content.appendChild(S.card('<h2>Nothing waiting</h2><p class="sub">When the system wants to send a recall blast, write off a balance, or adjust a fee, it stops here first and puts your name on the decision.</p>'));
+  content.appendChild(S.card('<h2>What always stops here</h2><ul>'+
+    ['Any message going out to a patient list','Writing off a patient balance','Changing a fee on the schedule',
+     'Sending a document for signature','Refunding a payment','Anything that would spend money']
+    .map(function(x){ return '<li>'+x+'</li>'; }).join("")+'</ul>'));
+
+})();
+</script>
+</body>
+</html>

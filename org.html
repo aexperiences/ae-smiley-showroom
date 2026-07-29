@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Agent Org · Smiley OS</title>
+<meta name="description" content="Four departments, one point of contact.">
+<link rel="canonical" href="https://www.aexperiences.com/apps/smiley/org.html">
+<meta property="og:title" content="Agent Org · Smiley OS">
+<meta property="og:description" content="Four departments, one point of contact.">
+<meta property="og:image" content="https://www.aexperiences.com/Smiley_OS.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<link rel="apple-touch-icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<meta name="theme-color" content="#0e7c93">
+<link rel="stylesheet" href="smiley.css">
+</head>
+<body>
+<script src="smiley.js"></script>
+<script src="manual.js"></script>
+<script>
+(function(){
+  var S = window.Smiley;
+  var content = S.mount({ active:"org.html", crumb:"Agent org · bus" });
+
+  content.appendChild(S.page("Agent org","Four departments, one point of contact. You get a decision, not four opinions."));
+  content.appendChild(S.card('<h2>'+S.esc(S.BRAIN.name)+'</h2><p class="sub"><b>'+S.esc(S.BRAIN.role)+'</b><br>'+S.esc(S.BRAIN.line)+'</p>'));
+  content.appendChild(S.card('<h2>Departments</h2><div class="tablewrap"><table><thead><tr><th>Department</th><th>Head</th><th>Desks</th></tr></thead><tbody>'+
+    S.SEATS.map(function(s){ return '<tr><td><b>'+S.esc(s.dept)+'</b></td><td>'+S.esc(s.head)+'</td><td class="mut">'+s.aes.map(S.esc).join(" · ")+'</td></tr>'; }).join("")+
+    '</tbody></table></div>'));
+  content.appendChild(S.card('<h2>What is native and what is not</h2><p class="sub">Named plainly, because claiming a vendor capability as your own is the kind of thing that gets a practice audited.</p>'+
+    '<div class="tablewrap"><table><thead><tr><th>Capability</th><th>How it actually works</th></tr></thead><tbody>'+
+    S.SYSTEMS.map(function(s){ return '<tr><td>'+S.esc(s.what)+'</td><td>'+(s.native?S.tag("native","good"):S.tag("vendor","watch"))+' <span class="mut">'+S.esc(s.how)+'</span></td></tr>'; }).join("")+
+    '</tbody></table></div>'));
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Treatment Plans · Smiley OS</title>
+<meta name="description" content="Diagnosed, presented, and never scheduled — the largest recoverable number in most practices.">
+<link rel="canonical" href="https://www.aexperiences.com/apps/smiley/treatment.html">
+<meta property="og:title" content="Treatment Plans · Smiley OS">
+<meta property="og:description" content="Diagnosed, presented, and never scheduled — the largest recoverable number in most practices.">
+<meta property="og:image" content="https://www.aexperiences.com/Smiley_OS.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<link rel="apple-touch-icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<meta name="theme-color" content="#0e7c93">
+<link rel="stylesheet" href="smiley.css">
+</head>
+<body>
+<script src="smiley.js"></script>
+<script src="manual.js"></script>
+<script>
+(function(){
+  var S = window.Smiley;
+  var content = S.mount({ active:"treatment.html", crumb:"Treatment plans" });
+
+  content.appendChild(S.page("Treatment plans","Work you diagnosed and presented but nobody booked. Most practices never total it, which is exactly why it stays there."));
+  content.appendChild(S.card('<h2>What is sitting in the drawer</h2><div class="stats">'+
+    S.stat("Unscheduled treatment", S.money(S.unscheduledValue()), "presented or accepted, not on the book", "bad")+
+    S.stat("Case acceptance", S.pct(S.caseAcceptance()), "national average "+S.BENCH.caseAcceptance.v+"% (40–60%)", S.caseAcceptance()>=50?"good":"watch")+
+    S.stat("Plans open", S.unscheduled().length, "waiting on a decision")+
+    '</div>'+S.srcNote(S.BENCH.caseAcceptance.src)));
+
+  function draw(){
+    var host=document.getElementById("tps"); host.innerHTML="";
+    S.db().treatment.forEach(function(t){
+      var p=S.ptById(t.pt); if(!p) return;
+      var lines=t.codes.map(function(c){ return S.priceLine(c,p.plan,p); });
+      var fee=lines.reduce(function(a,l){return a+l.fee;},0);
+      var patient=lines.reduce(function(a,l){return a+l.patient;},0);
+      var plan=lines.reduce(function(a,l){return a+l.planPays;},0);
+      var band={Presented:"watch",Accepted:"good",Scheduled:"good",Declined:"bad"}[t.status]||"";
+      var h='<div class="rowitem"><div class="ri-main"><b>'+S.esc(p.name)+'</b> '+S.tag(t.status,band)+
+        (t.tooth?' <span class="mut">'+S.esc(t.tooth)+'</span>':'')+
+        '<div class="mut">'+t.codes.map(function(c){ return S.esc(S.codeName(c)); }).join(" · ")+
+        ' — presented '+S.dayLabel(t.presented)+' by '+S.esc(S.memberName(t.by))+'</div>'+
+        '<div class="moneysplit">'+
+          '<div class="ms"><b>'+S.money(fee)+'</b><span>Fee</span></div>'+
+          '<div class="ms"><b>'+S.money(plan)+'</b><span>Plan would pay</span></div>'+
+          '<div class="ms"><b>'+S.money(patient)+'</b><span>Patient would owe</span></div>'+
+        '</div>';
+      if(t.why) h+='<div class="mods"><b>Why it stalled:</b> '+S.esc(t.why)+'</div>';
+      var blockers=[];
+      t.codes.forEach(function(c){ S.checkCoverage(p.id,c).blockers.forEach(function(b){ if(blockers.indexOf(b)<0) blockers.push(b); }); });
+      if(blockers.length) h+='<div class="blockers"><b>If you book this today:</b><ul><li>'+blockers.map(S.esc).join('</li><li>')+'</li></ul></div>';
+      if(t.status==="Presented"||t.status==="Accepted")
+        h+='<div class="ri-act"><button class="btn small primary" data-sch="'+t.id+'">Mark scheduled</button> <button class="btn small" data-dec="'+t.id+'">Patient declined</button></div>';
+      host.appendChild(S.el('<div>'+h+'</div></div>'));
+    });
+    [].forEach.call(host.querySelectorAll("[data-sch]"),function(b){ b.addEventListener("click",function(){ S.acceptTreatment(b.dataset.sch,"Scheduled"); S.toast("Scheduled."); setTimeout(function(){location.reload();},600); }); });
+    [].forEach.call(host.querySelectorAll("[data-dec]"),function(b){ b.addEventListener("click",function(){ S.acceptTreatment(b.dataset.dec,"Declined"); S.toast("Recorded as declined — at least now you know why."); setTimeout(function(){location.reload();},600); }); });
+  }
+  content.appendChild(S.card('<h2>Every plan on the books</h2><div id="tps"></div>'));
+  draw();
+
+})();
+</script>
+</body>
+</html>

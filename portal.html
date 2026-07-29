@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Patient Portal · Smiley OS</title>
+<meta name="description" content="What the patient sees — their estimate in plain English, before the work.">
+<link rel="canonical" href="https://www.aexperiences.com/apps/smiley/portal.html">
+<meta property="og:title" content="Patient Portal · Smiley OS">
+<meta property="og:description" content="What the patient sees — their estimate in plain English, before the work.">
+<meta property="og:image" content="https://www.aexperiences.com/Smiley_OS.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<link rel="apple-touch-icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<meta name="theme-color" content="#0e7c93">
+<link rel="stylesheet" href="smiley.css">
+</head>
+<body>
+<script src="smiley.js"></script>
+<script src="manual.js"></script>
+<script>
+(function(){
+  var S = window.Smiley;
+  var content = S.mount({ active:"portal.html", crumb:"Patient portal" });
+
+  content.appendChild(S.page("Patient portal","What the patient sees. The estimate is written the way somebody without a dental degree reads it, because 'D2392' has never once stopped an argument at the front desk."));
+  var p=S.ptById("p4");
+  var upcoming=S.db().visits.filter(function(v){ return v.pt===p.id && S.daysUntil(v.date)>=0; });
+  var tps=S.db().treatment.filter(function(t){ return t.pt===p.id; });
+  content.appendChild(S.card('<h2>'+S.esc(p.name)+'</h2><p class="sub">'+S.esc(S.planById(p.plan).carrier)+' '+S.esc(S.planById(p.plan).plan)+
+    ' · benefit used this year '+S.money(p.ytdUsed)+' of '+S.money(S.planById(p.plan).annualMax)+'</p>'+
+    S.bar(Math.round(p.ytdUsed/S.planById(p.plan).annualMax*100),"warn")+
+    '<p class="sub">When that bar fills, your plan stops paying until January. We would rather you saw it now than found out from a bill.</p>'));
+
+  if(upcoming.length) content.appendChild(S.card('<h2>Your appointments</h2>'+upcoming.map(function(v){
+    var m=S.priceVisit(v);
+    return '<div class="rowitem"><div class="ri-main"><b>'+S.dayLabel(v.date)+' at '+S.hhmm(v.start)+'</b> <span class="mut">'+S.esc(v.type)+'</span>'+
+      '<div class="mut">'+v.codes.map(function(c){return S.esc(S.codeName(c));}).join(" · ")+'</div>'+
+      '<div class="moneysplit"><div class="ms"><b>'+S.money(m.planPays)+'</b><span>Your plan pays</span></div>'+
+      '<div class="ms"><b>'+S.money(m.patient)+'</b><span>Your share</span></div></div></div></div>'; }).join("")));
+
+  if(tps.length) content.appendChild(S.card('<h2>Treatment we have talked about</h2>'+tps.map(function(t){
+    var lines=t.codes.map(function(c){ return S.priceLine(c,p.plan,p); });
+    return '<div class="rowitem"><div class="ri-main"><b>'+t.codes.map(function(c){return S.esc(S.codeName(c));}).join(" · ")+'</b> '+S.tag(t.status)+
+      (t.tooth?' <span class="mut">'+S.esc(t.tooth)+'</span>':'')+
+      '<div class="moneysplit"><div class="ms"><b>'+S.money(lines.reduce(function(a,l){return a+l.fee;},0))+'</b><span>Full fee</span></div>'+
+      '<div class="ms"><b>'+S.money(lines.reduce(function(a,l){return a+l.planPays;},0))+'</b><span>Plan pays</span></div>'+
+      '<div class="ms"><b>'+S.money(lines.reduce(function(a,l){return a+l.patient;},0))+'</b><span>You pay</span></div></div>'+
+      (lines.some(function(l){return l.downgraded;})?'<div class="mods"><b>Worth knowing:</b> your plan pays for the cheaper material here, so the difference is yours. We would rather say it now than put it on a bill later.</div>':'')+
+      '</div></div>'; }).join("")));
+
+  content.appendChild(S.card('<h2>An estimate is an estimate</h2><p class="sub">Your dental benefit is a contract between you and your plan, not between your plan and this practice. We check your history against your plan\'s rules before every visit and tell you what we find, but the plan makes the final call. Anything they decline is still yours to pay, and we will always tell you first.</p>'));
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sign your document</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<meta name="theme-color" content="#0e7c93">
+<link rel="stylesheet" href="smiley.css">
+</head>
+<body class="signer">
+<script src="smiley.js"></script>
+<div class="signwrap" id="wrap"></div>
+<script>
+(function(){
+  var S=window.Smiley;
+  var token=(location.search.match(/[?&]t=([^&]+)/)||[])[1]||"";
+  var wrap=document.getElementById("wrap");
+  var doc=token?S.openDoc(decodeURIComponent(token)):null;
+
+  if(!doc){
+    wrap.innerHTML='<div class="signcard"><h1>This link is not valid</h1>'+
+      '<p>It may have expired, or the address may have been copied incompletely. Ask the practice to send it again.</p></div>';
+    return;
+  }
+  var practice=S.db().practice.name;
+  var tpl=S.templateById(doc.tpl)||{body:""};
+
+  function view(){
+    if(doc.status==="Signed"){
+      wrap.innerHTML='<div class="signcard"><div class="signdone">✓</div><h1>Signed</h1>'+
+        '<p>Thank you, '+S.esc(doc.signer)+'. Your copy of <b>'+S.esc(doc.name)+'</b> has been recorded by '+S.esc(practice)+'.</p>'+
+        '<div class="trail"><b>Signing record</b><ul>'+doc.trail.map(function(t){
+          return '<li>'+S.esc(t.what)+' — '+new Date(t.t).toLocaleString()+'</li>'; }).join("")+'</ul></div>'+
+        '<p class="mut">You may request a paper copy from the practice at no charge.</p></div>';
+      return;
+    }
+    wrap.innerHTML='<div class="signcard">'+
+      '<div class="signhead"><b>'+S.esc(practice)+'</b><span>'+S.esc(doc.name)+'</span></div>'+
+      '<h1>'+S.esc(doc.name)+'</h1>'+
+      '<div class="docbody"><p>'+S.esc(S.fillTemplate(tpl.body,{practice:practice}))+'</p></div>'+
+      '<div class="err" id="signErr" role="alert" style="display:none"></div>'+
+      '<label class="fld"><span>Your full legal name</span><input id="nm" type="text" value="'+S.esc(doc.signer||"")+'" autocomplete="name"></label>'+
+      '<div class="fld"><span>Draw your signature</span><canvas id="pad" width="620" height="170"></canvas>'+
+      '<button type="button" class="btn small" id="clr">Clear</button></div>'+
+      '<label class="consent"><input type="checkbox" id="ck"> <span>'+S.esc(S.ESIGN_CONSENT.replace("{{PRACTICE}}",practice))+'</span></label>'+
+      '<button class="btn primary big" id="go">Adopt and sign</button>'+
+      '<p class="mut small">This practice uses Smiley OS by Accelerated Experiences LLC.</p></div>';
+
+    var pad=document.getElementById("pad"), ctx=pad.getContext("2d"), drawing=false, drawn=false;
+    ctx.lineWidth=2.4; ctx.lineCap="round"; ctx.lineJoin="round"; ctx.strokeStyle="#12303c";
+    function pos(e){ var r=pad.getBoundingClientRect(), t=e.touches?e.touches[0]:e;
+      return {x:(t.clientX-r.left)*(pad.width/r.width), y:(t.clientY-r.top)*(pad.height/r.height)}; }
+    function down(e){ e.preventDefault(); drawing=true; drawn=true; var p=pos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); }
+    function move(e){ if(!drawing) return; e.preventDefault(); var p=pos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); }
+    function up(){ drawing=false; }
+    pad.addEventListener("mousedown",down); pad.addEventListener("mousemove",move);
+    window.addEventListener("mouseup",up);
+    pad.addEventListener("touchstart",down,{passive:false}); pad.addEventListener("touchmove",move,{passive:false});
+    window.addEventListener("touchend",up);
+    document.getElementById("clr").addEventListener("click",function(){ ctx.clearRect(0,0,pad.width,pad.height); drawn=false; });
+
+    document.getElementById("go").addEventListener("click",function(){
+      var missing=[], errBox=document.getElementById("signErr");
+      if(!document.getElementById("nm").value.trim()) missing.push("Your full legal name");
+      if(!drawn) missing.push("A drawn signature");
+      if(!document.getElementById("ck").checked) missing.push("Agreement to sign electronically");
+      if(missing.length){
+        /* Never alert() on a signing page. A modal blocks the renderer, is suppressed
+           in some embedded browsers, and hides the very field the person has to fix. */
+        errBox.innerHTML="<b>Still needed before you can sign:</b><ul><li>"+missing.join("</li><li>")+"</li></ul>";
+        errBox.style.display="block";
+        errBox.scrollIntoView({behavior:"smooth",block:"center"});
+        return;
+      }
+      doc=S.signDoc(doc.token, pad.toDataURL("image/png"), {ua:navigator.userAgent});
+      view();
+      window.scrollTo({top:0,behavior:"smooth"});
+    });
+  }
+  view();
+})();
+</script>
+</body>
+</html>

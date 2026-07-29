@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Claims & Aging · Smiley OS</title>
+<meta name="description" content="Aging in the buckets the industry reads, and denials grouped by reason so you can see whether you have twelve problems or one problem twelve times.">
+<link rel="canonical" href="https://www.aexperiences.com/apps/smiley/claims.html">
+<meta property="og:title" content="Claims & Aging · Smiley OS">
+<meta property="og:description" content="Aging in the buckets the industry reads, and denials grouped by reason so you can see whether you have twelve problems or one problem twelve times.">
+<meta property="og:image" content="https://www.aexperiences.com/Smiley_OS.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<link rel="apple-touch-icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<meta name="theme-color" content="#0e7c93">
+<link rel="stylesheet" href="smiley.css">
+</head>
+<body>
+<script src="smiley.js"></script>
+<script src="manual.js"></script>
+<script>
+(function(){
+  var S = window.Smiley;
+  var content = S.mount({ active:"claims.html", crumb:"Claims & aging" });
+
+  content.appendChild(S.page("Claims & aging","Denials grouped by reason, because twelve denials is usually one problem happening twelve times."));
+  var ag=S.aging();
+  content.appendChild(S.card('<h2>Outstanding</h2><div class="stats">'+
+    S.stat("0–30 days", S.money(ag["0-30"]), "current", "good")+
+    S.stat("31–60", S.money(ag["31-60"]), "chase these", "watch")+
+    S.stat("61–90", S.money(ag["61-90"]), "getting cold", ag["61-90"]?"bad":"good")+
+    S.stat("90+", S.money(ag["90+"]), "usually written off", ag["90+"]?"bad":"good")+
+    S.stat("Collection rate", S.pct(S.collectionRate()), "high performer "+S.BENCH.collection.v+"%", S.collectionRate()>=95?"good":"watch")+
+    '</div><p class="sub">Collection rate here is measured against what was ever <b>collectable</b> — the allowed amount — never the full fee. The PPO write-off was never collectable, and including it makes a healthy practice look broken.</p>'+S.srcNote(S.BENCH.collection.src)));
+
+  var dr=S.denialReasons();
+  if(dr.length) content.appendChild(S.card('<h2>Why claims are coming back</h2>'+
+    '<div class="tablewrap"><table><thead><tr><th>Reason</th><th class="right">Times</th></tr></thead><tbody>'+
+    dr.map(function(d){ return '<tr><td>'+S.esc(d.reason)+'</td><td class="right mono">'+d.n+'</td></tr>'; }).join("")+
+    '</tbody></table></div><p class="sub">Every one of these is preventable at the front desk except the last. That is what Insurance Check is for.</p>'));
+
+  var pb=S.patientBalances();
+  if(pb.length) content.appendChild(S.card('<h2>Not denials — patient balances</h2><p class="sub">These claims adjudicated correctly. The annual maximum was reached, so the balance is properly the patient\'s. Filing them with the denials makes a working billing department look broken and buries the ones you can actually appeal.</p>'+
+    '<div class="tablewrap"><table><thead><tr><th>Patient</th><th>Why</th><th class="right">Patient owes</th><th class="right">Age</th></tr></thead><tbody>'+
+    pb.map(function(c){ return '<tr><td><b>'+S.esc(S.ptName(c.pt))+'</b></td><td class="mut">'+S.esc(c.why||"")+'</td>'+
+      '<td class="right mono">'+S.money(c.patient)+'</td><td class="right mono">'+c.aging+'d</td></tr>'; }).join("")+'</tbody></table></div>'));
+
+  function draw(){
+    var host=document.getElementById("cl"); host.innerHTML="";
+    var h='<div class="tablewrap"><table><thead><tr><th>Patient</th><th>Procedures</th><th class="right">Billed</th><th class="right">Allowed</th><th class="right">Plan</th><th class="right">Patient</th><th>Status</th><th class="right">Age</th><th></th></tr></thead><tbody>';
+    S.db().claims.slice().sort(function(a,b){ return b.aging-a.aging; }).forEach(function(c){
+      var band={Paid:"good",Sent:"",Denied:"bad",Appealed:"watch","Patient balance":"watch"}[c.status]||"";
+      h+='<tr><td><b>'+S.esc(S.ptName(c.pt))+'</b></td>'+
+        '<td class="mut">'+c.codes.map(function(x){return S.esc(S.codeName(x));}).join(", ")+'</td>'+
+        '<td class="right mono">'+S.money(c.billed)+'</td><td class="right mono">'+S.money(c.allowed)+'</td>'+
+        '<td class="right mono">'+S.money(c.plan)+'</td><td class="right mono">'+S.money(c.patient)+'</td>'+
+        '<td>'+S.tag(c.status,band)+(c.denial?'<br><span class="mut">'+S.esc(c.denial)+'</span>':'')+'</td>'+
+        '<td class="right mono">'+c.aging+'d</td>'+
+        '<td>'+(c.status==="Denied"?'<button class="btn small" data-ap="'+c.id+'">Appeal</button>':'')+'</td></tr>';
+    });
+    host.innerHTML=h+'</tbody></table></div>';
+    [].forEach.call(host.querySelectorAll("[data-ap]"),function(b){
+      b.addEventListener("click",function(){ S.appealClaim(b.dataset.ap); S.toast("Appealed — the clock restarts at zero."); draw(); }); });
+  }
+  content.appendChild(S.card('<h2>Every claim</h2><div id="cl"></div>'));
+  draw();
+  content.appendChild(S.card('<h2>What we do not do</h2><p class="sub">Smiley OS does not submit claims to a clearinghouse and does not move money. It prepares, tracks and ages them. Submission goes through your clearinghouse and payments through a licensed processor — both named vendor connections, not native features.</p>'));
+
+})();
+</script>
+</body>
+</html>

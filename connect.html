@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Connect · Smiley OS</title>
+<meta name="description" content="Cedar Ridge Dental — Connect: chat, channels and native video. Powered by Accelerated Experiences LLC.">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="smiley.css">
+<style>
+.cn-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
+@media(max-width:860px){.cn-grid{grid-template-columns:1fr}}
+.cn-person{display:flex;align-items:center;gap:12px;padding:11px 6px;border-top:1px solid var(--line-2)}
+.cn-person:first-child{border-top:none}
+.cn-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(160deg,var(--blue),var(--rail));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex:none;position:relative}
+.cn-av.me{background:linear-gradient(160deg,var(--amber-3),var(--amber-2));color:#241a08}
+.cn-dot{position:absolute;right:-1px;bottom:-1px;width:12px;height:12px;border-radius:50%;border:2px solid var(--card);background:#9aa5a0}
+.cn-dot.on{background:#2f7d5f}
+.cn-who b{display:block;font-size:14.5px}
+.cn-who span{font-size:11.5px;color:var(--mut);font-family:'IBM Plex Mono',monospace}
+.cn-actions{margin-left:auto;display:flex;gap:7px}
+.cn-btn{font:inherit;font-size:12.5px;font-weight:600;padding:8px 12px;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--ink-2);cursor:pointer;white-space:nowrap}
+.cn-btn:hover{border-color:var(--blue);color:var(--blue-2)}
+.cn-btn.call{background:var(--blue-2);border-color:var(--blue-2);color:#fff}
+.cn-btn.call:hover{background:var(--blue)}
+.cn-btn.amber{background:var(--amber-3);border-color:var(--amber-3);color:#241a08}
+.cn-chan{display:flex;align-items:center;gap:10px;padding:10px 6px;border-top:1px solid var(--line-2);cursor:pointer}
+.cn-chan:first-child{border-top:none}
+.cn-chan:hover .cn-chname{color:var(--blue-2)}
+.cn-chico{width:34px;height:34px;border-radius:9px;background:var(--sunk);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--blue-2);flex:none}
+.cn-chname{font-weight:600;font-size:14px}
+.cn-chsub{font-size:11.5px;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:34ch}
+.cn-unread{width:9px;height:9px;border-radius:50%;background:var(--amber);margin-left:auto;flex:none}
+.cn-room{display:flex;align-items:center;gap:11px;padding:11px 6px;border-top:1px solid var(--line-2)}
+.cn-room:first-child{border-top:none}
+.cn-live{background:#fdf1f0;border:1px solid #eecac4;border-radius:12px;padding:12px 14px;margin-bottom:14px;display:none}
+.cn-live.on{display:block}
+.cn-live .lv{display:flex;align-items:center;gap:10px;padding:6px 0}
+.cn-live .reddot{width:10px;height:10px;border-radius:50%;background:#b23b2f;animation:cnp 1.4s infinite}
+@keyframes cnp{0%,100%{opacity:1}50%{opacity:.35}}
+.cn-banner{border-radius:12px;padding:11px 15px;font-size:13px;margin-bottom:14px;display:none}
+.cn-banner.warm{display:block;background:var(--amber-wash);border:1px solid var(--amber-3);color:var(--amber-2)}
+.cn-banner.live{display:block;background:#eaf3ee;border:1px solid #bcd8c8;color:#2f5220}
+/* chat drawer */
+#cn-drawer{position:fixed;top:0;right:0;height:100%;width:min(430px,100%);background:var(--paper);box-shadow:-16px 0 50px rgba(0,0,0,.3);transform:translateX(105%);transition:.22s;z-index:700;display:flex;flex-direction:column}
+#cn-drawer.on{transform:none}
+#cn-dhead{background:var(--rail);color:#fff;padding:15px 18px;display:flex;align-items:center;gap:11px}
+#cn-dhead b{font-size:15.5px}
+#cn-dhead .sub{font-size:11px;color:var(--on-rail-mut);font-family:'IBM Plex Mono',monospace}
+#cn-dhead .x{margin-left:auto;background:none;border:none;color:var(--amber-3);font-size:22px;cursor:pointer}
+#cn-dlog{flex:1;overflow:auto;padding:15px 16px;display:flex;flex-direction:column;gap:8px}
+.cn-msg{max-width:85%;padding:9px 13px;border-radius:13px;font-size:13.5px;line-height:1.45;background:var(--card);border:1px solid var(--line);align-self:flex-start}
+.cn-msg.me{align-self:flex-end;background:var(--blue-2);border-color:var(--blue-2);color:#fff}
+.cn-msg .who{display:block;font-size:10.5px;font-weight:700;color:var(--mut);margin-bottom:2px;font-family:'IBM Plex Mono',monospace}
+.cn-msg.me .who{color:#cfe0ef}
+#cn-dfoot{border-top:1px solid var(--line);padding:11px 12px;display:flex;gap:8px;background:var(--card)}
+#cn-din{flex:1;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font:inherit;font-size:14px}
+/* identity picker */
+#cn-id{position:fixed;inset:0;background:rgba(16,24,32,.7);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:800;padding:16px;overflow:auto}
+#cn-id.on{display:flex}
+#cn-id .card2{background:var(--paper);border-radius:16px;max-width:430px;width:100%;padding:28px;border-top:5px solid var(--amber-3)}
+#cn-id h3{margin:0 0 4px;font-size:20px}
+#cn-id p{color:var(--mut);font-size:13px;margin:0 0 16px}
+.cn-pick{display:flex;align-items:center;gap:12px;width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:12px;background:var(--card);font:inherit;cursor:pointer;margin-bottom:9px;text-align:left}
+.cn-pick:hover{border-color:var(--blue)}
+.cn-pick b{display:block;font-size:14.5px}
+.cn-pick span{font-size:11.5px;color:var(--mut)}
+</style>
+</head>
+<body>
+<script>window.SLEEVES_API='https://ae-connect-api.vercel.app';</script>
+<script src="smiley.js"></script>
+<script src="smiley-rtc.js"></script>
+<script>
+(function () {
+  var T=window.Smiley;
+  var c=T.mount({active:"connect.html",crumb:"Connect"});
+  var API=window.SLEEVES_API+'/api/connect'; var NS="smiley";
+  var TEAM=[
+    {slug:"mira",name:"Mira Halloway",role:"Owner / Artist",init:"MH"},
+    {slug:"dez",name:"Dez Okonkwo",role:"Artist · blackwork",init:"DO"},
+    {slug:"saoirse",name:"Saoirse Bell",role:"Artist · fine line",init:"SB"},
+    {slug:"ruben",name:"Ruben Castellanos",role:"Artist · black & grey",init:"RC"},
+    {slug:"wren",name:"Wren Ashby",role:"Apprentice",init:"WA"}
+  ];
+  var CHANNELS=[
+    {ch:"floor",name:"#floor",desc:"Whatever the shop needs to see."},
+    {ch:"queue",name:"#queue",desc:"New requests, quotes, deposits."},
+    {ch:"flash",name:"#flash",desc:"New flash going up, what has moved."},
+    {ch:"clean",name:"#clean",desc:"Sterility, sharps, health-department readiness."}
+  ];
+  var ROOMS=[
+    {key:"standup",label:"Morning standup",sub:"The day’s book, walk-ins, no-shows."},
+    {key:"consult",label:"Consultation",sub:"A client, a reference pile, and the artist."},
+    {key:"critique",label:"Portfolio critique",sub:"Healed photos and technique review."}
+  ];
+  function me(){ try{ return JSON.parse(sessionStorage.getItem("smiley_connect_me")); }catch(e){ return null; } }
+  function setMe(p){ sessionStorage.setItem("smiley_connect_me",JSON.stringify(p)); }
+  function api(payload){ return fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(Object.assign({ns:NS},payload))}).then(function(r){return r.json();}).catch(function(){return {ok:false,reason:"offline"};}); }
+  var KV_OK=null;
+
+  c.appendChild(T.page("Connect",
+    "Message anyone, post to a channel, or get face to face on native video — one to one, the whole team, or an outside guest from a plain browser link. No Zoom, no accounts; the video is the browser's own."));
+
+  var host=document.createElement("div"); c.appendChild(host);
+  host.innerHTML=
+    '<div class="cn-banner" id="cnBanner"></div>'+
+    '<div class="cn-live" id="cnLive"></div>'+
+    '<div class="cn-grid">'+
+      '<div>'+
+        '<div class="card" id="cnPeopleCard"><h2 style="margin:0 0 4px">The team</h2><div class="card-sub" style="margin-bottom:8px">Green dot = on the system now. Message, or call — it rings them on whatever page they’re on.</div><div id="cnPeople"></div></div>'+
+        '<div class="card" style="margin-top:18px"><h2 style="margin:0 0 4px">Channels</h2><div class="card-sub" style="margin-bottom:8px">Post once, the group sees it.</div><div id="cnChans"></div></div>'+
+      '</div>'+
+      '<div>'+
+        '<div class="card"><h2 style="margin:0 0 4px">Meeting rooms</h2><div class="card-sub" style="margin-bottom:8px">Native video, up to the whole firm. A room with people in it shows in “Live now” above.</div><div id="cnRooms"></div></div>'+
+        '<div class="card" style="margin-top:18px"><h2 style="margin:0 0 4px">Outreach — bring in a guest</h2><div class="card-sub" style="margin-bottom:8px">A client, the county reviewer, a contractor: name them, send the link, they join from a plain browser. No app, no account.</div>'+
+        '<div style="display:flex;gap:9px;flex-wrap:wrap"><input id="cnGuest" placeholder="Guest or meeting name…" style="flex:1;min-width:170px;border:1px solid var(--line);border-radius:9px;padding:10px 12px;font:inherit;background:var(--card)">'+
+        '<button class="cn-btn amber" id="cnInvite">Create invite link</button></div>'+
+        '<div id="cnInviteOut" style="margin-top:10px;font-size:12.5px;color:var(--mut);word-break:break-all"></div></div>'+
+      '</div>'+
+    '</div>';
+
+  /* identity picker */
+  var idp=document.createElement("div"); idp.id="cn-id"; document.body.appendChild(idp);
+  idp.innerHTML='<div class="card2"><h3>Who’s this?</h3><p>Pick your name — it’s how the firm sees you in chat and on calls. (Real accounts come with go-live; this preview trusts the office.)</p>'+
+    TEAM.map(function(t){return '<button class="cn-pick" data-slug="'+t.slug+'"><span class="cn-av'+(t.slug==="scott-mcarthur"?" me":"")+'" style="position:static">'+t.init+'</span><span><b>'+t.name+'</b><span>'+t.role+'</span></span></button>';}).join("")+'</div>';
+  idp.addEventListener("click",function(e){ var b=e.target.closest(".cn-pick"); if(!b)return;
+    var t=TEAM.filter(function(x){return x.slug===b.dataset.slug;})[0];
+    setMe({slug:t.slug,name:t.name}); idp.classList.remove("on"); boot(); });
+  if(!me()) idp.classList.add("on");
+
+  /* chat drawer */
+  var dr=document.createElement("div"); dr.id="cn-drawer"; document.body.appendChild(dr);
+  dr.innerHTML='<div id="cn-dhead"><span class="cn-av" id="cnDav" style="position:static;width:36px;height:36px;font-size:13px"></span><span><b id="cnDname"></b><div class="sub" id="cnDsub"></div></span><button class="x" id="cnDx">×</button></div>'+
+    '<div id="cn-dlog"></div>'+
+    '<div id="cn-dfoot"><input id="cn-din" placeholder="Write a message…"><button class="cn-btn call" id="cnDsend">Send</button></div>';
+  var DMODE=null, DWITH=null, DPOLL=null;
+  function openThread(mode,key,label,sub,init){
+    DMODE=mode; DWITH=key;
+    document.getElementById("cnDname").textContent=label;
+    document.getElementById("cnDsub").textContent=sub;
+    document.getElementById("cnDav").textContent=init;
+    dr.classList.add("on"); loadThread(); clearInterval(DPOLL); DPOLL=setInterval(loadThread,5000);
+    setTimeout(function(){document.getElementById("cn-din").focus();},80);
+  }
+  function closeThread(){ dr.classList.remove("on"); clearInterval(DPOLL); }
+  document.getElementById("cnDx").onclick=closeThread;
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeThread(); });
+  function loadThread(){
+    var m=me(); if(!m||!DWITH)return;
+    var p=DMODE==="dm"?{do:"thread",me:m.slug,with:DWITH}:{do:"chread",channel:DWITH,me:m.slug};
+    api(p).then(function(r){
+      var log=document.getElementById("cn-dlog"); if(!r.ok){ if(r.reason==="no_kv") log.innerHTML='<div class="cn-msg">Chat comes alive as soon as the backend key is connected. The room’s built — it’s just waiting on the vault.</div>'; return; }
+      var stick=log.scrollTop+log.clientHeight>=log.scrollHeight-40;
+      log.innerHTML=(r.msgs||[]).map(function(x){
+        var mine=x.from===m.slug;
+        return '<div class="cn-msg'+(mine?" me":"")+'">'+(mine?"":'<span class="who">'+T.esc(x.name||x.from)+'</span>')+T.esc(x.text)+'</div>';
+      }).join("")||'<div class="cn-msg">No messages yet — say the first thing.</div>';
+      if(stick) log.scrollTop=log.scrollHeight;
+    });
+  }
+  function sendMsg(){
+    var m=me(); var inp=document.getElementById("cn-din"); var v=inp.value.trim(); if(!m||!v||!DWITH)return;
+    inp.value="";
+    var p=DMODE==="dm"?{do:"send",me:m.slug,name:m.name,to:DWITH,text:v}:{do:"chsend",channel:DWITH,me:m.slug,name:m.name,text:v};
+    api(p).then(function(r){ if(!r.ok&&r.reason==="no_kv") T.toast("Chat wakes up when the backend key is in — nothing lost, try again after.","warn"); loadThread(); });
+  }
+  document.getElementById("cnDsend").onclick=sendMsg;
+  document.getElementById("cn-din").addEventListener("keydown",function(e){ if(e.key==="Enter") sendMsg(); });
+
+  /* calls */
+  function callPerson(t){
+    var m=me(); if(!m)return;
+    var room=window.SmileyMeet.pairRoom(m.slug,t.slug);
+    api({do:"ring",me:m.slug,name:m.name,to:t.slug,room:room,subject:"Call from "+m.name});
+    window.SmileyMeet.open({room:room,displayName:m.name,subject:m.name.split(" ")[0]+" · "+t.name.split(" ")[0]});
+    T.toast("Ringing "+t.name.split(" ")[0]+"… they get a Join card on whatever page they’re on.","ok");
+  }
+  function joinRoom(key,label){
+    var m=me(); if(!m)return;
+    window.SmileyMeet.open({room:window.SmileyMeet.groupRoom(key),displayName:m.name,subject:label});
+  }
+
+  /* render sections */
+  function renderPeople(online){
+    var m=me()||{};
+    document.getElementById("cnPeople").innerHTML=TEAM.map(function(t){
+      var isMe=t.slug===m.slug;
+      var on=isMe||(online&&online[t.slug]);
+      return '<div class="cn-person"><span class="cn-av'+(isMe?" me":"")+'">'+t.init+'<span class="cn-dot'+(on?" on":"")+'"></span></span>'+
+        '<span class="cn-who"><b>'+t.name+(isMe?" (you)":"")+'</b><span>'+t.role+'</span></span>'+
+        (isMe?'<span class="cn-actions"><button class="cn-btn" data-switch="1">Switch user</button></span>'
+             :'<span class="cn-actions"><button class="cn-btn" data-msg="'+t.slug+'">Message</button><button class="cn-btn call" data-call="'+t.slug+'">📹 Call</button></span>')+
+        '</div>';
+    }).join("");
+    var pc=document.getElementById("cnPeople");
+    pc.onclick=function(e){
+      var b=e.target.closest("button"); if(!b)return;
+      if(b.dataset.switch){ idp.classList.add("on"); return; }
+      var t=TEAM.filter(function(x){return x.slug===(b.dataset.msg||b.dataset.call);})[0]; if(!t)return;
+      if(b.dataset.msg) openThread("dm",t.slug,t.name,t.role,t.init);
+      else callPerson(t);
+    };
+  }
+  function renderChans(meta){
+    document.getElementById("cnChans").innerHTML=CHANNELS.map(function(ch){
+      var mm=meta&&meta[ch.ch];
+      return '<div class="cn-chan" data-ch="'+ch.ch+'"><span class="cn-chico">#</span>'+
+        '<span><span class="cn-chname">'+ch.name+'</span><div class="cn-chsub">'+(mm&&mm.lastText?T.esc(mm.lastText):ch.desc)+'</div></span>'+
+        (mm&&mm.unread?'<span class="cn-unread"></span>':'')+'</div>';
+    }).join("");
+    document.getElementById("cnChans").onclick=function(e){
+      var d=e.target.closest(".cn-chan"); if(!d)return;
+      var ch=CHANNELS.filter(function(x){return x.ch===d.dataset.ch;})[0];
+      openThread("ch",ch.ch,ch.name,ch.desc,"#");
+    };
+  }
+  function renderRooms(){
+    document.getElementById("cnRooms").innerHTML=ROOMS.map(function(r){
+      return '<div class="cn-room"><span class="cn-chico">📹</span><span class="cn-who"><b>'+r.label+'</b><span>'+r.sub+'</span></span>'+
+        '<span class="cn-actions"><button class="cn-btn call" data-room="'+r.key+'" data-label="'+r.label+'">Start / Join</button></span></div>';
+    }).join("");
+    document.getElementById("cnRooms").onclick=function(e){
+      var b=e.target.closest("[data-room]"); if(!b)return; joinRoom(b.dataset.room,b.dataset.label);
+    };
+  }
+  document.getElementById("cnInvite").onclick=function(){
+    var m=me(); if(!m)return;
+    var g=document.getElementById("cnGuest").value.trim()||"Guest";
+    var room=window.SmileyMeet.outreachRoom(g);
+    var url=location.origin+"/meet.html?room="+encodeURIComponent(room);
+    var out=document.getElementById("cnInviteOut");
+    out.innerHTML='<b style="color:var(--ink)">Link for '+T.esc(g)+':</b><br>'+T.esc(url)+'<br><button class="cn-btn" id="cnCopy" style="margin-top:7px">Copy link</button> <button class="cn-btn call" id="cnEnterNow" style="margin-top:7px">Enter the room now</button>';
+    document.getElementById("cnCopy").onclick=function(){ navigator.clipboard.writeText(url).then(function(){T.toast("Copied — text or email it to them.","ok");}); };
+    document.getElementById("cnEnterNow").onclick=function(){ window.SmileyMeet.open({room:room,displayName:m.name,subject:"Outreach · "+g,outreach:true}); };
+  };
+
+  /* pollers */
+  function pollPresence(){
+    var m=me(); if(!m)return;
+    api({do:"ping",me:m.slug,name:m.name});
+    api({do:"who"}).then(function(r){
+      if(!r.ok){ setKV(false); renderPeople(null); return; }
+      setKV(true);
+      var on={}; (r.people||[]).forEach(function(p){ if(p.online) on[p.slug]=1; });
+      renderPeople(on);
+    });
+    api({do:"channels",me:m.slug}).then(function(r){
+      var meta={}; if(r.ok)(r.channels||[]).forEach(function(x){meta[x.channel]=x;});
+      renderChans(r.ok?meta:null);
+    });
+    api({do:"liveList"}).then(function(r){
+      var lv=document.getElementById("cnLive");
+      if(!r.ok||!(r.rooms||[]).length){ lv.classList.remove("on"); return; }
+      lv.classList.add("on");
+      lv.innerHTML=r.rooms.map(function(rm){
+        return '<div class="lv"><span class="reddot"></span><b>'+T.esc(rm.subject||rm.room)+'</b><span style="color:var(--mut);font-size:12.5px">'+rm.count+' here · '+T.esc((rm.names||[]).join(", "))+'</span>'+
+          '<button class="cn-btn call" style="margin-left:auto" data-join="'+T.esc(rm.room)+'" data-sub="'+T.esc(rm.subject||"")+'">Join</button></div>';
+      }).join("");
+      lv.onclick=function(e){ var b=e.target.closest("[data-join]"); if(!b)return;
+        var m2=me(); window.SmileyMeet.open({room:b.dataset.join,displayName:m2?m2.name:"Guest",subject:b.dataset.sub}); };
+    });
+  }
+  function setKV(ok){
+    if(KV_OK===ok)return; KV_OK=ok;
+    var b=document.getElementById("cnBanner");
+    if(ok){ b.className="cn-banner live"; b.textContent="● Live — the firm line is up. Calls, chat and channels are real."; }
+    else { b.className="cn-banner warm"; b.innerHTML="<b>Warming up.</b> The room is built and the video engine is native in this browser — group calls and invites work right now. Chat, presence dots and cross-page ringing switch on the moment the backend key (Upstash) is connected by Accelerated Experiences."; }
+  }
+  function boot(){ renderPeople(null); renderChans(null); renderRooms(); pollPresence(); }
+  boot(); setInterval(pollPresence,8000);
+})();
+</script>
+</body>
+</html>

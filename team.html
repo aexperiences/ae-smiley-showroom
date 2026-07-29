@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Team & Licences · Smiley OS</title>
+<meta name="description" content="Who can legally be scheduled today, and how many CE hours everyone still needs.">
+<link rel="canonical" href="https://www.aexperiences.com/apps/smiley/team.html">
+<meta property="og:title" content="Team & Licences · Smiley OS">
+<meta property="og:description" content="Who can legally be scheduled today, and how many CE hours everyone still needs.">
+<meta property="og:image" content="https://www.aexperiences.com/Smiley_OS.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<link rel="apple-touch-icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<meta name="theme-color" content="#0e7c93">
+<link rel="stylesheet" href="smiley.css">
+</head>
+<body>
+<script src="smiley.js"></script>
+<script src="manual.js"></script>
+<script>
+(function(){
+  var S = window.Smiley;
+  var content = S.mount({ active:"team.html", crumb:"Team & licences" });
+
+  content.appendChild(S.page("Team & licences","An expired licence is not a reminder. That person legally cannot work, so they come off the schedule."));
+  var cw=S.cannotWork(), ls=S.licenceState();
+  if(cw.length) content.appendChild(S.card('<h2>Cannot be scheduled today</h2><div class="blockers"><b>Take these people off the book until it is renewed:</b><ul><li>'+
+    cw.map(function(l){ return S.esc(l.member.name)+' — '+S.esc(l.label)+' expired '+Math.abs(l.days)+' days ago'; }).join('</li><li>')+'</li></ul></div>','urgent'));
+
+  content.appendChild(S.card('<h2>The team</h2><div class="tablewrap"><table><thead><tr><th>Name</th><th>Role</th><th>Days</th><th>Credentials</th></tr></thead><tbody>'+
+    S.db().team.map(function(t){
+      var mine=ls.filter(function(l){ return l.member.id===t.id; });
+      return '<tr><td><b>'+S.esc(t.name)+'</b></td><td class="mut">'+S.esc(t.role)+'</td><td class="mut">'+S.esc(t.days)+'</td><td>'+
+        (mine.length?mine.map(function(l){ var b={expired:"bad",soon:"watch",ok:"good"}[l.state];
+          return S.tag(l.label+" · "+(l.state==="expired"?"expired":S.dayLabel(l.expires)),b); }).join(" "):'<span class="mut">—</span>')+
+        '</td></tr>'; }).join("")+'</tbody></table></div>'));
+
+  content.appendChild(S.card('<h2>Continuing education</h2><p class="sub">Hours logged against what the licence renewal will ask for.</p>'+
+    '<div class="tablewrap"><table><thead><tr><th>Name</th><th>Licence</th><th class="right">Hours logged</th><th class="right">Needed</th><th>Progress</th></tr></thead><tbody>'+
+    ls.filter(function(l){ return l.ceNeeded>0; }).map(function(l){
+      var have=l.ceHave||0, need=l.ceNeeded;
+      return '<tr><td>'+S.esc(l.member.name)+'</td><td class="mut">'+S.esc(l.label)+'</td>'+
+        '<td class="right mono">'+have+'</td><td class="right mono">'+need+'</td>'+
+        '<td>'+S.bar(Math.round(have/need*100), have>=need?"":"warn")+'</td></tr>'; }).join("")+
+    '</tbody></table></div>'));
+
+  content.appendChild(S.card('<h2>Scope</h2><p class="sub">A hygienist cannot diagnose, cut, or place a restoration, and a recall visit is not complete until the doctor\'s exam is recorded. Smiley OS enforces both at check-out rather than printing a policy nobody reads. The exam is also the most commonly missed charge in the practice, so enforcing it pays for itself.</p>'));
+
+})();
+</script>
+</body>
+</html>

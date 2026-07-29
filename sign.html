@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>e-Sign · Smiley OS</title>
+<meta name="description" content="Native electronic signature — consent, intent, attribution and a trail that freezes when signed.">
+<link rel="canonical" href="https://www.aexperiences.com/apps/smiley/sign.html">
+<meta property="og:title" content="e-Sign · Smiley OS">
+<meta property="og:description" content="Native electronic signature — consent, intent, attribution and a trail that freezes when signed.">
+<meta property="og:image" content="https://www.aexperiences.com/Smiley_OS.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<link rel="apple-touch-icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<meta name="theme-color" content="#0e7c93">
+<link rel="stylesheet" href="smiley.css">
+</head>
+<body>
+<script src="smiley.js"></script>
+<script src="manual.js"></script>
+<script>
+(function(){
+  var S = window.Smiley;
+  var content = S.mount({ active:"sign.html", crumb:"e-Sign" });
+
+  content.appendChild(S.page("e-Sign","Consent to sign electronically, clear intent, attribution to a named person, and a signing trail that freezes the moment it is signed. That is what ESIGN and UETA ask for."));
+  function draw(){
+    var host=document.getElementById("docs"); host.innerHTML="";
+    var ds=S.db().documents;
+    if(!ds.length) host.innerHTML='<p class="sub">Nothing out for signature. Send one below.</p>';
+    ds.forEach(function(d){
+      var band={Draft:"",Sent:"watch",Viewed:"watch",Signed:"good"}[d.status]||"";
+      var url=location.href.replace(/sign\.html.*$/,"")+"sign-doc.html?t="+d.token;
+      host.appendChild(S.el('<div class="rowitem"><div class="ri-main"><b>'+S.esc(d.name)+'</b> '+S.tag(d.status,band)+
+        '<div class="mut">'+S.esc(d.signer)+'</div>'+
+        '<div class="mut mono" style="font-size:11.5px;word-break:break-all">'+S.esc(url)+'</div>'+
+        '<div class="mut">'+d.trail.map(function(t){ return S.esc(t.what); }).join(" → ")+'</div>'+
+        '<div class="ri-act">'+
+          (d.status==="Draft"?'<button class="btn small primary" data-send="'+d.id+'">Send to signer</button> ':'')+
+          '<a class="btn small" href="'+url+'" target="_blank">Open the signer page</a>'+
+        '</div></div></div>'));
+    });
+    [].forEach.call(host.querySelectorAll("[data-send]"),function(b){
+      b.addEventListener("click",function(){ S.sendDoc(b.dataset.send); S.toast("Sent. The link is unguessable and single-purpose."); draw(); }); });
+  }
+  content.appendChild(S.card('<h2>Out for signature</h2><div id="docs"></div>'));
+  draw();
+
+  content.appendChild(S.card('<h2>Send a document</h2>'+
+    '<div class="ri-act"><select id="tpl">'+S.DOC_TEMPLATES.map(function(t){ return '<option value="'+t.id+'">'+S.esc(t.name)+'</option>'; }).join("")+'</select> '+
+    '<select id="who">'+S.db().patients.slice(0,14).map(function(p){ return '<option value="'+p.id+'">'+S.esc(p.name)+'</option>'; }).join("")+'</select> '+
+    '<button class="btn primary" id="mk">Create it</button></div>'));
+  document.getElementById("mk").addEventListener("click",function(){
+    S.createDoc(document.getElementById("tpl").value, document.getElementById("who").value);
+    S.toast("Created as a draft. Nothing sends until you say so."); draw(); });
+
+  content.appendChild(S.card('<h2>The templates</h2>'+S.DOC_TEMPLATES.map(function(t){
+    return '<div class="rowitem"><div class="ri-main"><b>'+S.esc(t.name)+'</b> <span class="mut">'+S.esc(t.who)+'</span>'+
+      '<p class="sub">'+S.esc(S.fillTemplate(t.body,{practice:S.db().practice.name}))+'</p></div></div>'; }).join("")));
+
+})();
+</script>
+</body>
+</html>

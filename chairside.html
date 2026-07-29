@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chairside · Smiley OS</title>
+<meta name="description" content="Check a visit out — but not before the doctor's exam is recorded and scope is satisfied.">
+<link rel="canonical" href="https://www.aexperiences.com/apps/smiley/chairside.html">
+<meta property="og:title" content="Chairside · Smiley OS">
+<meta property="og:description" content="Check a visit out — but not before the doctor's exam is recorded and scope is satisfied.">
+<meta property="og:image" content="https://www.aexperiences.com/Smiley_OS.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<link rel="apple-touch-icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<meta name="theme-color" content="#0e7c93">
+<link rel="stylesheet" href="smiley.css">
+</head>
+<body>
+<script src="smiley.js"></script>
+<script src="manual.js"></script>
+<script>
+(function(){
+  var S = window.Smiley;
+  var content = S.mount({ active:"chairside.html", crumb:"Chairside & check-out" });
+
+  content.appendChild(S.page("Chairside & check-out","A visit cannot check out until the work is legal and the exam is on the record. The exam is also the most commonly missed charge in the practice."));
+  var today=S.iso(S.TODAY);
+  var vs=S.db().visits.filter(function(v){ return v.pt && v.date===today; });
+  if(!vs.length) vs=S.db().visits.filter(function(v){ return v.pt && S.daysUntil(v.date)>=0; }).slice(0,10);
+
+  function draw(){
+    var host=document.getElementById("chairs"); host.innerHTML="";
+    vs.forEach(function(v0){
+      var v=S.visitById(v0.id)||v0;
+      var m=S.priceVisit(v), scope=S.scopeIssues(v), cov=S.visitCoverageIssues(v);
+      var blockers=cov.filter(function(c){return c.kind==="blocker";});
+      var notes=cov.filter(function(c){return c.kind==="note";});
+      var prov=S.memberById(v.prov)||{};
+      var h='<div class="rowitem"><div class="ri-main"><b>'+S.esc(S.ptName(v.pt))+'</b> '+
+        S.tag(v.type)+' <span class="mut">'+S.hhmm(v.start)+' · '+S.esc(S.OPERATORIES[v.op])+' · '+S.esc(prov.name||"")+'</span>'+
+        '<div class="mut">'+v.codes.map(function(c){ return S.esc(S.codeName(c))+' <span class="mono">'+c+'</span>'; }).join(" · ")+'</div>'+
+        '<div class="moneysplit">'+
+          '<div class="ms"><b>'+S.money(m.fee)+'</b><span>Production</span></div>'+
+          '<div class="ms neg"><b>−'+S.money(m.writeOff)+'</b><span>Write-off</span></div>'+
+          '<div class="ms"><b>'+S.money(m.planPays)+'</b><span>Plan</span></div>'+
+          '<div class="ms"><b>'+S.money(m.patient)+'</b><span>Patient today</span></div>'+
+        '</div>';
+      if(scope.length) h+='<div class="blockers"><b>Scope — this is a legal boundary, not a preference:</b><ul><li>'+scope.map(S.esc).join('</li><li>')+'</li></ul></div>';
+      if(blockers.length) h+='<div class="blockers"><b>This will be denied:</b><ul><li>'+blockers.map(function(b){return S.esc(b.text);}).join('</li><li>')+'</li></ul></div>';
+      if(notes.length) h+='<div class="mods"><b>Tell the patient before you start:</b><ul><li>'+notes.map(function(b){return S.esc(b.text);}).join('</li><li>')+'</li></ul></div>';
+      h+='<div class="ri-act">'+
+         (v.exam?S.tag("doctor exam recorded","good"):'<button class="btn small" data-exam="'+v.id+'">Record doctor exam</button>')+' '+
+         (v.checkedOut?S.tag("checked out","good"):'<button class="btn small primary" data-out="'+v.id+'">Check out</button>')+
+         '</div></div></div>';
+      host.appendChild(S.el('<div>'+h+'</div>'));
+    });
+    [].forEach.call(host.querySelectorAll("[data-exam]"),function(b){
+      b.addEventListener("click",function(){ S.recordExam(b.dataset.exam); S.toast("Doctor exam recorded — it is now billable."); draw(); }); });
+    [].forEach.call(host.querySelectorAll("[data-out]"),function(b){
+      b.addEventListener("click",function(){
+        var v=S.visitById(b.dataset.out), sc=S.scopeIssues(v);
+        if(sc.length){ S.toast("Cannot check out: "+sc[0]); return; }
+        S.checkOut(b.dataset.out); S.toast("Checked out."); draw(); }); });
+  }
+  content.appendChild(S.card('<h2>In the chair</h2><p class="sub">Three money numbers on every visit, kept apart. Blockers mean the claim will bounce; advisories mean the patient will owe more than they expect.</p><div id="chairs"></div>'));
+  draw();
+
+})();
+</script>
+</body>
+</html>

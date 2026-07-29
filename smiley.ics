@@ -1,0 +1,907 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Accelerated Experiences LLC//Smiley OS//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Smiley OS — Cedar Ridge Dental
+X-WR-TIMEZONE:America/Los_Angeles
+BEGIN:VEVENT
+UID:v65-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260727T080000
+DTEND:20260727T090000
+SUMMARY:Franklin Deary — New patient exam
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nComprehensive exam, Full mouth x-rays\nProduction $265
+END:VEVENT
+BEGIN:VEVENT
+UID:v66-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260727T090000
+DTEND:20260727T103000
+SUMMARY:Ruth Ann Pike — Crown prep
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nCore build-up\nProduction $290
+END:VEVENT
+BEGIN:VEVENT
+UID:v67-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260727T104500
+DTEND:20260727T114500
+SUMMARY:Junie Halloran — Restorative
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nWhite filling — back, 2 srf\nProduction $245
+END:VEVENT
+BEGIN:VEVENT
+UID:v68-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260727T130000
+DTEND:20260727T143000
+SUMMARY:Everett Shaw — Root canal
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nRoot canal — molar\nProduction $1,395
+END:VEVENT
+BEGIN:VEVENT
+UID:v69-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260727T144500
+DTEND:20260727T154500
+SUMMARY:Silas Moreau — Restorative
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nWhite filling — back, 1 srf\nProduction $195
+END:VEVENT
+BEGIN:VEVENT
+UID:v70-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260727T080000
+DTEND:20260727T090000
+SUMMARY:Caleb Frye — Recall — cleaning & exam
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nCleaning — adult, Periodic exam, Bitewings — four films\nProduction $250
+END:VEVENT
+BEGIN:VEVENT
+UID:v71-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260727T090000
+DTEND:20260727T100000
+SUMMARY:Harold Vance — Perio maintenance
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nPerio maintenance, Periodic exam\nProduction $210
+END:VEVENT
+BEGIN:VEVENT
+UID:v72-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260727T100000
+DTEND:20260727T110000
+SUMMARY:Odette Lamb — Recall — cleaning & exam
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nCleaning — adult, Periodic exam\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v73-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260727T110000
+DTEND:20260727T120000
+SUMMARY:Nadia Brzezinski — Recall — cleaning & exam
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nCleaning — adult, Periodic exam, Bitewings — four films\nProduction $250
+END:VEVENT
+BEGIN:VEVENT
+UID:v74-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260727T130000
+DTEND:20260727T140000
+SUMMARY:Junie Halloran — Deep cleaning
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nDeep cleaning — quad (4+), Deep cleaning — quad (4+)\nProduction $620
+END:VEVENT
+BEGIN:VEVENT
+UID:v76-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260728T080000
+DTEND:20260728T090000
+SUMMARY:Ruth Ann Pike — Crown seat
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nCrown — all ceramic\nProduction $1,450
+END:VEVENT
+BEGIN:VEVENT
+UID:v77-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260728T090000
+DTEND:20260728T100000
+SUMMARY:Nadia Brzezinski — Restorative
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nWhite filling — back, 2 srf\nProduction $245
+END:VEVENT
+BEGIN:VEVENT
+UID:v78-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260728T100000
+DTEND:20260728T113000
+SUMMARY:Franklin Deary — Extraction
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nExtraction — simple\nProduction $215
+END:VEVENT
+BEGIN:VEVENT
+UID:v79-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260728T130000
+DTEND:20260728T140000
+SUMMARY:Peggy Ustinov — Emergency
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nLimited exam — problem, Emergency — pain relief\nProduction $240
+END:VEVENT
+BEGIN:VEVENT
+UID:v80-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260728T083000
+DTEND:20260728T090000
+SUMMARY:Caleb Frye — Ortho adjust
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nAdjustment visit\nProduction $0
+END:VEVENT
+BEGIN:VEVENT
+UID:v81-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260728T090000
+DTEND:20260728T093000
+SUMMARY:Silas Moreau — Ortho adjust
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nAdjustment visit\nProduction $0
+END:VEVENT
+BEGIN:VEVENT
+UID:v82-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260728T093000
+DTEND:20260728T103000
+SUMMARY:Marisol Reyes — Restorative
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nWhite filling — front\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v84-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260728T080000
+DTEND:20260728T090000
+SUMMARY:Silas Moreau — Recall — cleaning & exam
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nCleaning — adult, Periodic exam\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v85-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260728T090000
+DTEND:20260728T100000
+SUMMARY:Marisol Reyes — Recall — cleaning & exam
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nCleaning — adult, Periodic exam, Bitewings — four films\nProduction $250
+END:VEVENT
+BEGIN:VEVENT
+UID:v86-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260728T100000
+DTEND:20260728T110000
+SUMMARY:Ruth Ann Pike — Perio maintenance
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nPerio maintenance\nProduction $145
+END:VEVENT
+BEGIN:VEVENT
+UID:v87-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260728T080000
+DTEND:20260728T090000
+SUMMARY:Tomás Alcaraz — Recall — cleaning & exam
+LOCATION:Op 4 — hygiene
+DESCRIPTION:Dana Whitfield, RDH\nCleaning — child, Periodic exam, Fluoride varnish, Sealant — per tooth\nProduction $255
+END:VEVENT
+BEGIN:VEVENT
+UID:v88-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260728T090000
+DTEND:20260728T100000
+SUMMARY:Junie Halloran — Recall — cleaning & exam
+LOCATION:Op 4 — hygiene
+DESCRIPTION:Dana Whitfield, RDH\nCleaning — adult, Periodic exam\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v90-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260728T110000
+DTEND:20260728T120000
+SUMMARY:Everett Shaw — Recall — cleaning & exam
+LOCATION:Op 4 — hygiene
+DESCRIPTION:Dana Whitfield, RDH\nCleaning — adult, Periodic exam, Bitewings — four films\nProduction $250
+END:VEVENT
+BEGIN:VEVENT
+UID:v91-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260729T080000
+DTEND:20260729T093000
+SUMMARY:Junie Halloran — Crown prep
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nCore build-up\nProduction $290
+END:VEVENT
+BEGIN:VEVENT
+UID:v92-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260729T094500
+DTEND:20260729T104500
+SUMMARY:Odette Lamb — Restorative
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nWhite filling — back, 2 srf\nProduction $245
+END:VEVENT
+BEGIN:VEVENT
+UID:v94-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260729T130000
+DTEND:20260729T143000
+SUMMARY:Ruth Ann Pike — Root canal
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nRoot canal — front tooth\nProduction $950
+END:VEVENT
+BEGIN:VEVENT
+UID:v96-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260729T083000
+DTEND:20260729T090000
+SUMMARY:Tomás Alcaraz — Ortho adjust
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nAdjustment visit\nProduction $0
+END:VEVENT
+BEGIN:VEVENT
+UID:v97-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260729T090000
+DTEND:20260729T100000
+SUMMARY:Silas Moreau — Restorative
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nWhite filling — back, 1 srf\nProduction $195
+END:VEVENT
+BEGIN:VEVENT
+UID:v98-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260729T101500
+DTEND:20260729T111500
+SUMMARY:Harold Vance — Extraction
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nExtraction — surgical\nProduction $340
+END:VEVENT
+BEGIN:VEVENT
+UID:v100-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260729T080000
+DTEND:20260729T090000
+SUMMARY:Harold Vance — Recall — cleaning & exam
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nPerio maintenance, Periodic exam\nProduction $210
+END:VEVENT
+BEGIN:VEVENT
+UID:v101-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260729T090000
+DTEND:20260729T100000
+SUMMARY:Franklin Deary — Recall — cleaning & exam
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nCleaning — adult, Periodic exam\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v104-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260729T130000
+DTEND:20260729T140000
+SUMMARY:Odette Lamb — Deep cleaning
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nDeep cleaning — quad (4+), Deep cleaning — quad (4+)\nProduction $620
+END:VEVENT
+BEGIN:VEVENT
+UID:v105-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260729T080000
+DTEND:20260729T090000
+SUMMARY:Nadia Brzezinski — Recall — cleaning & exam
+LOCATION:Op 4 — hygiene
+DESCRIPTION:Dana Whitfield, RDH\nCleaning — adult, Periodic exam\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v107-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260729T100000
+DTEND:20260729T110000
+SUMMARY:Marisol Reyes — Recall — cleaning & exam
+LOCATION:Op 4 — hygiene
+DESCRIPTION:Dana Whitfield, RDH\nCleaning — adult, Periodic exam\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v108-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260730T080000
+DTEND:20260730T090000
+SUMMARY:Ruth Ann Pike — Restorative
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nWhite filling — back, 1 srf, White filling — back, 2 srf\nProduction $440
+END:VEVENT
+BEGIN:VEVENT
+UID:v109-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260730T091500
+DTEND:20260730T104500
+SUMMARY:Junie Halloran — Crown seat
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nCrown — all ceramic\nProduction $1,450
+END:VEVENT
+BEGIN:VEVENT
+UID:v111-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260730T130000
+DTEND:20260730T140000
+SUMMARY:Nadia Brzezinski — Restorative
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nWhite filling — back, 2 srf\nProduction $245
+END:VEVENT
+BEGIN:VEVENT
+UID:v112-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260730T083000
+DTEND:20260730T090000
+SUMMARY:Caleb Frye — Ortho adjust
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nAdjustment visit\nProduction $0
+END:VEVENT
+BEGIN:VEVENT
+UID:v113-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260730T090000
+DTEND:20260730T100000
+SUMMARY:Franklin Deary — Restorative
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nWhite filling — front\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v115-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260730T080000
+DTEND:20260730T090000
+SUMMARY:Everett Shaw — Recall — cleaning & exam
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nCleaning — adult, Periodic exam\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v116-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260730T090000
+DTEND:20260730T100000
+SUMMARY:Harold Vance — Perio maintenance
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nPerio maintenance\nProduction $145
+END:VEVENT
+BEGIN:VEVENT
+UID:v118-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260730T110000
+DTEND:20260730T120000
+SUMMARY:Caleb Frye — Recall — cleaning & exam
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nCleaning — adult, Periodic exam\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v119-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260730T080000
+DTEND:20260730T090000
+SUMMARY:Silas Moreau — Recall — cleaning & exam
+LOCATION:Op 4 — hygiene
+DESCRIPTION:Dana Whitfield, RDH\nCleaning — adult, Periodic exam\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v122-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260731T083000
+DTEND:20260731T090000
+SUMMARY:Silas Moreau — Ortho adjust
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nAdjustment visit\nProduction $0
+END:VEVENT
+BEGIN:VEVENT
+UID:v123-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260731T090000
+DTEND:20260731T103000
+SUMMARY:Marisol Reyes — Crown prep
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nCore build-up\nProduction $290
+END:VEVENT
+BEGIN:VEVENT
+UID:v124-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260731T110000
+DTEND:20260731T120000
+SUMMARY:Odette Lamb — Restorative
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nWhite filling — back, 1 srf\nProduction $195
+END:VEVENT
+BEGIN:VEVENT
+UID:v125-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260731T080000
+DTEND:20260731T090000
+SUMMARY:Franklin Deary — Recall — cleaning & exam
+LOCATION:Op 4 — hygiene
+DESCRIPTION:Dana Whitfield, RDH\nCleaning — adult, Periodic exam, Bitewings — four films\nProduction $250
+END:VEVENT
+BEGIN:VEVENT
+UID:v127-2026-07-26@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260731T100000
+DTEND:20260731T110000
+SUMMARY:Ruth Ann Pike — Recall — cleaning & exam
+LOCATION:Op 4 — hygiene
+DESCRIPTION:Dana Whitfield, RDH\nPerio maintenance\nProduction $145
+END:VEVENT
+BEGIN:VEVENT
+UID:v1-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260720T080000
+DTEND:20260720T090000
+SUMMARY:Wren Wexford — New patient exam
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nComprehensive exam, Full mouth x-rays\nProduction $265
+END:VEVENT
+BEGIN:VEVENT
+UID:v2-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260720T090000
+DTEND:20260720T103000
+SUMMARY:Quill Quarrier — Crown prep
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nCore build-up\nProduction $290
+END:VEVENT
+BEGIN:VEVENT
+UID:v3-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260720T104500
+DTEND:20260720T114500
+SUMMARY:Ines Ingleton — Restorative
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nWhite filling — back, 2 srf\nProduction $245
+END:VEVENT
+BEGIN:VEVENT
+UID:v4-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260720T130000
+DTEND:20260720T143000
+SUMMARY:Kess Kettering — Root canal
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nRoot canal — molar\nProduction $1,395
+END:VEVENT
+BEGIN:VEVENT
+UID:v5-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260720T144500
+DTEND:20260720T154500
+SUMMARY:Arlo Ashcombe — Restorative
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nWhite filling — back, 1 srf\nProduction $195
+END:VEVENT
+BEGIN:VEVENT
+UID:v6-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260720T080000
+DTEND:20260720T090000
+SUMMARY:Soren Stannard — Recall — cleaning & exam
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nCleaning — adult, Periodic exam, Bitewings — four films\nProduction $250
+END:VEVENT
+BEGIN:VEVENT
+UID:v7-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260720T090000
+DTEND:20260720T100000
+SUMMARY:Cyrus Carrow — Perio maintenance
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nPerio maintenance, Periodic exam\nProduction $210
+END:VEVENT
+BEGIN:VEVENT
+UID:v8-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260720T100000
+DTEND:20260720T110000
+SUMMARY:Yusuf Zell — Recall — cleaning & exam
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nCleaning — adult, Periodic exam\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v9-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260720T110000
+DTEND:20260720T120000
+SUMMARY:Emory Eastcote — Recall — cleaning & exam
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nCleaning — adult, Periodic exam, Bitewings — four films\nProduction $250
+END:VEVENT
+BEGIN:VEVENT
+UID:v10-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260720T130000
+DTEND:20260720T140000
+SUMMARY:Ines Ingleton — Deep cleaning
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nDeep cleaning — quad (4+), Deep cleaning — quad (4+)\nProduction $620
+END:VEVENT
+BEGIN:VEVENT
+UID:v12-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260721T080000
+DTEND:20260721T090000
+SUMMARY:Quill Quarrier — Crown seat
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nCrown — all ceramic\nProduction $1,450
+END:VEVENT
+BEGIN:VEVENT
+UID:v13-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260721T090000
+DTEND:20260721T100000
+SUMMARY:Emory Eastcote — Restorative
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nWhite filling — back, 2 srf\nProduction $245
+END:VEVENT
+BEGIN:VEVENT
+UID:v14-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260721T100000
+DTEND:20260721T113000
+SUMMARY:Wren Wexford — Extraction
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nExtraction — simple\nProduction $215
+END:VEVENT
+BEGIN:VEVENT
+UID:v15-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260721T130000
+DTEND:20260721T140000
+SUMMARY:Cyrus Carrow — Emergency
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nLimited exam — problem, Emergency — pain relief\nProduction $240
+END:VEVENT
+BEGIN:VEVENT
+UID:v16-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260721T083000
+DTEND:20260721T090000
+SUMMARY:Soren Stannard — Ortho adjust
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nAdjustment visit\nProduction $0
+END:VEVENT
+BEGIN:VEVENT
+UID:v17-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260721T090000
+DTEND:20260721T093000
+SUMMARY:Arlo Ashcombe — Ortho adjust
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nAdjustment visit\nProduction $0
+END:VEVENT
+BEGIN:VEVENT
+UID:v18-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260721T093000
+DTEND:20260721T103000
+SUMMARY:Micah Mardle — Restorative
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nWhite filling — front\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v20-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260721T080000
+DTEND:20260721T090000
+SUMMARY:Arlo Ashcombe — Recall — cleaning & exam
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nCleaning — adult, Periodic exam\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v21-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260721T090000
+DTEND:20260721T100000
+SUMMARY:Micah Mardle — Recall — cleaning & exam
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nCleaning — adult, Periodic exam, Bitewings — four films\nProduction $250
+END:VEVENT
+BEGIN:VEVENT
+UID:v22-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260721T100000
+DTEND:20260721T110000
+SUMMARY:Quill Quarrier — Perio maintenance
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nPerio maintenance\nProduction $145
+END:VEVENT
+BEGIN:VEVENT
+UID:v23-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260721T080000
+DTEND:20260721T090000
+SUMMARY:Gideon Grimsby — Recall — cleaning & exam
+LOCATION:Op 4 — hygiene
+DESCRIPTION:Dana Whitfield, RDH\nCleaning — child, Periodic exam, Fluoride varnish, Sealant — per tooth\nProduction $255
+END:VEVENT
+BEGIN:VEVENT
+UID:v24-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260721T090000
+DTEND:20260721T100000
+SUMMARY:Ines Ingleton — Recall — cleaning & exam
+LOCATION:Op 4 — hygiene
+DESCRIPTION:Dana Whitfield, RDH\nCleaning — adult, Periodic exam\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v26-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260721T110000
+DTEND:20260721T120000
+SUMMARY:Kess Kettering — Recall — cleaning & exam
+LOCATION:Op 4 — hygiene
+DESCRIPTION:Dana Whitfield, RDH\nCleaning — adult, Periodic exam, Bitewings — four films\nProduction $250
+END:VEVENT
+BEGIN:VEVENT
+UID:v27-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260722T080000
+DTEND:20260722T093000
+SUMMARY:Ines Ingleton — Crown prep
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nCore build-up\nProduction $290
+END:VEVENT
+BEGIN:VEVENT
+UID:v28-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260722T094500
+DTEND:20260722T104500
+SUMMARY:Yusuf Zell — Restorative
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nWhite filling — back, 2 srf\nProduction $245
+END:VEVENT
+BEGIN:VEVENT
+UID:v30-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260722T130000
+DTEND:20260722T143000
+SUMMARY:Quill Quarrier — Root canal
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nRoot canal — front tooth\nProduction $950
+END:VEVENT
+BEGIN:VEVENT
+UID:v32-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260722T083000
+DTEND:20260722T090000
+SUMMARY:Gideon Grimsby — Ortho adjust
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nAdjustment visit\nProduction $0
+END:VEVENT
+BEGIN:VEVENT
+UID:v33-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260722T090000
+DTEND:20260722T100000
+SUMMARY:Arlo Ashcombe — Restorative
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nWhite filling — back, 1 srf\nProduction $195
+END:VEVENT
+BEGIN:VEVENT
+UID:v34-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260722T101500
+DTEND:20260722T111500
+SUMMARY:Cyrus Carrow — Extraction
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nExtraction — surgical\nProduction $340
+END:VEVENT
+BEGIN:VEVENT
+UID:v36-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260722T080000
+DTEND:20260722T090000
+SUMMARY:Cyrus Carrow — Recall — cleaning & exam
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nPerio maintenance, Periodic exam\nProduction $210
+END:VEVENT
+BEGIN:VEVENT
+UID:v37-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260722T090000
+DTEND:20260722T100000
+SUMMARY:Wren Wexford — Recall — cleaning & exam
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nCleaning — adult, Periodic exam\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v40-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260722T130000
+DTEND:20260722T140000
+SUMMARY:Yusuf Zell — Deep cleaning
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nDeep cleaning — quad (4+), Deep cleaning — quad (4+)\nProduction $620
+END:VEVENT
+BEGIN:VEVENT
+UID:v41-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260722T080000
+DTEND:20260722T090000
+SUMMARY:Emory Eastcote — Recall — cleaning & exam
+LOCATION:Op 4 — hygiene
+DESCRIPTION:Dana Whitfield, RDH\nCleaning — adult, Periodic exam\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v43-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260722T100000
+DTEND:20260722T110000
+SUMMARY:Micah Mardle — Recall — cleaning & exam
+LOCATION:Op 4 — hygiene
+DESCRIPTION:Dana Whitfield, RDH\nCleaning — adult, Periodic exam\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v44-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260723T080000
+DTEND:20260723T090000
+SUMMARY:Quill Quarrier — Restorative
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nWhite filling — back, 1 srf, White filling — back, 2 srf\nProduction $440
+END:VEVENT
+BEGIN:VEVENT
+UID:v45-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260723T091500
+DTEND:20260723T104500
+SUMMARY:Ines Ingleton — Crown seat
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nCrown — all ceramic\nProduction $1,450
+END:VEVENT
+BEGIN:VEVENT
+UID:v47-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260723T130000
+DTEND:20260723T140000
+SUMMARY:Emory Eastcote — Restorative
+LOCATION:Op 1
+DESCRIPTION:Dr. Marcus Okonjo\nWhite filling — back, 2 srf\nProduction $245
+END:VEVENT
+BEGIN:VEVENT
+UID:v48-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260723T083000
+DTEND:20260723T090000
+SUMMARY:Soren Stannard — Ortho adjust
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nAdjustment visit\nProduction $0
+END:VEVENT
+BEGIN:VEVENT
+UID:v49-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260723T090000
+DTEND:20260723T100000
+SUMMARY:Wren Wexford — Restorative
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nWhite filling — front\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v51-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260723T080000
+DTEND:20260723T090000
+SUMMARY:Kess Kettering — Recall — cleaning & exam
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nCleaning — adult, Periodic exam\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v52-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260723T090000
+DTEND:20260723T100000
+SUMMARY:Cyrus Carrow — Perio maintenance
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nPerio maintenance\nProduction $145
+END:VEVENT
+BEGIN:VEVENT
+UID:v54-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260723T110000
+DTEND:20260723T120000
+SUMMARY:Soren Stannard — Recall — cleaning & exam
+LOCATION:Op 3 — hygiene
+DESCRIPTION:Tessa Lindgren, RDH\nCleaning — adult, Periodic exam\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v55-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260723T080000
+DTEND:20260723T090000
+SUMMARY:Arlo Ashcombe — Recall — cleaning & exam
+LOCATION:Op 4 — hygiene
+DESCRIPTION:Dana Whitfield, RDH\nCleaning — adult, Periodic exam\nProduction $175
+END:VEVENT
+BEGIN:VEVENT
+UID:v58-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260724T083000
+DTEND:20260724T090000
+SUMMARY:Arlo Ashcombe — Ortho adjust
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nAdjustment visit\nProduction $0
+END:VEVENT
+BEGIN:VEVENT
+UID:v59-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260724T090000
+DTEND:20260724T103000
+SUMMARY:Micah Mardle — Crown prep
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nCore build-up\nProduction $290
+END:VEVENT
+BEGIN:VEVENT
+UID:v60-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260724T110000
+DTEND:20260724T120000
+SUMMARY:Yusuf Zell — Restorative
+LOCATION:Op 2
+DESCRIPTION:Dr. Priya Raman\nWhite filling — back, 1 srf\nProduction $195
+END:VEVENT
+BEGIN:VEVENT
+UID:v61-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260724T080000
+DTEND:20260724T090000
+SUMMARY:Wren Wexford — Recall — cleaning & exam
+LOCATION:Op 4 — hygiene
+DESCRIPTION:Dana Whitfield, RDH\nCleaning — adult, Periodic exam, Bitewings — four films\nProduction $250
+END:VEVENT
+BEGIN:VEVENT
+UID:v63-2026-07-19@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART:20260724T100000
+DTEND:20260724T110000
+SUMMARY:Quill Quarrier — Recall — cleaning & exam
+LOCATION:Op 4 — hygiene
+DESCRIPTION:Dana Whitfield, RDH\nPerio maintenance\nProduction $145
+END:VEVENT
+BEGIN:VEVENT
+UID:ortho-o1@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART;VALUE=DATE:20260731
+SUMMARY:Ortho — Caleb Frye (Upper 018 NiTi)
+DESCRIPTION:Month 7 of 24. Behind $0
+END:VEVENT
+BEGIN:VEVENT
+UID:ortho-o2@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART;VALUE=DATE:20260728
+SUMMARY:Ortho — Silas Moreau (Lower 016x022 SS)
+DESCRIPTION:Month 3 of 26. Behind $0
+END:VEVENT
+BEGIN:VEVENT
+UID:ortho-o3@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART;VALUE=DATE:20260805
+SUMMARY:Ortho — Tomás Alcaraz (Aligner tray 4 of 22)
+DESCRIPTION:Month 1 of 12. Behind $0
+END:VEVENT
+BEGIN:VEVENT
+UID:ortho-o4@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART;VALUE=DATE:20261130
+SUMMARY:Ortho — Marisol Reyes (Retainers delivered)
+DESCRIPTION:Month 12 of 12. Behind $0
+END:VEVENT
+BEGIN:VEVENT
+UID:ortho-o5@smiley.aexperiences.com
+DTSTAMP:20260726T080000Z
+DTSTART;VALUE=DATE:20260709
+SUMMARY:Ortho — Nadia Brzezinski (Debond overdue — 3 months past term)
+DESCRIPTION:Month 18 of 26. Behind $1,103
+END:VEVENT
+END:VCALENDAR

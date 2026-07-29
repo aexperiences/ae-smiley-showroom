@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Contacts · Smiley OS</title>
+<meta name="description" content="Cedar Ridge Dental — contacts. Powered by Accelerated Experiences LLC.">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="smiley.css">
+<style>
+.ct-tools{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin:2px 0 12px}
+.ct-search{flex:1;min-width:210px}
+.ct-search input,.ct-tools select{width:100%;padding:9px 12px;border-radius:9px;border:1px solid var(--line);background:var(--card);font:inherit;font-size:13.5px;color:var(--ink)}
+.ct-tools select{width:auto;cursor:pointer}
+.ct-chips{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:12px}
+.ct-chip{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:7px 12px;font-size:12px;color:var(--mut)}
+.ct-btnchip{font:inherit;font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink-2);cursor:pointer}
+.ct-btnchip:hover{border-color:var(--blue)}
+.ct-btnchip.on{background:var(--rail);color:#fff;border-color:var(--rail)}
+.ct-chip b{font-size:15px;color:var(--ink);margin-right:5px}
+.ct-detail td{background:var(--sunk)!important}
+.ct-actions{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0}
+.ct-actions a,.ct-actions button{font:inherit;font-size:12.5px;font-weight:600;padding:7px 12px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink-2);cursor:pointer;text-decoration:none}
+.ct-actions a:hover{border-color:var(--blue)}
+.ct-del{color:#8a3d2f!important}
+.ct-modal{position:fixed;inset:0;background:rgba(20,26,32,.5);display:none;align-items:center;justify-content:center;z-index:600;padding:16px}
+.ct-modal.on{display:flex}
+.ct-mcard{background:var(--paper);border-radius:14px;max-width:520px;width:100%;padding:22px;max-height:90vh;overflow:auto}
+.ct-mcard h3{margin:0 0 10px}
+.ct-mcard label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);margin:10px 0 4px}
+.ct-mcard input,.ct-mcard textarea{width:100%;box-sizing:border-box;padding:9px 11px;border-radius:8px;border:1px solid var(--line);font:inherit;font-size:13.5px;background:var(--card)}
+.ct-mrow{display:flex;gap:10px}.ct-mrow>div{flex:1}
+</style>
+</head>
+<body>
+<script src="smiley.js"></script>
+<script src="contacts-data.js"></script>
+<script>
+(function () {
+  var T = window.Smiley;
+  var c = T.mount({ active:"contacts.html", crumb:"Contacts" });
+  var KEY="smiley_contacts_v1";
+  var SEED=(window.SMILEY_CONTACTS||[]).slice();
+  function load(){ try{ var d=JSON.parse(sessionStorage.getItem(KEY)); if(d&&d.length) return d; }catch(e){} return SEED.slice(); }
+  function persist(){ try{ sessionStorage.setItem(KEY,JSON.stringify(ROWS)); }catch(e){} }
+  var ROWS=load(), Q="", FV="", FC="", SORT="n", OPEN=-1, SCOPE="all";
+
+  c.appendChild(T.page("Contacts",
+    "Your book. Add anyone — clients, vendors, partners, agencies — with the + Add button, and it grows with the business. Loaded here with examples so you can see it working. Search it, filter it, call straight from it; CSV import and export any time."));
+
+  var host=document.createElement("div"); c.appendChild(host);
+
+  function esc(s){ return T.esc(s); }
+  function verts(){ var s={}; ROWS.forEach(function(r){ if(r.v)s[r.v]=1; }); return Object.keys(s).sort(); }
+  function cities(){ var s={}; ROWS.forEach(function(r){ if(r.c)s[r.c]=1; }); return Object.keys(s).sort(); }
+  function filtered(){
+    var q=Q.toLowerCase();
+    var out=ROWS.map(function(r,i){ r._i=i; return r; }).filter(function(r){
+      if(SCOPE==="kc"&&!r.kc) return false;
+      if(SCOPE==="id"&&r.st!=="ID") return false;
+      if(SCOPE==="gov"&&r.k!=="Government") return false;
+      if(FV&&r.v!==FV) return false;
+      if(FC&&r.c!==FC) return false;
+      if(!q) return true;
+      return (r.n+" "+r.v+" "+r.c+" "+(r.f||"")+" "+(r.note||"")).toLowerCase().indexOf(q)>-1;
+    });
+    out.sort(function(a,b){ var ka=(a[SORT]||"").toLowerCase(), kb=(b[SORT]||"").toLowerCase(); return ka<kb?-1:ka>kb?1:0; });
+    return out;
+  }
+  function link(u){ if(!u) return ""; return /^https?:/.test(u)?u:"https://"+u; }
+
+  function render(){
+    var list=filtered();
+    var vset=verts(), cset=cities();
+    var health=ROWS.filter(function(r){return r.k==="Health & Wellness";}).length;
+    host.innerHTML=
+      '<div class="ct-chips"><span class="ct-chip"><b>'+list.length+'</b> shown</span>'+
+      
+      '<span class="ct-chip"><b>'+ROWS.filter(function(r){return r.k==="Government";}).length+'</b> government</span>'+
+      '<span class="ct-chip"><b>'+ROWS.length+'</b> in the book</span></div>'+
+      '<div class="ct-chips" style="margin-bottom:4px">'+'<button class="ct-scope ct-btnchip" data-sc="gov">Government &amp; agencies</button>'+'<button class="ct-scope ct-btnchip" data-sc="all">Everything</button>'+'</div>'+'<div class="ct-tools">'+
+      '<div class="ct-search"><input id="ctQ" placeholder="Search name, city, category, notes…" value="'+esc(Q)+'"></div>'+
+      '<select id="ctV"><option value="">All categories</option>'+vset.map(function(v){return '<option '+(v===FV?"selected":"")+'>'+esc(v)+'</option>';}).join("")+'</select>'+
+      '<select id="ctC"><option value="">All cities</option>'+cset.map(function(v){return '<option '+(v===FC?"selected":"")+'>'+esc(v)+'</option>';}).join("")+'</select>'+
+      '<select id="ctS"><option value="n" '+(SORT==="n"?"selected":"")+'>Sort: Name</option><option value="v" '+(SORT==="v"?"selected":"")+'>Sort: Category</option><option value="c" '+(SORT==="c"?"selected":"")+'>Sort: City</option></select>'+
+      '<button class="btn blue sm" id="ctAdd">+ Add</button>'+
+      '<button class="btn sm" id="ctImp">Import CSV</button>'+
+      '<button class="btn sm" id="ctExp">Export</button>'+
+      '</div>'+
+      '<div class="card">'+ 
+      '<table><thead><tr><th>Name</th><th>Category</th><th>City</th><th>Phone</th><th>Website</th></tr></thead><tbody>'+
+      (list.length?list.map(function(r){
+        var open=r._i===OPEN;
+        var row='<tr data-i="'+r._i+'"><td><div class="t-main">'+esc(r.n)+'</div>'+(r.f?'<div class="t-sub">'+esc(r.f)+'</div>':'')+'</td>'+
+          '<td>'+esc(r.v||"—")+'</td><td>'+esc(r.c||"—")+'</td><td>'+esc(r.p||"—")+'</td>'+
+          '<td>'+(r.w?'<a href="'+esc(link(r.w))+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">site ↗</a>':"—")+'</td></tr>';
+        if(open){ row+='<tr class="ct-detail"><td colspan="5">'+
+          (r.note?'<div class="t-sub" style="margin-bottom:7px">'+esc(r.note)+'</div>':'')+
+          '<div class="ct-actions">'+
+          (r.p?'<a href="tel:'+esc(r.p.replace(/[^0-9+]/g,""))+'">📞 Call</a>':'')+
+          (r.e?'<a href="mailto:'+esc(r.e)+'">✉️ Email</a>':'')+
+          (r.w?'<a href="'+esc(link(r.w))+'" target="_blank" rel="noopener">🌐 Open site</a>':'')+
+          '<button class="ct-del" data-del="'+r._i+'">Remove</button>'+
+          '</div></td></tr>'; }
+        return row;
+      }).join(""):'<tr><td colspan="5" style="color:var(--mut);padding:22px">Nothing matches — clear the search or import the master CSV.</td></tr>')+
+      '</tbody></table></div>'+
+      '<div class="srcnote">Sample entries so every column has something in it. Add your own with + Add, or import your existing list as a CSV — the book is yours. Blank phone/email means it isn\'t on file yet — blank beats wrong. In this preview, changes stay in this browser.</div>';
+
+    var q=document.getElementById("ctQ");
+    q.oninput=function(){ Q=this.value; OPEN=-1; render(); var qq=document.getElementById("ctQ"); qq.focus(); qq.setSelectionRange(qq.value.length,qq.value.length); };
+    Array.prototype.forEach.call(host.querySelectorAll(".ct-scope"),function(b){ b.classList.toggle("on",b.dataset.sc===SCOPE);
+      b.onclick=function(){ SCOPE=this.dataset.sc; OPEN=-1; render(); }; });
+    document.getElementById("ctV").onchange=function(){ FV=this.value; OPEN=-1; render(); };
+    document.getElementById("ctC").onchange=function(){ FC=this.value; OPEN=-1; render(); };
+    document.getElementById("ctS").onchange=function(){ SORT=this.value; render(); };
+    document.getElementById("ctAdd").onclick=openAdd;
+    document.getElementById("ctImp").onclick=openImp;
+    document.getElementById("ctExp").onclick=doExport;
+    Array.prototype.forEach.call(host.querySelectorAll("tbody tr[data-i]"),function(tr){
+      tr.style.cursor="pointer";
+      tr.onclick=function(){ var i=+this.dataset.i; OPEN=(OPEN===i?-1:i); render(); };
+    });
+    Array.prototype.forEach.call(host.querySelectorAll("[data-del]"),function(b){
+      b.onclick=function(e){ e.stopPropagation(); ROWS.splice(+this.dataset.del,1); OPEN=-1; persist(); render(); T.toast("Removed. (Preview only — resets when you leave.)","ok"); };
+    });
+  }
+
+  /* ---- add modal ---- */
+  var modal=document.createElement("div"); modal.className="ct-modal"; document.body.appendChild(modal);
+  function closeM(){ modal.classList.remove("on"); }
+  modal.addEventListener("click",function(e){ if(e.target===modal) closeM(); });
+  function openAdd(){
+    modal.innerHTML='<div class="ct-mcard"><h3>Add a contact</h3>'+
+    '<label>Business / name</label><input id="amN">'+
+    '<div class="ct-mrow"><div><label>Category</label><input id="amV" placeholder="Developer, Contractor, Agency…"></div><div><label>City</label><input id="amC"></div></div>'+
+    '<div class="ct-mrow"><div><label>Phone</label><input id="amP"></div><div><label>Email</label><input id="amE"></div></div>'+
+    '<label>Website</label><input id="amW">'+
+    '<label>Notes</label><textarea id="amNo" rows="2"></textarea>'+
+    '<div class="ct-actions" style="margin-top:14px"><button class="btn blue sm" id="amGo">Save</button><button class="btn sm" id="amX">Cancel</button></div></div>';
+    modal.classList.add("on");
+    document.getElementById("amX").onclick=closeM;
+    document.getElementById("amGo").onclick=function(){
+      var n=document.getElementById("amN").value.trim(); if(!n){ T.toast("Give it a name.","warn"); return; }
+      ROWS.unshift({n:n,v:document.getElementById("amV").value.trim(),c:document.getElementById("amC").value.trim(),
+        p:document.getElementById("amP").value.trim(),e:document.getElementById("amE").value.trim(),
+        w:document.getElementById("amW").value.trim(),f:"",note:document.getElementById("amNo").value.trim(),k:"Business"});
+      persist(); closeM(); OPEN=-1; render(); T.toast("Added.","ok");
+    };
+  }
+
+  /* ---- import (file or paste), Barry-style header mapping ---- */
+  function openImp(){
+    modal.innerHTML='<div class="ct-mcard"><h3>Import the master CSV</h3>'+
+    '<p style="font-size:13px;color:var(--mut);margin:0 0 6px">First row = headers. Recognized: name/account, first/last, category/vertical/industry, city, phone, email, website, notes. Duplicates (same name + city) are skipped.</p>'+
+    '<input type="file" id="imF" accept=".csv,text/csv" style="margin:8px 0">'+
+    '<label>…or paste CSV</label><textarea id="imT" rows="6" placeholder="Account Name,City,Phone,…"></textarea>'+
+    '<div class="ct-actions" style="margin-top:14px"><button class="btn blue sm" id="imGo">Import</button><button class="btn sm" id="imX">Cancel</button></div></div>';
+    modal.classList.add("on");
+    document.getElementById("imX").onclick=closeM;
+    document.getElementById("imF").onchange=function(e){ var f=e.target.files[0]; if(!f)return; var rd=new FileReader(); rd.onload=function(){ document.getElementById("imT").value=String(rd.result); }; rd.readAsText(f); };
+    document.getElementById("imGo").onclick=function(){ doImport(document.getElementById("imT").value); };
+  }
+  function parseCSV(t){
+    var rows=[],row=[],cur="",inq=false;
+    for(var i=0;i<t.length;i++){ var ch=t[i];
+      if(inq){ if(ch==='"'){ if(t[i+1]==='"'){cur+='"';i++;} else inq=false; } else cur+=ch; }
+      else if(ch==='"') inq=true;
+      else if(ch===','){ row.push(cur); cur=""; }
+      else if(ch==='\n'||ch==='\r'){ if(cur!==""||row.length){ row.push(cur); rows.push(row); row=[]; cur=""; } if(ch==='\r'&&t[i+1]==='\n')i++; }
+      else cur+=ch; }
+    if(cur!==""||row.length){ row.push(cur); rows.push(row); }
+    return rows;
+  }
+  function doImport(text){
+    if(!text.trim()){ T.toast("Nothing to import.","warn"); return; }
+    var rows=parseCSV(text); if(rows.length<2){ T.toast("Need a header row plus data.","warn"); return; }
+    var H=rows[0].map(function(h){ return h.toLowerCase().replace(/[^a-z]/g,""); });
+    function col(){ for(var i=0;i<arguments.length;i++){ var j=H.indexOf(arguments[i]); if(j>-1) return j; } return -1; }
+    var iN=col("accountname","account","name","business","company"), iF=col("contactfirstname","firstname","first"),
+        iL=col("contactlastname","lastname","last"), iV=col("vertical","category","industry","type","kind"),
+        iC=col("city"), iP=col("phone","phonenumber"), iE=col("email"), iW=col("website","url","site"), iNo=col("notes","note");
+    if(iN<0){ T.toast("No name/account column found.","warn"); return; }
+    var have={}; ROWS.forEach(function(r){ have[(r.n+"|"+r.c).toLowerCase()]=1; });
+    var added=0,skipped=0;
+    rows.slice(1).forEach(function(r){
+      var n=(r[iN]||"").trim(); if(!n) return;
+      var city=iC>-1?(r[iC]||"").trim():"";
+      var key=(n+"|"+city).toLowerCase();
+      if(have[key]){ skipped++; return; }
+      have[key]=1; added++;
+      ROWS.push({ n:n, v:iV>-1?(r[iV]||"").trim():"", c:city, p:iP>-1?(r[iP]||"").trim():"",
+        e:iE>-1?(r[iE]||"").trim():"", w:iW>-1?(r[iW]||"").trim():"",
+        f:((iF>-1?r[iF]||"":"")+" "+(iL>-1?r[iL]||"":"")).trim(), note:iNo>-1?(r[iNo]||"").trim().slice(0,200):"", k:"Business" });
+    });
+    persist(); closeM(); OPEN=-1; render();
+    T.toast("Imported "+added+" · skipped "+skipped+" duplicate(s).","ok");
+  }
+  function doExport(){
+    var head="Account Name,Contact,Category,City,Phone,Email,Website,Notes";
+    var lines=ROWS.map(function(r){ return [r.n,r.f||"",r.v||"",r.c||"",r.p||"",r.e||"",r.w||"",(r.note||"").replace(/"/g,"\'\'")].map(function(x){ return '"'+String(x).replace(/"/g,'""')+'"'; }).join(","); });
+    var blob=new Blob([head+"\n"+lines.join("\n")],{type:"text/csv"});
+    var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="smiley-contacts-"+new Date().toISOString().slice(0,10)+".csv"; a.click();
+  }
+  render();
+})();
+</script>
+</body>
+</html>

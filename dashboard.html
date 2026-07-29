@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Command Center · Smiley OS</title>
+<meta name="description" content="The practice on one screen — what was produced, what is collectable, what will be denied, and which chairs are empty.">
+<link rel="canonical" href="https://www.aexperiences.com/apps/smiley/dashboard.html">
+<meta property="og:title" content="Command Center · Smiley OS">
+<meta property="og:description" content="The practice on one screen — what was produced, what is collectable, what will be denied, and which chairs are empty.">
+<meta property="og:image" content="https://www.aexperiences.com/Smiley_OS.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<link rel="apple-touch-icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<meta name="theme-color" content="#0e7c93">
+<link rel="stylesheet" href="smiley.css">
+</head>
+<body>
+<script src="smiley.js"></script>
+<script src="manual.js"></script>
+<script>
+(function(){
+  var S = window.Smiley;
+  var content = S.mount({ active:"dashboard.html", crumb:"Command Center" });
+
+  var k=S.kpis(), B=S.BENCH;
+  content.appendChild(S.page("Command Center","Every number below is computed from this practice's own book. Nothing here was typed in by hand."));
+
+  content.appendChild(S.card('<h2>The week that finished</h2><p class="sub">A practice reads the week that closed, not the one still running — otherwise every number looks like a collapse until Friday afternoon. Week of '+S.dayLabel(k.week)+'.</p>'+
+    '<div class="moneysplit">'+
+      '<div class="ms"><b>'+S.money(k.production)+'</b><span>Production</span></div>'+
+      '<div class="ms neg"><b>−'+S.money(k.writeOff)+'</b><span>PPO write-off</span></div>'+
+      '<div class="ms"><b>'+S.money(k.collectable)+'</b><span>Collectable</span></div>'+
+      '<div class="ms"><b>'+S.money(k.planPortion)+'</b><span>Plan pays</span></div>'+
+      '<div class="ms"><b>'+S.money(k.patientPortion)+'</b><span>Patient owes</span></div>'+
+    '</div>'+
+    '<p class="sub">The write-off is not money that went missing. Your contract with the plan says you may never charge it, so it never existed. What is left splits between the plan and the patient — and those two are collected in completely different ways.</p>'));
+
+  function band(v,good){ return v>=good ? "good" : v>=good*0.85 ? "watch" : "bad"; }
+  content.appendChild(S.card('<h2>Against the benchmarks</h2><p class="sub">Sourced, not invented. Where we could not source a number we leave it out.</p><div class="stats">'+
+    S.stat("Collection rate", S.pct(k.collectionRate), "high performer "+B.collection.v+"% · average "+B.collectionAvg.v+"%", band(k.collectionRate,95))+
+    S.stat("Case acceptance", S.pct(k.caseAcceptance), "national average "+B.caseAcceptance.v+"% (40–60%)", band(k.caseAcceptance,50))+
+    S.stat("Hygiene share of production", S.pct(k.hygieneShare), "benchmark "+B.hygieneShare.v+"% (30–33%)", band(k.hygieneShare,30))+
+    S.stat("Reappointment", S.pct(k.reappoint), "benchmark "+B.reappoint.v+"%", band(k.reappoint,85))+
+    '</div>'+S.srcNote(B.collection.src)));
+
+  content.appendChild(S.card('<h2>What is costing you money right now</h2><p class="sub">Each of these is a number most practices never total.</p><div class="stats">'+
+    S.stat("Unscheduled treatment", S.money(k.unscheduled), "diagnosed, presented, never booked", k.unscheduled>5000?"bad":"watch")+
+    S.stat("Open hygiene hours", k.openHygiene, "worth "+S.money(k.openHygieneCost)+" this week", k.openHygiene>6?"bad":"watch")+
+    S.stat("Broken appointments", k.broken, S.money(k.brokenCost)+" of production, last week", k.broken?"watch":"good")+
+    S.stat("Outstanding", S.money(k.ar), "across all aging buckets", k.ar>3000?"watch":"good")+
+    S.stat("Denied claims", k.denied, S.money(k.deniedValue)+" worth working", k.denied?"bad":"good")+
+    S.stat("Overdue for recall", k.lapsed, "no future appointment booked", k.lapsed?"watch":"good")+
+    '</div>'));
+
+  var stop=[];
+  if(k.verifyFlags) stop.push('<b>'+k.verifyFlags+' booked '+(k.verifyFlags===1?'visit':'visits')+'</b> will be denied or surprise the patient — <a href="insurance.html">Insurance Check</a>');
+  if(k.cannotWork) stop.push('<b>'+k.cannotWork+' '+(k.cannotWork===1?'person':'people')+'</b> cannot legally be scheduled today — <a href="team.html">Team &amp; Licences</a>');
+  if(k.complianceOverdue) stop.push('<b>'+k.complianceOverdue+'</b> compliance '+(k.complianceOverdue===1?'item is':'items are')+' overdue — <a href="sterile.html">Sterilisation &amp; OSHA</a>');
+  if(stop.length) content.appendChild(S.card('<h2>Before anything else</h2><div class="blockers"><b>These stop work, they do not just annoy you.</b><ul><li>'+stop.join('</li><li>')+'</li></ul></div>','urgent'));
+
+  if(k.ortho){
+    var o=k.ortho;
+    content.appendChild(S.card('<h2>Ortho contracts</h2><p class="sub">A signed case is not production. It earns monthly, in arrears, across the treatment term.</p><div class="stats">'+
+      S.stat("Active cases", o.active, "of "+o.cases+" on the books")+
+      S.stat("Contracted", S.money(o.contracted), "total signed value")+
+      S.stat("Recognised", S.money(o.recognised), "actually earned so far")+
+      S.stat("Unearned", S.money(o.unearned), "treatment still owed to patients", "watch")+
+      S.stat("Behind on payments", S.money(o.behind), "against treatment already given", o.behind>0?"bad":"good")+
+      '</div><p class="sub"><a href="ortho.html">Open the ortho ledger →</a></p>'));
+  }
+
+})();
+</script>
+</body>
+</html>

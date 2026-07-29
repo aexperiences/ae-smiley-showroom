@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calendar · Smiley OS</title>
+<meta name="description" content="Subscribe from your phone — the schedule, recall due dates and ortho visits.">
+<link rel="canonical" href="https://www.aexperiences.com/apps/smiley/calendar.html">
+<meta property="og:title" content="Calendar · Smiley OS">
+<meta property="og:description" content="Subscribe from your phone — the schedule, recall due dates and ortho visits.">
+<meta property="og:image" content="https://www.aexperiences.com/Smiley_OS.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<link rel="apple-touch-icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<meta name="theme-color" content="#0e7c93">
+<link rel="stylesheet" href="smiley.css">
+</head>
+<body>
+<script src="smiley.js"></script>
+<script src="manual.js"></script>
+<script>
+(function(){
+  var S = window.Smiley;
+  var content = S.mount({ active:"calendar.html", crumb:"Calendar" });
+
+  content.appendChild(S.page("Calendar","Subscribe once and it keeps itself current on your phone."));
+  var url=location.href.replace(/calendar\.html.*$/,"")+"smiley.ics";
+  content.appendChild(S.card('<h2>Subscribe</h2><p class="sub">Add this address as a subscribed calendar in Google Calendar or Apple Calendar. It is read-only and it refreshes on its own.</p>'+
+    '<div class="mono" style="word-break:break-all;background:var(--sunk);padding:11px 13px;border-radius:12px">'+S.esc(url)+'</div>'+
+    '<div class="ri-act" style="margin-top:11px"><a class="btn primary" href="smiley.ics">Download the file</a> '+
+    '<a class="btn" href="https://calendar.google.com/calendar/r/settings/addbyurl" target="_blank" rel="noopener">Add in Google Calendar</a></div>'));
+  var wk=S.thisWeek();
+  content.appendChild(S.card('<h2>This week</h2><div class="tablewrap"><table><thead><tr><th>When</th><th>Patient</th><th>What</th><th>Chair</th></tr></thead><tbody>'+
+    S.visitsInWeek(wk).filter(function(v){return v.pt;}).sort(function(a,b){ return a.date===b.date ? (a.start<b.start?-1:1) : (a.date<b.date?-1:1); })
+    .map(function(v){ return '<tr><td class="mono">'+S.dayLabel(v.date)+' '+S.hhmm(v.start)+'</td><td>'+S.esc(S.ptName(v.pt))+'</td>'+
+      '<td class="mut">'+S.esc(v.type)+'</td><td class="mut">'+S.esc(S.OPERATORIES[v.op])+'</td></tr>'; }).join("")+
+    '</tbody></table></div>'));
+
+})();
+</script>
+</body>
+</html>

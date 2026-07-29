@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Smiley OS — the dental practice operating system</title>
+<meta name="description" content="A native operating system for an independent dental practice. Production, collection and the patient portion kept apart; insurance checked before the visit; ortho as a module with its own contract ledger.">
+<link rel="canonical" href="https://www.aexperiences.com/apps/smiley/">
+<meta property="og:title" content="Smiley OS — dental practice OS">
+<meta property="og:description" content="Production, collection and the patient portion are three different numbers. Smiley OS never adds them together.">
+<meta property="og:image" content="https://www.aexperiences.com/Smiley_OS.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<link rel="apple-touch-icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<meta name="theme-color" content="#0e7c93">
+<link rel="stylesheet" href="smiley.css">
+</head>
+<body class="gate">
+<script src="smiley.js"></script>
+<script>
+(function(){
+  var S=window.Smiley, d=S.db();
+  document.body.innerHTML='<div class="gatewrap"><div class="gatecard">'+
+    '<div class="gatemark">'+S.brandMark()+'</div>'+
+    '<h1>Smiley OS</h1>'+
+    '<p class="gsub">The operating system for an independent dental practice — and the orthodontic module that runs beside it.</p>'+
+    '<p class="gnote">This is the real system running in your browser on a realistic sample practice. Check a visit out, fill an empty hygiene chair, work a denial, post an ortho payment. Nothing you type leaves your device.</p>'+
+    '<div class="gbtns"><a class="btn primary big" href="dashboard.html">Walk in →</a></div>'+
+    '<div class="gtier">'+S.esc(S.TIERS[S.tier()].name)+' · '+S.priceLabel()+'</div>'+
+    '<div class="grid3">'+
+      '<div><b>Three money numbers, kept apart</b><p>Production, the PPO write-off, and what the patient actually owes. Adding them together is how a practice reads a record month and cannot make payroll.</p></div>'+
+      '<div><b>Insurance checked before the visit</b><p>Frequency limits, annual maximums, age caps and downgrades — flagged while you can still do something about it.</p></div>'+
+      '<div><b>Ortho is a contract, not a procedure</b><p>Its own ledger, recognised monthly in arrears against a lifetime maximum. Switch the module on only if you do it.</p></div>'+
+    '</div>'+
+    '<div class="gfoot">Built by <b>Accelerated Experiences LLC</b> · Post Falls, Idaho</div>'+
+  '</div></div>';
+})();
+</script>
+</body>
+</html>

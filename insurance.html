@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Insurance Check · Smiley OS</title>
+<meta name="description" content="What will be denied, before the appointment — frequency, annual maximum, age limits and downgrades.">
+<link rel="canonical" href="https://www.aexperiences.com/apps/smiley/insurance.html">
+<meta property="og:title" content="Insurance Check · Smiley OS">
+<meta property="og:description" content="What will be denied, before the appointment — frequency, annual maximum, age limits and downgrades.">
+<meta property="og:image" content="https://www.aexperiences.com/Smiley_OS.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<link rel="apple-touch-icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<meta name="theme-color" content="#0e7c93">
+<link rel="stylesheet" href="smiley.css">
+</head>
+<body>
+<script src="smiley.js"></script>
+<script src="manual.js"></script>
+<script>
+(function(){
+  var S = window.Smiley;
+  var content = S.mount({ active:"insurance.html", crumb:"Insurance verification" });
+
+  content.appendChild(S.page("Insurance verification","Frequency violations are one of the most common denial reasons in dental billing, and they are entirely preventable — the office already holds the history that proves the claim will bounce."));
+  var q=S.verificationQueue();
+  var hard=q.filter(function(r){return r.blockers.length;});
+  content.appendChild(S.card('<h2>Booked visits that need a decision</h2><div class="stats">'+
+    S.stat("Will be denied", hard.length, "hard blockers — fix or reschedule", hard.length?"bad":"good")+
+    S.stat("Patient will owe more", q.length-hard.length, "downgrades and waits — tell them first", (q.length-hard.length)?"watch":"good")+
+    S.stat("Clean", S.db().visits.filter(function(v){return v.pt&&!v.checkedOut&&S.daysUntil(v.date)>=0;}).length-q.length, "nothing to warn about", "good")+
+    '</div><p class="sub">Blockers and advisories are shown apart on purpose. Staff who see everything in red learn to ignore all of it.</p>'));
+
+  q.forEach(function(r){
+    var v=r.visit, p=S.ptById(v.pt), plan=S.planById(p.plan);
+    var h='<h2>'+S.esc(p.name)+'</h2><p class="sub">'+S.dayLabel(v.date)+' '+S.hhmm(v.start)+' · '+S.esc(v.type)+' · '+
+      S.esc(plan.carrier)+' '+S.esc(plan.plan)+
+      (plan.annualMax!=null?(' · maximum '+S.money(plan.annualMax)+', used '+S.money(p.ytdUsed)):'')+'</p>';
+    if(r.blockers.length) h+='<div class="blockers"><b>This will be denied:</b><ul><li>'+r.blockers.map(function(b){return S.esc(b.text);}).join('</li><li>')+'</li></ul></div>';
+    if(r.notes.length) h+='<div class="mods"><b>The patient will owe more than they expect:</b><ul><li>'+r.notes.map(function(b){return S.esc(b.text);}).join('</li><li>')+'</li></ul></div>';
+    h+='<div class="tablewrap"><table><thead><tr><th>Procedure</th><th class="right">Fee</th><th class="right">Write-off</th><th class="right">Plan</th><th class="right">Patient</th></tr></thead><tbody>'+
+      v.codes.map(function(c){ var L=S.priceLine(c,p.plan,p);
+        return '<tr><td>'+S.esc(S.codeName(c))+' <span class="mono mut">'+c+'</span>'+(L.downgraded?' '+S.tag("downgraded","watch"):'')+'</td>'+
+          '<td class="right mono">'+S.money(L.fee)+'</td><td class="right mono">'+S.money(L.writeOff)+'</td>'+
+          '<td class="right mono">'+S.money(L.planPays)+'</td><td class="right mono"><b>'+S.money(L.patient)+'</b></td></tr>'; }).join("")+
+      '</tbody></table></div>';
+    content.appendChild(S.card(h));
+  });
+
+  content.appendChild(S.card('<h2>The plans this practice takes</h2><div class="tablewrap"><table><thead><tr><th>Carrier</th><th class="right">Annual max</th><th class="right">Write-off</th><th>Downgrades</th><th>Note</th></tr></thead><tbody>'+
+    S.PLANS.map(function(pl){ return '<tr><td><b>'+S.esc(pl.carrier)+'</b><br><span class="mut">'+S.esc(pl.plan)+'</span></td>'+
+      '<td class="right mono">'+(pl.annualMax==null?"—":S.money(pl.annualMax))+'</td>'+
+      '<td class="right mono">'+S.pct(pl.ppoCut*100)+'</td>'+
+      '<td>'+(pl.downgrades?S.tag("yes","watch"):S.tag("no","good"))+'</td>'+
+      '<td class="mut">'+S.esc(pl.note)+'</td></tr>'; }).join("")+'</tbody></table></div>'));
+
+})();
+</script>
+</body>
+</html>
