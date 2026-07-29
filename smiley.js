@@ -1265,6 +1265,8 @@
 })(this);
 
 
+
+
 /* ---- ae-charts: the visual command center (auto-discovers the engine) ---- */
 (function(){
   if (typeof document==='undefined') return;
@@ -1331,7 +1333,18 @@
     function title(s){ return String(s).replace(/[._-]/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase();}); }
 
     /* --- bars: top rows by value --- */
-    var rows=S.rows.slice().map(function(r){ return {l:S.label?r[S.label]:'—', v:Number(pick(r,S.field))||0}; })
+    /* A label field can legitimately hold a foreign key ("client":"c1") rather than a
+       name, which renders a chart labelled c1, c5, c8 — useless. If the engine exposes
+       its own lookup, resolve through it. */
+    function human(v){
+      if(typeof v!=='string' || !/^[a-z]{1,3}\d+$/.test(v)) return v;
+      var fns=['clientName','ptName','memberName','artistName','name'];
+      for(var i=0;i<fns.length;i++){
+        if(typeof E[fns[i]]==='function'){ try{ var n=E[fns[i]](v); if(n && n!=='—') return n; }catch(e){} }
+      }
+      return v;
+    }
+    var rows=S.rows.slice().map(function(r){ return {l:S.label?human(r[S.label]):'—', v:Number(pick(r,S.field))||0}; })
                    .filter(function(r){ return r.v>0; })
                    .sort(function(a,b){ return b.v-a.v; }).slice(0,6);
     var max=Math.max.apply(null,rows.map(function(r){return r.v;}).concat([1]));
@@ -1348,7 +1361,7 @@
     var g2='',leg='';
     if(S.cat){
       var by={},tot=0;
-      S.rows.forEach(function(r){ var c=r[S.cat]; if(typeof c!=='string')return;
+      S.rows.forEach(function(r){ var c=human(r[S.cat]); if(typeof c!=='string')return;
         var v=Number(pick(r,S.field))||0; if(!(v>0))return; by[c]=(by[c]||0)+v; tot+=v; });
       var keys=Object.keys(by).sort(function(a,b){return by[b]-by[a];});
       var PAL=[ACC,HI,ACC2,'#6a8f7a','#8a7fa8','#a8865f'];
