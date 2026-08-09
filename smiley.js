@@ -989,7 +989,7 @@
     (d.adds||[]).forEach(function(k){ if(ROOMS[k]){ mo+=ROOMS[k].mo; build+=ROOMS[k].build; } });
     (d.offs||[]).forEach(function(k){ if(ROOMS[k]){ mo-=ROOMS[k].mo; build-=ROOMS[k].build; } });
     return {mo:Math.max(0,mo), build:Math.max(0,build)}; }
-  function priceLabel(){ var p=priceNow(); return money(p.mo)+"/mo · "+money(p.build)+" build"; }
+  function priceLabel(){ var p=priceNow(); return money(p.mo)+"/mo licensed"; }
 
   var SEATS = [
     {dept:"Front desk",  head:"Marisa", aes:["Verification","Recall","Collections"]},
@@ -1082,7 +1082,7 @@
     bar.innerHTML='<div class="crumbs">'+esc(crumb||"")+'</div><div class="spacer"></div>'+
       '<div class="tierpill" id="tierPill" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">'+
         '<span class="dot"></span><div><b>'+esc(t.name)+(changed?' <i class="cfg">configured</i>':'')+'</b> '+
-        '<span class="price">'+money(pr.mo)+'/mo · '+money(pr.build)+' setup</span></div><span class="chev">▾</span></div>'+
+        '<span class="price">'+money(pr.mo)+'/mo licensed</span></div><span class="chev">▾</span></div>'+
       '<div class="who"><div class="av">'+esc("RO")+'</div><div>'+esc("Roslyn Mbeki")+'<br>'+
         '<span class="muted small">'+esc("Office manager")+'</span></div></div>';
 
@@ -1092,7 +1092,7 @@
       var tt=TIERS[k];
       var opt=el('<div class="tieropt '+(k===tier()?"on":"")+'">'+
         '<div class="to-top"><span class="to-name">'+esc(tt.name)+'</span>'+
-        '<span class="to-price">'+money(tt.mo)+'/mo · '+money(tt.build)+' setup</span></div>'+
+        '<span class="to-price">'+money(tt.mo)+'/mo licensed</span></div>'+
         '<div class="to-desc">'+esc(tt.blurb)+'</div>'+
         '<div class="to-base">'+tt.includes.length+' rooms included</div></div>');
       opt.addEventListener("click", function(e){ e.stopPropagation(); setTier(k); location.reload(); });
@@ -1105,7 +1105,7 @@
       var row=el('<div class="roomrow '+(isOn?"on":"")+'"><span class="rr-box">'+(isOn?"✓":"+")+'</span>'+
         '<span class="rr-name">'+esc(r.name)+(isOn&&!inPack?' <i class="rr-flag add">added</i>':'')+
         (!isOn&&inPack?' <i class="rr-flag off">removed</i>':'')+'</span>'+
-        '<span class="rr-price">'+money(r.mo)+'/mo<i>'+money(r.build)+' setup</i></span></div>');
+        '<span class="rr-price">'+money(r.mo)+'/mo</span></div>');
       row.addEventListener("click", function(e){ e.stopPropagation(); toggleRoom(k);
         toast(r.name+(activeRooms().indexOf(k)>=0?" added — ":" removed — ")+priceLabel());
         setTimeout(function(){ location.reload(); },550); });
@@ -1116,7 +1116,7 @@
       '<b>'+money(t.mo)+'/mo</b></div>'+
       (adds.length?'<div class="tt-line add"><span>+ '+adds.length+' room'+(adds.length>1?'s':'')+' added</span><b>+'+money(pr.mo-t.mo>0?pr.mo-t.mo:0)+'/mo</b></div>':'')+
       (offs.length?'<div class="tt-line off"><span>− '+offs.length+' room'+(offs.length>1?'s':'')+' removed</span><b>−'+money(t.mo-pr.mo>0?t.mo-pr.mo:0)+'/mo</b></div>':'')+
-      '<div class="tt-line grand"><span>Your build</span><b>'+money(pr.mo)+'/mo · '+money(pr.build)+' setup</b></div></div>'));
+      '<div class="tt-line grand"><span>Your build</span><b>'+money(pr.mo)+'/mo licensed</b></div></div>'));
     bar.appendChild(menu);
 
     var pill=bar.querySelector("#tierPill");
