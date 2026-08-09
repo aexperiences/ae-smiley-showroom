@@ -1667,8 +1667,13 @@
   function line(A) {
     var here, top = null, k;
     try { here = A.TIERS[A.tier()]; } catch (e) { return ""; }
-    for (k in A.TIERS) if (!top || (A.TIERS[k].rank || 0) > (top.rank || 0)) top = A.TIERS[k];
-    if (!here || !top || here.rank === top.rank) return "";          /* top tier: nothing to explain */
+    var keys = [], ranked = true;
+    for (k in A.TIERS) { keys.push(k); if (typeof A.TIERS[k].rank !== "number") ranked = false; }
+    /* Moments and Smiley declare tiers without a rank, so fall back to declaration
+       order — the last one declared is the top. Never guess at scale from price. */
+    if (ranked) { for (k in A.TIERS) if (!top || A.TIERS[k].rank > top.rank) top = A.TIERS[k]; }
+    else { top = A.TIERS[keys[keys.length - 1]]; }
+    if (!here || !top || here === top) return "";          /* top tier: nothing to explain */
     var mine = (here.includes || []).length, all = (top.includes || []).length;
     var s = "This floor stays seeded at full " + top.name + " scale so you can see the ceiling — "
           + "the figures below are not resized down to " + here.name + ".";
