@@ -1633,3 +1633,75 @@
   })();
 
 })(window);
+
+
+/* --------------------------------------------------------------- scope note
+   The showroom always opens at the TOP tier on purpose — Art. X: show the
+   ceiling, take departments off to fit, never build up from a stripped base.
+   That is deliberate and it is right. What was missing is that nobody ever
+   SAID so, so a visitor who stepped the tier down had no way to tell whether
+   the numbers still on screen were meant to be theirs. They are not. On a
+   mystery-shop of Abode the reviewer put it as not being able to picture
+   themselves in it, and this is a large part of why.
+
+   So: when you are not on the top tier, the floor says out loud that the
+   figures are still seeded at full scale, and tells you what your tier
+   actually changes — the departments. No number is altered, invented or
+   shrunk to flatter a smaller buyer (Art. IV).
+
+   Appended rather than surgically inserted so it works identically across
+   eleven engines that differ inside. It reads the live TIERS, never a copy. */
+
+(function (global) {
+  "use strict";
+
+  function engine() {
+    var k, o;
+    for (k in global) {
+      try { o = global[k]; } catch (e) { continue; }
+      if (o && typeof o === "object" && o.TIERS && typeof o.tier === "function") return o;
+    }
+    return null;
+  }
+
+  function line(A) {
+    var here, top = null, k;
+    try { here = A.TIERS[A.tier()]; } catch (e) { return ""; }
+    for (k in A.TIERS) if (!top || (A.TIERS[k].rank || 0) > (top.rank || 0)) top = A.TIERS[k];
+    if (!here || !top || here.rank === top.rank) return "";          /* top tier: nothing to explain */
+    var mine = (here.includes || []).length, all = (top.includes || []).length;
+    var s = "This floor stays seeded at full " + top.name + " scale so you can see the ceiling — "
+          + "the figures below are not resized down to " + here.name + ".";
+    if (mine && all) s += " What your tier changes is the departments: " + mine + " of " + all + " switched on.";
+    return s;
+  }
+
+  function paint() {
+    var A = engine(); if (!A) return;
+    var bar = document.querySelector(".topbar"); if (!bar || !bar.parentNode) return;
+    var msg = line(A), el = document.getElementById("aeScopeNote");
+    if (!msg) { if (el && el.parentNode) el.parentNode.removeChild(el); return; }
+    if (!el) {
+      el = document.createElement("div");
+      el.id = "aeScopeNote";
+      el.className = "scopenote";
+      /* styled inline so this needs no stylesheet edit in any of the eleven,
+         and inherits whatever chrome the product already uses */
+      el.style.cssText = "padding:7px 14px;font-size:11.5px;line-height:1.45;opacity:.72;" +
+        "border-bottom:1px solid rgba(128,128,128,.22)";
+      bar.parentNode.insertBefore(el, bar.nextSibling);
+    }
+    if (el.textContent !== msg) el.textContent = msg;
+  }
+
+  function boot() {
+    paint();
+    [200, 600, 1400, 2600].forEach(function (ms) { setTimeout(paint, ms); });
+    /* tier changes re-render the chrome; some engines reload, some do not */
+    setInterval(paint, 1500);
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+
+})(window);
