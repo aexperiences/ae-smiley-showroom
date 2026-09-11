@@ -956,13 +956,13 @@
     sign:      {name:"e-Sign",                   mo:49, build:380}
   };
   var TIERS = {
-    solo:      {name:"Solo", mo:350, build:3200,
+    solo:      {name:"Core", mo:350, build:0,
       includes:["schedule","chairside","recall","treat","money","sterile","team","sign"],
       blurb:"One doctor, one or two hygiene chairs — the whole system for a practice where the owner is also the office manager."},
-    practice:  {name:"Practice", mo:750, build:6400,
+    practice:  {name:"Elite", mo:750, build:0,
       includes:["schedule","chairside","recall","treat","ins","claims","money","sterile","team","portal","sign"],
       blurb:"Two to four operatories with an office manager and a treatment coordinator. Insurance verification and claims aging come in here."},
-    grandsuite:{name:"Grandsuite", mo:1500, build:12000,
+    grandsuite:{name:"Mothership", mo:1500, build:0,
       includes:["schedule","chairside","recall","treat","ins","claims","money","ortho","sterile","team","portal","sign"],
       blurb:"Multi-provider, multi-location, ortho module switched on, dedicated environment and a branded patient portal."}
   };
