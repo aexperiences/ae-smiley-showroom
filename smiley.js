@@ -1227,7 +1227,9 @@
     {t:"Broken appointments are costed", k:"broken cancellation no show",
      b:"A cancelled appointment normally just vanishes from the book. Here it keeps its production value so you can see what the week actually cost you."},
     {t:"White-label", k:"branding white label logo colours",
-     b:"Your practice name, your colours, your domain. The Accelerated Experiences credit sits quietly in the footer."}
+     b:"Your practice name, your colours, your domain. The Accelerated Experiences credit sits quietly in the footer."},
+    {t:"Three ways to look at the same day", k:"view views switch ledger board line layout look display change appearance theme", c:"The same information, drawn three ways, and you pick which one you want. LEDGER is what loads first: the whole day on one page with nothing hidden, the way a morning report sits on a desk. BOARD hangs the day on a time rail with the money sitting on each piece of work, which is what you want when you are running the day. LINE has no menu at all; you talk to it and it answers, and it is built for a phone in a truck. Switch whenever you like from the menu. It is the same information underneath all three, so nothing moves and nothing is lost when you change, and the view you leave it on is the one that comes back next time you sign in."},
+    {t:"The menu, and finding anything fast", k:"menu navigation nav find search where is rooms open go to shortcut keyboard", c:"The Menu button sits at the bottom of the screen next to Hold to talk, and it slides out from the left. Every room in the system is in it, grouped, with a count beside the ones that have something waiting on you. There is a search box at the top: type a job, a client, an invoice number or a room name. On a keyboard, press K from anywhere to open it and escape to close it. The menu is in all three views, including Line."}
   ];
   function manual(){ return MANUAL; }
   function askManual(q){
