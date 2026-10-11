@@ -26,8 +26,14 @@
   /* ---------------- tiny helpers ---------------- */
   /* American spelling in everything the shell draws (house rule) — legacy seed text is British in places */
   var US = [[/\blicenc(e|es|ed|ing)\b/g, "licens$1"], [/\bLicenc(e|es|ed|ing)\b/g, "Licens$1"], [/sterilis/g, "steriliz"], [/Sterilis/g, "Steriliz"], [/\benrolment/g, "enrollment"], [/\bEnrolment/g, "Enrollment"],
-    [/colour/g, "color"], [/Colour/g, "Color"], [/organis/g, "organiz"], [/recognis/g, "recogniz"], [/authoris/g, "authoriz"], [/Authoris/g, "Authoriz"], [/customis/g, "customiz"], [/\bcentre/g, "center"], [/\bprogramme/g, "program"], [/labelled/g, "labeled"], [/cancelled/g, "canceled"], [/fulfil\b/g, "fulfill"], [/instalment/g, "installment"]];
-  function us(s) { s = String(s); for (var i = 0; i < US.length; i++) s = s.replace(US[i][0], US[i][1]); return s; }
+    [/colour/g, "color"], [/Colour/g, "Color"], [/organis/g, "organiz"], [/recognis/g, "recogniz"], [/authoris/g, "authoriz"], [/Authoris/g, "Authoriz"], [/customis/g, "customiz"], [/\bcentre/g, "center"], [/\bprogramme/g, "program"], [/labelled/g, "labeled"], [/cancelled/g, "canceled"], [/fulfil\b/g, "fulfill"], [/instalment/g, "installment"],
+    [/\bCentre/g, "Center"], [/\bProgramme/g, "Program"], [/Organis/g, "Organiz"], [/Recognis/g, "Recogniz"], [/Customis/g, "Customiz"], [/Cancelled/g, "Canceled"], [/cancelling/g, "canceling"], [/Instalment/g, "Installment"],
+    [/\bcatalogue/g, "catalog"], [/\bCatalogue/g, "Catalog"], [/behaviour/g, "behavior"], [/Behaviour/g, "Behavior"], [/\bfavour/g, "favor"], [/\bFavour/g, "Favor"], [/\bhonour/g, "honor"], [/\bHonour/g, "Honor"],
+    [/\blabour/g, "labor"], [/\bLabour/g, "Labor"], [/judgement/g, "judgment"], [/Judgement/g, "Judgment"], [/\benrol\b/g, "enroll"], [/\benrols\b/g, "enrolls"], [/\bfulfilment/g, "fulfillment"], [/\bFulfilment/g, "Fulfillment"], [/\bfulfils\b/g, "fulfills"],
+    [/\bpractis(e|es|ed|ing)\b/g, "practic$1"], [/\banalys(e|ed|ing)\b/g, "analyz$1"], [/travelled/g, "traveled"], [/modelling/g, "modeling"], [/\bdefence/g, "defense"], [/aluminium/g, "aluminum"], [/\bcheque/g, "check"], [/sterilis/gi, function (m) { return m[0] === "S" ? "Steriliz" : "steriliz"; }]];
+  function us(s) { s = String(s); for (var i = 0; i < US.length; i++) s = s.replace(US[i][0], US[i][1]); return s.replace(/Custom Color\b/g, "Custom Colour"); }  /* a company's own name keeps its spelling (WHCC) */
+  /* attributes (href, src, data-k) keep their exact bytes — americanizing "licences.html" breaks the link */
+  function attr(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function esc(s) { return us(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
   function fnOr(v) { return typeof v === "function" ? v : function () { return v; }; }
@@ -62,6 +68,14 @@
   function canOpen(k) { if (k === "__home" || k === "__glance") return true; var s = seat().sees; if (!s || s === "*") return true; return s.indexOf(k) >= 0; }
   BS.canOpen = canOpen;
   function seesMoney() { return seat().money !== false; }
+  /* PRIVILEGE: money only reaches seats that hold money. A line carrying a dollar figure never reaches a
+     seat with money:false — even if a profile's needs/glance/bus/helper forgot to mark it. */
+  var MONEY = /\$\s?\d|\d\s?USD\b/;
+  function moneyOK(s) { return seesMoney() || !MONEY.test(String(s == null ? "" : s)); }
+  BS.moneyOK = moneyOK;
+  /* the legacy dashboard under the plan is the owner's full picture: only an all-rooms seat or a money seat gets it */
+  function legacyOK() { var s = seat(); return s.money === true || ((!s.sees || s.sees === "*") && s.money !== false); }
+  BS.legacyOK = legacyOK;
   function hrefOf(k) {
     if (k === "__home") return C.routing === "hash" ? (C.homeRoute || "#/desk") : C.home;
     if (k === "__glance") return C.routing === "hash" ? (C.glanceRoute || "#/eye") : C.home + "#glance";
@@ -82,7 +96,7 @@
   function label(r) { return String(r.label || r.k).replace(/^The /, ""); }
   function icon(k, cls) {
     var src = k === "__home" || k === "__glance" ? C.brand.icon : (room(k) || {}).icon;
-    if (src) return '<img class="' + (cls || "bs-ric") + '" src="' + esc(src) + '" alt="" loading="lazy">';
+    if (src) return '<img class="' + (cls || "bs-ric") + '" src="' + attr(src) + '" alt="" loading="lazy">';
     var g = (room(k) || {}).glyph || "◇";
     return '<span class="' + (cls || "bs-ric") + ' bs-glyph" aria-hidden="true">' + esc(g) + "</span>";
   }
@@ -108,7 +122,7 @@
     var r = room(k), f = C.figures && C.figures[k];
     if (f && (!f.money || seesMoney())) {
       var v = call(f.fn || f);
-      if (v && v.length && !bad(v[0]) && !bad(v[1])) {
+      if (v && v.length && !bad(v[0]) && !bad(v[1]) && moneyOK(v[0]) && moneyOK(v[1])) {
         var val = typeof v[0] === "number" ? v[0].toLocaleString("en-US") : String(v[0]);
         return [val, plur(v[1], v[0])];
       }
@@ -175,8 +189,8 @@
     var b = C.brand;
     var top = document.createElement("div"); top.className = "bs-top"; top.id = "bsTop"; top.setAttribute("role", "banner");
     top.innerHTML = '<div class="bs-in">' +
-      '<a class="bs-aos" href="' + esc(hrefOf("__home")) + '" aria-label="Birdseye — home"><img src="' + esc(b.aos) + '" alt="Accelerated Operating Systems"></a>' +
-      '<div class="bs-brand"><a href="' + esc(hrefOf("__home")) + '" aria-label="Birdseye"><img class="bs-osicon" src="' + esc(b.icon) + '" alt=""></a><span class="bs-names"><a class="bs-sys" href="' + esc(hrefOf("__home")) + '">' + esc(b.name) + '</a><button type="button" class="bs-house" id="bsHouse" aria-label="The business name — tap to change it"></button></span></div>' +
+      '<a class="bs-aos" href="' + attr(hrefOf("__home")) + '" aria-label="Birdseye — home"><img src="' + attr(b.aos) + '" alt="Accelerated Operating Systems"></a>' +
+      '<div class="bs-brand"><a href="' + attr(hrefOf("__home")) + '" aria-label="Birdseye"><img class="bs-osicon" src="' + attr(b.icon) + '" alt=""></a><span class="bs-names"><a class="bs-sys" href="' + attr(hrefOf("__home")) + '">' + esc(b.name) + '</a><button type="button" class="bs-house" id="bsHouse" aria-label="The business name — tap to change it"></button></span></div>' +
       '<span class="bs-sp"></span>' +
       '<label class="bs-seat"><span class="bs-lbl">Viewing as</span><select id="bsSeat" aria-label="Viewing as"></select></label>' +
       '<button type="button" class="bs-iconbtn" id="bsTwin" aria-label="Switch to the dark twin">◐</button>' +
@@ -194,7 +208,7 @@
     els.modal.addEventListener("click", function (e) { if (e.target === els.modal) closeModal(); });
     els.scrim.onclick = function () { openSheet(false); openDrawer(false); };
     var sel = top.querySelector("#bsSeat");
-    sel.innerHTML = Object.keys(C.seats).map(function (k) { return '<option value="' + esc(k) + '">' + esc(C.seats[k].label) + "</option>"; }).join("");
+    sel.innerHTML = Object.keys(C.seats).map(function (k) { return '<option value="' + attr(k) + '">' + esc(C.seats[k].label) + "</option>"; }).join("");
     sel.onchange = function () { BS.setSeat(sel.value); };
     top.querySelector("#bsHouse").onclick = function () { BS.renameHouse(); };
     top.querySelector("#bsTwin").onclick = function () { var all = Object.assign({}, SKINS, C.skins || {}), k = all[skinKey()].twin; BS.setSkin(k); toast(all[k].name); };
@@ -223,13 +237,13 @@
     var isHome = k === "__home", r = isHome ? null : room(k);
     var short = isHome ? "Home" : (r.short || label(r).split(/[\s·&]/)[0]);
     var on = (isHome && mode === "home") || (!isHome && active === k);
-    return '<a href="' + esc(hrefOf(k)) + '" data-k="' + esc(k) + '"' + (on ? ' class="on" aria-current="page"' : "") + ">" +
+    return '<a href="' + attr(hrefOf(k)) + '" data-k="' + attr(k) + '"' + (on ? ' class="on" aria-current="page"' : "") + ">" +
       (isHome ? GRID : icon(k, "bs-dic")) + "<span>" + esc(short) + "</span></a>";
   }
   function paintDock() {
     var two = dockRooms(), d = els.dock;
     d.innerHTML = '<span class="bs-glide" aria-hidden="true"></span>' + dlink("__home") + (two[0] ? dlink(two[0]) : "<span></span>") +
-      '<a href="' + esc(hrefOf("__glance")) + '" data-k="__glance" id="bsPrime" class="bs-prime' + (mode === "glance" ? " on" : "") + '" aria-label="Birdseye — everything at a glance"><img class="bs-pl" src="' + esc(C.brand.icon) + '" alt="' + esc(C.brand.short || C.brand.name) + '"><span>Birdseye</span></a>' +
+      '<a href="' + attr(hrefOf("__glance")) + '" data-k="__glance" id="bsPrime" class="bs-prime' + (mode === "glance" ? " on" : "") + '" aria-label="Birdseye — everything at a glance"><img class="bs-pl" src="' + attr(C.brand.icon) + '" alt="' + esc(C.brand.short || C.brand.name) + '"><span>Birdseye</span></a>' +
       (two[1] ? dlink(two[1]) : "<span></span>") + '<button type="button" id="bsMore" data-k="__more" aria-haspopup="dialog" aria-controls="bsSheet">' + MORE + "<span>More</span></button>";
     d.querySelector("#bsMore").onclick = function () { openSheet(!els.sheet.classList.contains("up")); };
     var inDock = mode === "home" || ["__glance"].concat(two).indexOf(active) >= 0 || mode === "glance";
@@ -255,16 +269,16 @@
       if (!rs.length) return "";
       total += rs.length;
       var op = openWing === w.k;
-      return '<div class="bs-wing' + (op ? " open" : "") + '" data-w="' + esc(w.k) + '"><button type="button" class="bs-wh" aria-expanded="' + op + '">' +
+      return '<div class="bs-wing' + (op ? " open" : "") + '" data-w="' + attr(w.k) + '"><button type="button" class="bs-wh" aria-expanded="' + op + '">' +
         icon(rs[0].k, "bs-whi") + '<span class="bs-wt">' + esc(w.name) + "</span><b>" + rs.length + '</b><i class="bs-chev" aria-hidden="true"></i></button>' +
         '<div class="bs-wb"><div class="bs-wbi"><div class="bs-rooms">' + rs.map(function (r) {
-          return '<a href="' + esc(hrefOf(r.k)) + '"' + (active === r.k ? ' class="cur"' : "") + ">" + icon(r.k) + "<span>" + esc(label(r)) + "</span></a>";
+          return '<a href="' + attr(hrefOf(r.k)) + '"' + (active === r.k ? ' class="cur"' : "") + ">" + icon(r.k) + "<span>" + esc(label(r)) + "</span></a>";
         }).join("") + "</div></div></div></div>";
     }).join("");
     var s = els.sheet;
     s.innerHTML = '<div class="bs-grab" id="bsGrab"><span class="bs-grip"></span><h3>' + esc(houseName()) + " · " + esc(seat().label || "") + " · " + n(total, "room") + "</h3></div>" +
-      '<div class="bs-mscroll">' + secs + '<div class="bs-mfoot"><a href="' + esc(hrefOf("__glance")) + '">Birdseye</a><a href="' + esc(hrefOf("__home")) + '">Home</a><button type="button" id="bsSkins">Skins</button>' +
-      (C.brand.store ? '<a href="' + esc(C.brand.store) + '">The store ↗</a>' : "") + "</div></div>";
+      '<div class="bs-mscroll">' + secs + '<div class="bs-mfoot"><a href="' + attr(hrefOf("__glance")) + '">Birdseye</a><a href="' + attr(hrefOf("__home")) + '">Home</a><button type="button" id="bsSkins">Skins</button>' +
+      (C.brand.store ? '<a href="' + attr(C.brand.store) + '">The store ↗</a>' : "") + "</div></div>";
     s.querySelectorAll(".bs-wh").forEach(function (b) {
       b.onclick = function () {
         var box = b.parentNode, was = box.classList.contains("open");
@@ -295,7 +309,7 @@
   }
   function skinPicker() {
     var all = Object.assign({}, SKINS, C.skins || {}), cur = skinKey();
-    function sw(k) { var s = all[k], v = s.v; return '<button type="button" class="bs-skin' + (k === cur ? " on" : "") + '" data-s="' + esc(k) + '" style="background:' + v.paper + ";color:" + v.ink + '"><span class="bs-skp"><i style="background:' + v.card + '"></i><i style="background:' + v.char + '"></i><i style="background:' + v.red + '"></i><i style="background:' + v.gold + '"></i></span><b>' + esc(s.name) + "</b><small>" + esc(s.note) + "</small></button>"; }
+    function sw(k) { var s = all[k], v = s.v; return '<button type="button" class="bs-skin' + (k === cur ? " on" : "") + '" data-s="' + attr(k) + '" style="background:' + v.paper + ";color:" + v.ink + '"><span class="bs-skp"><i style="background:' + v.card + '"></i><i style="background:' + v.char + '"></i><i style="background:' + v.red + '"></i><i style="background:' + v.gold + '"></i></span><b>' + esc(s.name) + "</b><small>" + esc(s.note) + "</small></button>"; }
     var keys = Object.keys(all), light = keys.filter(function (k) { return !all[k].dark; }), dark = keys.filter(function (k) { return all[k].dark; });
     modal("<h3>Skins</h3><p class=\"bs-mut\">" + keys.length + " skins. The ◐ button at the top flips any skin to its twin.</p><h4>Light</h4><div class=\"bs-skins\">" + light.map(sw).join("") + "</div><h4>Dark</h4><div class=\"bs-skins\">" + dark.map(sw).join("") + "</div>", function (box) {
       box.querySelectorAll("[data-s]").forEach(function (b) { b.onclick = function () { BS.setSkin(b.getAttribute("data-s")); toast(all[b.getAttribute("data-s")].name + " — on."); closeModal(); }; });
@@ -305,7 +319,7 @@
   /* the helper — a hidden tab on the right edge; everything still works by hand */
   function paintDrawer() {
     var h = C.helper;
-    els.drawer.innerHTML = '<div class="bs-dh"><img src="' + esc(C.brand.icon) + '" alt=""><div><b>' + esc(h.name) + "</b><span>" + esc(h.role || "Ask in plain words. Nothing happens without your tap.") + '</span></div><button type="button" class="bs-iconbtn" id="bsDX" aria-label="Close the helper">✕</button></div>' +
+    els.drawer.innerHTML = '<div class="bs-dh"><img src="' + attr(C.brand.icon) + '" alt=""><div><b>' + esc(h.name) + "</b><span>" + esc(h.role || "Ask in plain words. Nothing happens without your tap.") + '</span></div><button type="button" class="bs-iconbtn" id="bsDX" aria-label="Close the helper">✕</button></div>' +
       '<div class="bs-dlog" id="bsDLog"><p class="bs-mut">' + esc(h.hello || ("Ask " + h.name + " anything about " + houseName() + ".")) + "</p></div>" +
       '<form class="bs-dform" id="bsDForm"><input id="bsDQ" type="text" placeholder="Ask ' + esc(h.name) + '…" aria-label="Ask ' + esc(h.name) + '"><button type="submit" class="bs-btn bs-a">Ask</button></form>';
     els.drawer.querySelector("#bsDX").onclick = function () { openDrawer(false); };
@@ -316,6 +330,7 @@
       else if (ans && typeof ans === "object" && (ans.stance || ans.text)) html = "<div class=\"bs-ans\"><p>" + esc(ans.stance || ans.text) + "</p></div>";
       else if (typeof ans === "string" && ans) html = "<div class=\"bs-ans\"><p>" + esc(ans) + "</p></div>";
       else html = '<div class="bs-ans"><p>Nothing in the manual answers that yet. Try different words.</p></div>';
+      if (!seesMoney()) html = html.replace(/\$\s?[\d,.]+[kKmM]?/g, "(a money seat sees this)");
       log.innerHTML = '<div class="bs-q">' + esc(q) + "</div>" + html + log.innerHTML; els.drawer.querySelector("#bsDQ").value = "";
     };
   }
@@ -325,37 +340,39 @@
   }
 
   function footer() {
-    return '<div class="bs-foot" role="contentinfo"><a class="bs-co" href="https://aexperiences.studio/"><img src="' + esc(C.brand.aeMark) + '" alt="" width="40" height="40"><span>accelerated experiences</span></a></div>';
+    return '<div class="bs-foot" role="contentinfo"><a class="bs-co" href="https://aexperiences.studio/"><img src="' + attr(C.brand.aeMark) + '" alt="" width="40" height="40"><span>accelerated experiences</span></a></div>';
   }
 
   /* ---------------- the floor plan (home) ---------------- */
   function todayDate() { var d = call(C.today); return d instanceof Date && !isNaN(d) ? d : new Date(); }
   function cell(k, i) {
     var r = room(k), f = figure(k);
-    return '<a class="bs-cell" href="' + esc(hrefOf(k)) + '" data-k="' + esc(k) + '"><span class="bs-no">' + (i + 1) + "</span>" + icon(k, "bs-ci") +
+    return '<a class="bs-cell" href="' + attr(hrefOf(k)) + '" data-k="' + attr(k) + '"><span class="bs-no">' + (i + 1) + "</span>" + icon(k, "bs-ci") +
       "<b>" + esc(label(r)) + "</b><i>" + (f[0] !== "" ? "<em>" + esc(f[0]) + "</em> " : "") + esc(f[1]) + "</i></a>";
   }
   function planHTML() {
     var pr = planRooms(), s = seat();
     var cen = call(C.center, seat()) || {};
-    var center = '<a class="bs-cell bs-cc" href="' + esc(hrefOf("__glance")) + '" data-k="__glance"><img class="bs-lock" src="' + esc(C.brand.icon) + '" alt=""><b>Birdseye</b>' +
+    if (!moneyOK(cen.big) || !moneyOK(cen.line)) cen = { big: "—", line: "" };
+    var center = '<a class="bs-cell bs-cc" href="' + attr(hrefOf("__glance")) + '" data-k="__glance"><img class="bs-lock" src="' + attr(C.brand.icon) + '" alt=""><b>Birdseye</b>' +
       '<span class="bs-big' + (cen.tone ? " " + esc(cen.tone) : "") + '">' + esc(bad(cen.big) ? "—" : (cen.big == null ? "" : cen.big)) + "</span><i>" + esc(bad(cen.line) ? "" : (cen.line || "")) + "</i></a>";
     var cells = pr.big.map(cell); cells.splice(4, 0, center);
-    var prime = s.prime ? '<a class="bs-act" id="bsAct" href="' + esc(s.prime.href || (s.prime.room ? hrefOf(s.prime.room) : "#")) + '">' + (s.prime.room ? icon(s.prime.room, "bs-ai") : "") + "<span>" + esc(s.prime.label) + "</span><em>›</em></a>" : "";
+    var prime = s.prime ? '<a class="bs-act" id="bsAct" href="' + attr(s.prime.href || (s.prime.room ? hrefOf(s.prime.room) : "#")) + '">' + (s.prime.room ? icon(s.prime.room, "bs-ai") : "") + "<span>" + esc(s.prime.label) + "</span><em>›</em></a>" : "";
     var html = '<div class="bs-home" id="bsHome"><div class="bs-eyetop"><div class="bs-kick">' + esc(houseName()) + " · " + esc(s.label || "") + '</div><div class="bs-dl">' +
       todayDate().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" }) + "</div></div>" + prime +
       '<div class="bs-plan" id="bsPlan">' + cells.join("") + "</div>";
     if (pr.small.length) html += '<div class="bs-small" id="bsSmall">' + pr.small.map(function (k) {
       var r = room(k), f = figure(k);
-      return '<a class="bs-cell bs-sm" href="' + esc(hrefOf(k)) + '" data-k="' + esc(k) + '">' + icon(k, "bs-ci") + "<span><b>" + esc(label(r)) + "</b><i>" + esc((f[0] !== "" ? f[0] + " " : "") + f[1]) + "</i></span></a>";
+      return '<a class="bs-cell bs-sm" href="' + attr(hrefOf(k)) + '" data-k="' + attr(k) + '">' + icon(k, "bs-ci") + "<span><b>" + esc(label(r)) + "</b><i>" + esc((f[0] !== "" ? f[0] + " " : "") + f[1]) + "</i></span></a>";
     }).join("") + "</div>";
-    var al = (call(C.needs, seat()) || []).filter(function (a) { return a && !bad(a[1]) && (!a[2] || canOpen(a[2])); });
+    var al = (call(C.needs, seat()) || []).filter(function (a) { return a && !bad(a[1]) && moneyOK(a[1]) && (!a[2] || canOpen(a[2])); });
     html += '<section class="bs-card bs-needs"><h3>Needs you <span class="bs-pill ' + (al.length ? "warn" : "ok") + '">' + (al.length ? n(al.length, "item") : "clear") + "</span></h3>" +
       (al.length ? al.slice(0, 6).map(needRow).join("") : '<p class="bs-mut">Nothing on your screen needs you.</p>') + "</section>";
-    if (C.legacyBelow) html += '<h2 class="bs-legacyh">' + esc(C.legacyBelow) + "</h2>";
+    /* the legacy dashboard: a closed toggle for a money / all-rooms seat; nothing at all for anyone else */
+    if (legacyOK()) html += '<button type="button" class="bs-legt" id="bsLegT" aria-expanded="false"><span>' + esc(C.legacyBelow || "The full Command Center") + '</span><i class="bs-chev" aria-hidden="true"></i></button>';
     return html + "</div>";
   }
-  function needRow(x) { var can = x[2] && canOpen(x[2]); return "<" + (can ? 'a href="' + esc(hrefOf(x[2])) + '"' : "div") + ' class="bs-need"><span class="bs-pill ' + esc(x[0] || "warn") + '">' + (x[0] === "bad" ? "Now" : "Soon") + "</span><span>" + esc(x[1]) + "</span>" + (can ? "<b>›</b>" : "") + "</" + (can ? "a" : "div") + ">"; }
+  function needRow(x) { var can = x[2] && canOpen(x[2]); return "<" + (can ? 'a href="' + attr(hrefOf(x[2])) + '"' : "div") + ' class="bs-need"><span class="bs-pill ' + esc(x[0] || "warn") + '">' + (x[0] === "bad" ? "Now" : "Soon") + "</span><span>" + esc(x[1]) + "</span>" + (can ? "<b>›</b>" : "") + "</" + (can ? "a" : "div") + ">"; }
 
   /* ---------------- the raised Birdseye: at a glance ---------------- */
   function sec(t, body, right) { return '<section class="bs-gl"><h2>' + esc(t) + (right ? "<span>" + esc(right) + "</span>" : "") + "</h2>" + body + "</section>"; }
@@ -363,19 +380,19 @@
     var s = seat(), g = call(C.glance, s) || {};
     var html = '<div class="bs-page" id="bsGlance"><div class="bs-ghead"><div class="bs-kick">' + esc(houseName()) + ' · Birdseye</div><h1>Everything at a glance</h1>' +
       '<p class="bs-dl">' + esc(todayDate().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" }).toUpperCase() + " · " + String(s.label || "").toUpperCase()) + "</p>" +
-      (g.lede && !bad(g.lede) ? '<p class="bs-lede">' + esc(g.lede) + "</p>" : "") + "</div>";
-    var nums = (g.numbers || []).filter(function (x) { return x && !bad(x[0]) && (!x[3] || seesMoney()); }).slice(0, 4);
-    if (nums.length) html += '<div class="bs-gnums">' + nums.map(function (x) { var can = x[2] && canOpen(x[2]); return "<" + (can ? 'a href="' + esc(hrefOf(x[2])) + '"' : "div") + "><b>" + esc(typeof x[0] === "number" ? x[0].toLocaleString("en-US") : x[0]) + "</b><span>" + esc(x[1]) + "</span></" + (can ? "a" : "div") + ">"; }).join("") + "</div>";
+      (g.lede && !bad(g.lede) && moneyOK(g.lede) ? '<p class="bs-lede">' + esc(g.lede) + "</p>" : "") + "</div>";
+    var nums = (g.numbers || []).filter(function (x) { return x && !bad(x[0]) && (!x[3] || seesMoney()) && moneyOK(x[0]) && moneyOK(x[1]); }).slice(0, 4);
+    if (nums.length) html += '<div class="bs-gnums">' + nums.map(function (x) { var can = x[2] && canOpen(x[2]); return "<" + (can ? 'a href="' + attr(hrefOf(x[2])) + '"' : "div") + "><b>" + esc(typeof x[0] === "number" ? x[0].toLocaleString("en-US") : x[0]) + "</b><span>" + esc(x[1]) + "</span></" + (can ? "a" : "div") + ">"; }).join("") + "</div>";
     (g.sections || []).forEach(function (sc) {
-      var rows = (sc.rows || []).filter(function (r) { return r && !bad(r[2]) && (!r[3] || seesMoney()); });  /* shown to every seat; linked only where the seat can open the room */
+      var rows = (sc.rows || []).filter(function (r) { return r && !bad(r[2]) && (!r[3] || seesMoney()) && moneyOK(r[1]) && moneyOK(r[2]); });  /* shown to every seat; linked only where the seat can open the room */
       if (!rows.length && !sc.empty) return;
-      html += sec(sc.title, rows.length ? rows.map(function (r) { var can = r[0] && canOpen(r[0]); return "<" + (can ? 'a href="' + esc(hrefOf(r[0])) + '"' : "div") + ' class="bs-go">' + (r[0] ? icon(r[0], "bs-gri") : "") + "<b>" + esc(r[1]) + "</b><span>" + esc(r[2]) + "</span>" + (can ? "<em>›</em>" : "") + "</" + (can ? "a" : "div") + ">"; }).join("") : '<p class="bs-mut">' + esc(sc.empty) + "</p>", bad(sc.right) ? "" : sc.right);
+      html += sec(sc.title, rows.length ? rows.map(function (r) { var can = r[0] && canOpen(r[0]); return "<" + (can ? 'a href="' + attr(hrefOf(r[0])) + '"' : "div") + ' class="bs-go">' + (r[0] ? icon(r[0], "bs-gri") : "") + "<b>" + esc(r[1]) + "</b><span>" + esc(r[2]) + "</span>" + (can ? "<em>›</em>" : "") + "</" + (can ? "a" : "div") + ">"; }).join("") : '<p class="bs-mut">' + esc(sc.empty) + "</p>", bad(sc.right) ? "" : sc.right);
     });
-    var al = (call(C.needs, seat()) || []).filter(function (a) { return a && !bad(a[1]) && (!a[2] || canOpen(a[2])); });
+    var al = (call(C.needs, seat()) || []).filter(function (a) { return a && !bad(a[1]) && moneyOK(a[1]) && (!a[2] || canOpen(a[2])); });
     html += sec("What needs you", al.length ? al.slice(0, 10).map(needRow).join("") : '<p class="bs-mut">Nothing needs you right now.</p>', al.length ? n(al.length, "item") : "clear");
     var mine = (C.rooms || []).filter(function (r) { return canOpen(r.k) && !r.hidden; });
-    html += sec("Every room", mine.map(function (r) { var f = figure(r.k); return '<a class="bs-rr" href="' + esc(hrefOf(r.k)) + '">' + icon(r.k) + "<b>" + esc(label(r)) + "</b><span>" + esc(f[1]) + '</span><em class="v">' + esc(f[0]) + "</em></a>"; }).join(""), n(mine.length, "room"));
-    var bus = (call(C.bus) || []).filter(function (b) { return b && !bad(b[1]); }).slice(0, 25);
+    html += sec("Every room", mine.map(function (r) { var f = figure(r.k); return '<a class="bs-rr" href="' + attr(hrefOf(r.k)) + '">' + icon(r.k) + "<b>" + esc(label(r)) + "</b><span>" + esc(f[1]) + '</span><em class="v">' + esc(f[0]) + "</em></a>"; }).join(""), n(mine.length, "room"));
+    var bus = (call(C.bus) || []).filter(function (b) { return b && !bad(b[1]) && moneyOK(b[1]); }).slice(0, 25);
     html += sec("The bus — what happened", bus.length ? bus.map(function (b) { return '<div class="bs-bus"><time>' + esc(bad(b[0]) ? "" : b[0]) + "</time><span>" + esc(b[1]) + "</span></div>"; }).join("") : '<p class="bs-mut">Quiet so far.</p>');
     return html + "</div>";
   }
@@ -383,7 +400,7 @@
   /* ---------------- the room kicker: the house name on every room ---------------- */
   function kickHTML() {
     var r = room(active), w = r && (C.wings || []).filter(function (x) { return x.k === r.wing; })[0];
-    var note = r && !canOpen(r.k) ? '<div class="bs-card bs-notseat">This room is not on the ' + esc(seat().label) + ' seat. Switch “Viewing as” at the top to see it as the person who works it.</div>' : "";
+    var note = r && !canOpen(r.k) ? '<div class="bs-card bs-notseat">This room is not on the ' + esc(seat().label) + ' seat, so it stays closed. Switch “Viewing as” at the top to see it as the person who works it.</div>' : "";
     return '<div class="bs-roomkick" id="bsKick"><span class="bs-hk">' + esc(houseName()) + "</span>" + (w ? " · " + esc(w.name) : "") + (r ? " · " + esc(r.label) : "") + "</div>" + note;
   }
 
@@ -392,9 +409,16 @@
     if (!mountEl) return;
     var old = mountEl.querySelectorAll(":scope > .bs-view"); old.forEach(function (x) { x.remove(); });
     mountEl.classList.toggle("bs-glancing", mode === "glance");
+    /* privilege gate on the legacy page underneath: closed toggle (money seats, home), shut (anyone else on home,
+       or a room outside the seat's rooms reached by a typed address) */
+    var gate = mode === "home" ? (legacyOK() ? "toggle" : "shut") : (mode === "room" && active && !canOpen(active)) ? "shut" : "";
+    mountEl.classList.toggle("bs-lg", !!gate); mountEl.classList.toggle("bs-lno", gate === "shut"); mountEl.classList.remove("bs-lopen");
     var v = document.createElement("div"); v.className = "bs-view bs-view-" + mode;
     v.innerHTML = mode === "home" ? planHTML() : mode === "glance" ? glanceHTML() : kickHTML();
     mountEl.insertBefore(v, mountEl.firstChild);
+    var lt = v.querySelector("#bsLegT");
+    if (lt) lt.onclick = function () { var on = !mountEl.classList.contains("bs-lopen"); mountEl.classList.toggle("bs-lopen", on); lt.setAttribute("aria-expanded", on ? "true" : "false");
+      if (on) setTimeout(function () { if (lt.scrollIntoView) lt.scrollIntoView({ block: "start", behavior: "smooth" }); }, 60); };
     var title = mode === "home" ? "Birdseye" : mode === "glance" ? "At a glance" : ((room(active) || {}).label || "");
     document.title = title + " · " + houseName() + " · " + C.brand.name;
   }
@@ -428,11 +452,31 @@
     var r = (C.rooms || []).filter(function (x) { return x.href && x.href.split("/").pop() === href; })[0];
     return r ? r.k : null;
   };
+  /* AMERICAN SPELLING on every visible string a legacy page draws (house rule): text nodes only — never an href,
+     a value, a data key, an <option> with no value attribute (its text is its value) or anything typed into a field */
+  var SKIPTAG = /^(SCRIPT|STYLE|TEXTAREA|CODE|PRE|INPUT|NOSCRIPT|TEMPLATE)$/;
+  function skipEl(e) { return SKIPTAG.test(e.nodeName) || e.isContentEditable || (e.nodeName === "OPTION" && !e.hasAttribute("value")); }
+  function americanize(root) {
+    if (!root) return;
+    if (root.nodeType === 3) { var p0 = root.parentNode; if (p0 && p0.nodeType === 1 && !skipEl(p0)) { var t0 = root.nodeValue, u0 = us(t0); if (u0 !== t0) root.nodeValue = u0; } return; }
+    if (root.nodeType !== 1 || skipEl(root)) return;
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: function (nd) { for (var e = nd.parentNode; e && e !== root.parentNode; e = e.parentNode) { if (e.nodeType === 1 && skipEl(e)) return NodeFilter.FILTER_REJECT; } return NodeFilter.FILTER_ACCEPT; } }), nd, t, u;
+    while ((nd = w.nextNode())) { t = nd.nodeValue; if (!/[a-z]/i.test(t)) continue; u = us(t); if (u !== t) nd.nodeValue = u; }
+  }
+  BS.americanize = americanize;
+  var spellObs = null;
+  function watchSpelling() {
+    if (spellObs || C.americanize === false || !window.MutationObserver) return;
+    americanize(document.body); if (document.title) document.title = us(document.title);
+    spellObs = new MutationObserver(function (ms) { ms.forEach(function (m) { if (m.type === "characterData") americanize(m.target); else for (var i = 0; i < m.addedNodes.length; i++) americanize(m.addedNodes[i]); }); });
+    spellObs.observe(document.body, { childList: true, subtree: true, characterData: true });
+  }
   BS.adopt = function (o) {
     o = o || {}; C = o.config || window.BIRDSEYE; if (!C) return;
     var file = o.active || (location.pathname.split("/").pop() || "index.html");
     var home = file === C.home;
     BS.replaceLegacy(C.legacyChrome || [".sidebar", ".topbar", ".mobilebar", ".nav-backdrop", ".ae-credit", ".hamburger", ".manualbtn", ".man-fab", ".as-fab", "#aeCooFab", ".skinpill"]);
     BS.mount({ config: C, mode: home ? (location.hash === "#glance" ? "glance" : "home") : "room", active: home ? null : BS.roomForHref(file), mountEl: o.content, footerHost: o.content && o.content.parentNode });
+    watchSpelling();
   };
 })();
