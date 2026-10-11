@@ -20,6 +20,14 @@
 (function () {
   "use strict";
   var BS = window.BirdseyeShell = { version: "1.0" };
+  /* THE APP-SHELL SCROLL (Oct 11 2026): on phones and tablets the document never scrolls — the page lives in one
+     scroller and the dock, sheet, drawer, toasts and modals stay outside it, so an installed home-screen app's
+     bounce can never drag the dock. One shared file beside this one: ae-app-scroll.js. */
+  (function () {
+    if (window.AEAppScroll || document.getElementById("aeAppScrollJs")) return;
+    var me = document.currentScript, src = me && me.src ? me.src.replace(/[^\/]*(\?.*)?$/, "") + "ae-app-scroll.js" : "birdseye/ae-app-scroll.js";
+    var s = document.createElement("script"); s.id = "aeAppScrollJs"; s.src = src; (document.head || document.documentElement).appendChild(s);
+  })();
   var C = null, E = null, built = false, mode = "home", active = null, mountEl = null;
   var els = {};
 
