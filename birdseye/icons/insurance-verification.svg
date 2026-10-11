@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="100%" height="100%">
+<defs>
+<linearGradient id="tile" x1="0" y1="0" x2="0.35" y2="1">
+<stop offset="0%" stop-color="#8a9ac0"/><stop offset="46%" stop-color="#3a4476"/><stop offset="100%" stop-color="#0c1024"/></linearGradient>
+<linearGradient id="glare" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#fff" stop-opacity=".20"/><stop offset="44%" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="pap" x1="0" y1="0" x2="0.3" y2="1">
+<stop offset="0%" stop-color="#fdfbf4"/><stop offset="100%" stop-color="#e8e2d2"/></linearGradient>
+<linearGradient id="gild" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#ffe08a"/><stop offset="100%" stop-color="#b98d1c"/></linearGradient>
+<linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#e3e8ec"/><stop offset="100%" stop-color="#8e99a2"/></linearGradient>
+<linearGradient id="wood" x1="0" y1="0" x2="0.2" y2="1">
+<stop offset="0%" stop-color="#a9743f"/><stop offset="100%" stop-color="#5d3c1c"/></linearGradient>
+<linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="screen" x1="0" y1="0" x2="0.3" y2="1">
+<stop offset="0%" stop-color="#1d3a4e"/><stop offset="100%" stop-color="#0a1824"/></linearGradient>
+<linearGradient id="accent" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#e0a83a"/><stop offset="100%" stop-color="#9a6f14"/></linearGradient>
+</defs>
+<rect width="1024" height="1024" fill="url(#tile)"/><rect width="1024" height="1024" fill="url(#glare)"/>
+<circle cx="512" cy="400" r="246" fill="#e0a83a" opacity="0.040"/><path d="M527 250 L512 100 L497 250 Z" fill="#e0a83a" opacity=".18"/><path d="M595 275 L620 213 L579 266 Z" fill="#e0a83a" opacity=".18"/><path d="M649 338 L772 250 L634 312 Z" fill="#e0a83a" opacity=".18"/><path d="M662 409 L728 400 L662 391 Z" fill="#e0a83a" opacity=".18"/><path d="M634 488 L772 550 L649 462 Z" fill="#e0a83a" opacity=".18"/><path d="M579 534 L620 587 L595 525 Z" fill="#e0a83a" opacity=".18"/><path d="M497 550 L512 700 L527 550 Z" fill="#e0a83a" opacity=".18"/><path d="M429 525 L404 587 L445 534 Z" fill="#e0a83a" opacity=".18"/><path d="M375 462 L252 550 L390 488 Z" fill="#e0a83a" opacity=".18"/><path d="M362 391 L296 400 L362 409 Z" fill="#e0a83a" opacity=".18"/><path d="M390 312 L252 250 L375 338 Z" fill="#e0a83a" opacity=".18"/><path d="M445 266 L404 213 L429 275 Z" fill="#e0a83a" opacity=".18"/>
+<path d="M0 806 L1024 806 L1024 1024 L0 1024 Z" fill="#0c1024" opacity=".72"/><rect x="0" y="806" width="1024" height="5" fill="#fff" opacity=".10"/>
+<ellipse cx="512" cy="884" rx="340" ry="32" fill="#000" opacity=".45"/>
+<g transform="translate(150 790)"><rect x="0" y="0" width="724" height="26" rx="8" fill="url(#wood)"/><rect x="0" y="0" width="724" height="7" fill="#fff" opacity=".16"/><rect x="26" y="26" width="20" height="0" fill="#3c2612"/><rect x="678" y="26" width="20" height="0" fill="#3c2612"/></g><g transform="translate(344 318)"><rect x="-14" y="-14" width="358" height="256" rx="20" fill="#2a2520"/><rect x="0" y="0" width="330" height="228" rx="10" fill="url(#screen)"/><rect x="22" y="22" width="286" height="44" rx="8" fill="#223a4c"/><rect x="22" y="84" width="200" height="22" rx="6" fill="#3f6f8a"/><rect x="22" y="120" width="250" height="22" rx="6" fill="#3f6f8a"/><rect x="22" y="156" width="170" height="22" rx="6" fill="#3f6f8a"/><path d="M232 162 L256 186 L300 134" stroke="#6fd3a0" stroke-width="13" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="0" y="0" width="330" height="228" rx="10" fill="url(#glass)"/><rect x="119" y="242" width="92" height="34" fill="#2a2520"/><rect x="55" y="272" width="220" height="20" rx="10" fill="#1d1a16"/></g><g transform="translate(256 638) rotate(-8)"><rect width="300" height="186" rx="14" fill="#f2ecdd"/><rect width="300" height="46" rx="14" fill="#2f4f8a"/><rect x="22" y="14" width="130" height="16" rx="8" fill="#fff" opacity=".85"/><rect x="22" y="76" width="180" height="14" rx="7" fill="#b5ab94"/><rect x="22" y="110" width="130" height="14" rx="7" fill="#b5ab94"/><rect x="212" y="110" width="66" height="44" rx="8" fill="#c8c0a8"/></g></svg>
