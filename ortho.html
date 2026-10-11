@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ortho · Smiley OS V3.5</title>
-<meta name="description" content="Contracts, not procedures — recognised monthly in arrears against a lifetime maximum.">
+<meta name="description" content="Contracts, not procedures — recognized monthly in arrears against a lifetime maximum.">
 <link rel="canonical" href="https://www.aexperiences.com/apps/smiley/ortho.html">
 <meta property="og:title" content="Ortho · Smiley OS">
-<meta property="og:description" content="Contracts, not procedures — recognised monthly in arrears against a lifetime maximum.">
+<meta property="og:description" content="Contracts, not procedures — recognized monthly in arrears against a lifetime maximum.">
 <meta property="og:image" content="https://www.aexperiences.com/Smiley_OS.png">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
@@ -29,11 +29,11 @@
   content.appendChild(S.card('<h2>The ledger</h2><div class="stats">'+
     S.stat("Active cases", t.active, "of "+t.cases+" on the books")+
     S.stat("Contracted", S.money(t.contracted), "total signed value")+
-    S.stat("Recognised", S.money(t.recognised), "earned so far, straight-line")+
+    S.stat("Recognized", S.money(t.recognised), "earned so far, straight-line")+
     S.stat("Unearned", S.money(t.unearned), "treatment still owed", "watch")+
     S.stat("Collected", S.money(t.collected), "actually banked")+
     S.stat("Behind", S.money(t.behind), "owed against work already done", t.behind>0?"bad":"good")+
-    '</div><p class="sub">Contracted is not revenue and never was. The number that pays your staff is <b>recognised</b>, and the number that tells you who to call is <b>behind</b>.</p>'));
+    '</div><p class="sub">Contracted is not revenue and never was. The number that pays your staff is <b>recognized</b>, and the number that tells you who to call is <b>behind</b>.</p>'));
 
   function draw(){
     var host=document.getElementById("cases"); host.innerHTML="";
@@ -48,7 +48,7 @@
         '<div class="mut">month '+m+' of '+o.months+'</div>'+
         '<div class="moneysplit">'+
           '<div class="ms"><b>'+S.money(o.contract)+'</b><span>Contract</span></div>'+
-          '<div class="ms"><b>'+S.money(S.orthoRecognised(o))+'</b><span>Recognised</span></div>'+
+          '<div class="ms"><b>'+S.money(S.orthoRecognised(o))+'</b><span>Recognized</span></div>'+
           '<div class="ms"><b>'+S.money(S.orthoUnearned(o))+'</b><span>Unearned</span></div>'+
           '<div class="ms"><b>'+S.money(o.paid)+'</b><span>Collected</span></div>'+
           '<div class="ms'+(S.orthoBehind(o)>0?" neg":"")+'"><b>'+S.money(S.orthoBehind(o))+'</b><span>Behind</span></div>'+

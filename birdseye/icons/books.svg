@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="100%" height="100%">
+<defs>
+<linearGradient id="tile" x1="0" y1="0" x2="0.35" y2="1">
+<stop offset="0%" stop-color="#6e86a8"/><stop offset="46%" stop-color="#33456a"/><stop offset="100%" stop-color="#0c1327"/></linearGradient>
+<linearGradient id="glare" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#fff" stop-opacity=".20"/><stop offset="44%" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="cloth" x1="0" y1="0" x2="0.4" y2="1">
+<stop offset="0%" stop-color="#9a3f33"/><stop offset="52%" stop-color="#6e2a21"/><stop offset="100%" stop-color="#3a1410"/></linearGradient>
+<linearGradient id="pageL" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0%" stop-color="#d8d3c2"/><stop offset="26%" stop-color="#fbf8ee"/><stop offset="100%" stop-color="#efe9da"/></linearGradient>
+<linearGradient id="pageR" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0%" stop-color="#efe9da"/><stop offset="74%" stop-color="#fbf8ee"/><stop offset="100%" stop-color="#d8d3c2"/></linearGradient>
+<linearGradient id="gild" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#ffe08a"/><stop offset="100%" stop-color="#b98d1c"/></linearGradient>
+</defs>
+<rect width="1024" height="1024" fill="url(#tile)"/><rect width="1024" height="1024" fill="url(#glare)"/>
+<ellipse cx="512" cy="878" rx="376" ry="34" fill="#060a16" opacity=".55"/>
+
+<!-- covers -->
+<path d="M60 300 L500 246 L500 800 L60 846 Z" fill="url(#cloth)"/>
+<path d="M964 300 L524 246 L524 800 L964 846 Z" fill="url(#cloth)"/>
+<!-- gilt page block edges -->
+<path d="M76 322 L500 272 L500 300 L76 350 Z" fill="url(#gild)"/>
+<path d="M948 322 L524 272 L524 300 L948 350 Z" fill="url(#gild)"/>
+
+<!-- pages -->
+<path d="M86 336 L500 288 L500 782 L86 826 Z" fill="url(#pageL)"/>
+<path d="M938 336 L524 288 L524 782 L938 826 Z" fill="url(#pageR)"/>
+<path d="M500 288 L524 288 L524 782 L500 782 Z" fill="#c9c2ad"/>
+
+<!-- ruled ledger columns, left page -->
+<g stroke="#b9b3a0" stroke-width="5" opacity=".85">
+  <path d="M128 402 L470 362"/><path d="M128 452 L470 412"/><path d="M128 502 L470 462"/>
+  <path d="M128 552 L470 512"/><path d="M128 602 L470 562"/><path d="M128 652 L470 612"/>
+  <path d="M128 702 L470 662"/>
+</g>
+<g stroke="#c05a4a" stroke-width="5" opacity=".7">
+  <path d="M330 372 L330 716"/><path d="M400 366 L400 710"/>
+</g>
+<g fill="#46525e">
+  <rect x="130" y="368" width="150" height="16" rx="8" transform="rotate(-6.6 130 368)"/>
+</g>
+<g fill="#8b95a0" opacity=".9">
+  <rect x="140" y="424" width="118" height="12" rx="6" transform="rotate(-6.6 140 424)"/>
+  <rect x="140" y="474" width="140" height="12" rx="6" transform="rotate(-6.6 140 474)"/>
+  <rect x="140" y="524" width="106" height="12" rx="6" transform="rotate(-6.6 140 524)"/>
+  <rect x="140" y="574" width="132" height="12" rx="6" transform="rotate(-6.6 140 574)"/>
+  <rect x="140" y="624" width="112" height="12" rx="6" transform="rotate(-6.6 140 624)"/>
+</g>
+
+<!-- the margin line, right page -->
+<g transform="rotate(6.6 730 540)">
+  <g stroke="#cfc9b8" stroke-width="5">
+    <path d="M584 700 L900 700"/><path d="M584 620 L900 620"/><path d="M584 540 L900 540"/><path d="M584 460 L900 460"/>
+  </g>
+  <path d="M584 700 L584 380" stroke="#8f8a79" stroke-width="7"/>
+  <path d="M584 700 L900 700" stroke="#8f8a79" stroke-width="7"/>
+  <path d="M596 664 L676 604 L756 622 L836 486 L892 434" fill="none" stroke="#2f9d5b" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="892" cy="434" r="22" fill="#2f9d5b"/>
+  <g fill="#e4832b">
+    <rect x="616" y="666" width="34" height="34" rx="6"/>
+    <rect x="676" y="640" width="34" height="60" rx="6"/>
+    <rect x="736" y="612" width="34" height="88" rx="6"/>
+    <rect x="796" y="566" width="34" height="134" rx="6"/>
+  </g>
+  <rect x="584" y="400" width="180" height="18" rx="9" fill="#46525e"/>
+</g>
+
+<!-- ribbon -->
+<path d="M512 288 L512 900 L556 862 L600 900 L600 288 Z" fill="#e0a83a"/>
+<path d="M512 288 L512 900 L534 882 L534 288 Z" fill="#f6d68a" opacity=".7"/>
+</svg>

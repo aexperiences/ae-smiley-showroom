@@ -78,26 +78,24 @@
   var T=window.Smiley;
   var c=T.mount({active:"connect.html",crumb:"Connect"});
   var API=window.SLEEVES_API+'/api/connect'; var NS="smiley";
-  var TEAM=[
-    {slug:"mira",name:"Mira Halloway",role:"Owner / Artist",init:"MH"},
-    {slug:"dez",name:"Dez Okonkwo",role:"Artist · blackwork",init:"DO"},
-    {slug:"saoirse",name:"Saoirse Bell",role:"Artist · fine line",init:"SB"},
-    {slug:"ruben",name:"Ruben Castellanos",role:"Artist · black & grey",init:"RC"},
-    {slug:"wren",name:"Wren Ashby",role:"Apprentice",init:"WA"}
-  ];
+  /* The team comes from the practice's own book. */
+  var TEAM=(T.db().team||[]).map(function(m){
+    var nm=m.name.replace(/,.*$/,""), parts=nm.replace(/^Dr\.\s*/,"").split(/\s+/);
+    return {slug:m.id,name:m.name,role:m.role,init:((parts[0]||"")[0]||"")+((parts[parts.length-1]||"")[0]||"")};
+  });
   var CHANNELS=[
-    {ch:"floor",name:"#floor",desc:"Whatever the shop needs to see."},
-    {ch:"queue",name:"#queue",desc:"New requests, quotes, deposits."},
-    {ch:"flash",name:"#flash",desc:"New flash going up, what has moved."},
-    {ch:"clean",name:"#clean",desc:"Sterility, sharps, health-department readiness."}
+    {ch:"floor",name:"#front-desk",desc:"Arrivals, running late, who is in which chair."},
+    {ch:"queue",name:"#schedule",desc:"Open hygiene chairs, short-notice fills, broken appointments."},
+    {ch:"flash",name:"#lab",desc:"Lab cases out, due back, seat dates."},
+    {ch:"clean",name:"#sterilization",desc:"Spore tests, OSHA, the autoclave log."}
   ];
   var ROOMS=[
-    {key:"standup",label:"Morning standup",sub:"The day’s book, walk-ins, no-shows."},
-    {key:"consult",label:"Consultation",sub:"A client, a reference pile, and the artist."},
-    {key:"critique",label:"Portfolio critique",sub:"Healed photos and technique review."}
+    {key:"standup",label:"Morning huddle",sub:"Today's chairs, unscheduled treatment, coverage flags."},
+    {key:"consult",label:"Treatment consult",sub:"A patient, the treatment plan and the dentist."},
+    {key:"critique",label:"Case review",sub:"Radiographs and charting with the clinical team."}
   ];
-  function me(){ try{ return JSON.parse(sessionStorage.getItem("smiley_connect_me")); }catch(e){ return null; } }
-  function setMe(p){ sessionStorage.setItem("smiley_connect_me",JSON.stringify(p)); }
+  function me(){ try{ return JSON.parse(sessionStorage.getItem("smiley_connect_me_v2")); }catch(e){ return null; } }
+  function setMe(p){ sessionStorage.setItem("smiley_connect_me_v2",JSON.stringify(p)); }
   function api(payload){ return fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(Object.assign({ns:NS},payload))}).then(function(r){return r.json();}).catch(function(){return {ok:false,reason:"offline"};}); }
   var KV_OK=null;
 
@@ -115,7 +113,7 @@
       '</div>'+
       '<div>'+
         '<div class="card"><h2 style="margin:0 0 4px">Meeting rooms</h2><div class="card-sub" style="margin-bottom:8px">Native video, up to the whole firm. A room with people in it shows in “Live now” above.</div><div id="cnRooms"></div></div>'+
-        '<div class="card" style="margin-top:18px"><h2 style="margin:0 0 4px">Outreach — bring in a guest</h2><div class="card-sub" style="margin-bottom:8px">A client, the county reviewer, a contractor: name them, send the link, they join from a plain browser. No app, no account.</div>'+
+        '<div class="card" style="margin-top:18px"><h2 style="margin:0 0 4px">Outreach — bring in a guest</h2><div class="card-sub" style="margin-bottom:8px">A patient, a specialist, a lab tech, a contractor: name them, send the link, they join from a plain browser. No app, no account.</div>'+
         '<div style="display:flex;gap:9px;flex-wrap:wrap"><input id="cnGuest" placeholder="Guest or meeting name…" style="flex:1;min-width:170px;border:1px solid var(--line);border-radius:9px;padding:10px 12px;font:inherit;background:var(--card)">'+
         '<button class="cn-btn amber" id="cnInvite">Create invite link</button></div>'+
         '<div id="cnInviteOut" style="margin-top:10px;font-size:12.5px;color:var(--mut);word-break:break-all"></div></div>'+

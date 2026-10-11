@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+<defs>
+<linearGradient id="gtm" x1="0" y1="0" x2="0.65" y2="1">
+<stop offset="0%" stop-color="#3fd6c6"/><stop offset="55%" stop-color="#2f5fc4"/><stop offset="100%" stop-color="#0a5f5f"/></linearGradient>
+<radialGradient id="gltm" cx="32%" cy="6%" r="80%">
+<stop offset="0%" stop-color="#ffffff" stop-opacity=".26"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+
+</defs>
+<rect x="0" y="0" width="1024" height="1024" fill="url(#gtm)"/>
+<g id="art" transform="translate(-85.07,-167.28) scale(2.3232)">
+
+
+<g transform="translate(140,322) scale(0.9)">
+  <path d="M-16.0 4 C-42.0 -8 -58.0 -36 -54.0 -64"
+        stroke="#e2673f" stroke-width="22" fill="none" stroke-linecap="round"/>
+  <path d="M16.0 4 C42.0 -8 58.0 -36 54.0 -64"
+        stroke="#e2673f" stroke-width="22" fill="none" stroke-linecap="round"/>
+  <path d="M-21 88 L-21 8 C-21 -12 -9 -23 0 -23 C9 -23 21 -12 21 8 L21 88
+           C21 97 13 101 0 101 C-13 101 -21 97 -21 88 Z" fill="#e2673f"/>
+  <circle cx="0" cy="-58" r="31" fill="#e2673f"/>
+</g>
+<g transform="translate(374,322) scale(0.9)">
+  <path d="M-16.0 4 C-42.0 -8 -58.0 -36 -54.0 -64"
+        stroke="#dda12e" stroke-width="22" fill="none" stroke-linecap="round"/>
+  <path d="M16.0 4 C42.0 -8 58.0 -36 54.0 -64"
+        stroke="#dda12e" stroke-width="22" fill="none" stroke-linecap="round"/>
+  <path d="M-21 88 L-21 8 C-21 -12 -9 -23 0 -23 C9 -23 21 -12 21 8 L21 88
+           C21 97 13 101 0 101 C-13 101 -21 97 -21 88 Z" fill="#dda12e"/>
+  <circle cx="0" cy="-58" r="31" fill="#dda12e"/>
+</g>
+<g transform="translate(212,296) scale(0.95)">
+  <path d="M-12.8 4 C-33.6 -8 -46.400000000000006 -36 -43.2 -64"
+        stroke="#2a2622" stroke-width="22" fill="none" stroke-linecap="round"/>
+  <path d="M12.8 4 C33.6 -8 46.400000000000006 -36 43.2 -64"
+        stroke="#2a2622" stroke-width="22" fill="none" stroke-linecap="round"/>
+  <path d="M-21 88 L-21 8 C-21 -12 -9 -23 0 -23 C9 -23 21 -12 21 8 L21 88
+           C21 97 13 101 0 101 C-13 101 -21 97 -21 88 Z" fill="#2a2622"/>
+  <circle cx="0" cy="-58" r="31" fill="#2a2622"/>
+</g>
+<g transform="translate(300,268) scale(1.08)">
+  <path d="M-13.76 4 C-36.12 -8 -49.88 -36 -46.44 -64"
+        stroke="#faf6ee" stroke-width="22" fill="none" stroke-linecap="round"/>
+  <path d="M13.76 4 C36.12 -8 49.88 -36 46.44 -64"
+        stroke="#faf6ee" stroke-width="22" fill="none" stroke-linecap="round"/>
+  <path d="M-21 88 L-21 8 C-21 -12 -9 -23 0 -23 C9 -23 21 -12 21 8 L21 88
+           C21 97 13 101 0 101 C-13 101 -21 97 -21 88 Z" fill="#faf6ee"/>
+  <circle cx="0" cy="-58" r="31" fill="#faf6ee"/>
+</g>
+
+</g>
+<rect x="0" y="0" width="1024" height="1024" fill="url(#gltm)"/>
+
+</svg>

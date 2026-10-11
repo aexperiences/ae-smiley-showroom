@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="100%" height="100%">
+<defs>
+<linearGradient id="tile" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0%" stop-color="#7a7a7a"/><stop offset="46%" stop-color="#333333"/><stop offset="100%" stop-color="#0d0d0d"/></linearGradient>
+<linearGradient id="glare" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff" stop-opacity=".22"/><stop offset="44%" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<radialGradient id="halo" cx="0.5" cy="0.46" r="0.42"><stop offset="0%" stop-color="#ffe2a6" stop-opacity=".30"/><stop offset="100%" stop-color="#ffe2a6" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="1024" height="1024" fill="url(#tile)"/>
+<rect width="1024" height="1024" fill="url(#halo)"/>
+<g fill="#e0a83a" opacity=".13"><polygon points="512,470 463,-88 561,-88"/><polygon points="512,470 690,112 733,136"/><polygon points="512,470 971,149 1020,233"/><polygon points="512,470 911,446 911,494"/><polygon points="512,470 1020,707 971,791"/><polygon points="512,470 733,804 690,828"/><polygon points="512,470 561,1028 463,1028"/><polygon points="512,470 334,828 291,804"/><polygon points="512,470 53,791 4,707"/><polygon points="512,470 113,494 113,446"/><polygon points="512,470 4,233 53,149"/><polygon points="512,470 291,136 334,112"/></g>
+<rect width="1024" height="1024" fill="url(#glare)"/>
+<path d="M0 820 L1024 820 L1024 1024 L0 1024Z" fill="#000" opacity=".22"/><ellipse cx="512" cy="905" rx="360" ry="26" fill="#000" opacity=".45"/>
+<path d="M250 860 L380 300 L500 860Z" fill="#ffd400"/><path d="M380 300 L500 860 L540 860 L410 300Z" fill="#d9a400"/>
+<rect x="266" y="840" width="250" height="24" rx="10" fill="#d9a400"/>
+<circle cx="372" cy="520" r="20" fill="#141210"/><path d="M372 545 L352 640 L330 700 M352 640 L400 600 M352 600 L320 580 M358 640 L390 700" stroke="#141210" stroke-width="16" fill="none" stroke-linecap="round"/>
+<path d="M300 730 q40 -20 90 0" stroke="#141210" stroke-width="10" fill="none"/>
+<rect x="580" y="560" width="300" height="230" rx="30" fill="#fffaf0"/><rect x="680" y="520" width="100" height="56" rx="18" fill="none" stroke="#fffaf0" stroke-width="18"/>
+<rect x="702" y="600" width="56" height="150" rx="8" fill="#c8102e"/><rect x="655" y="647" width="150" height="56" rx="8" fill="#c8102e"/>
+</svg>

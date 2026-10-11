@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="100%" height="100%">
+<defs>
+<linearGradient id="tile" x1="0" y1="0" x2="0.35" y2="1">
+<stop offset="0%" stop-color="#63a6b2"/><stop offset="46%" stop-color="#2f7d8c"/><stop offset="100%" stop-color="#0f3039"/></linearGradient>
+<linearGradient id="glare" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#fff" stop-opacity=".20"/><stop offset="44%" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="booth" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0%" stop-color="#fbf9f2"/><stop offset="52%" stop-color="#e4e0d2"/><stop offset="82%" stop-color="#b6b2a3"/><stop offset="100%" stop-color="#8d8a7d"/></linearGradient>
+<linearGradient id="roof" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#6d7a83"/><stop offset="100%" stop-color="#2c363d"/></linearGradient>
+<linearGradient id="win" x1="0" y1="0" x2="0.4" y2="1">
+<stop offset="0%" stop-color="#ffd79a"/><stop offset="55%" stop-color="#e8a94e"/><stop offset="100%" stop-color="#b9762a"/></linearGradient>
+<linearGradient id="steel" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0%" stop-color="#98a3ac"/><stop offset="55%" stop-color="#5b666f"/><stop offset="100%" stop-color="#2c343a"/></linearGradient>
+<linearGradient id="armw" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#dde2e0"/></linearGradient>
+<clipPath id="armclip"><rect x="596" y="548" width="404" height="92" rx="30"/></clipPath>
+<radialGradient id="spill" cx="0.5" cy="0.5" r="0.5">
+<stop offset="0%" stop-color="#ffc477" stop-opacity=".55"/><stop offset="100%" stop-color="#ffc477" stop-opacity="0"/></radialGradient>
+<linearGradient id="cap" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#c9d0cd"/></linearGradient>
+</defs>
+
+<rect width="1024" height="1024" fill="url(#tile)"/><rect width="1024" height="1024" fill="url(#glare)"/>
+<ellipse cx="512" cy="898" rx="368" ry="30" fill="#08222a" opacity=".5"/>
+
+<!-- flag -->
+<rect x="292" y="66" width="16" height="164" rx="8" fill="#c9d2d6"/>
+<path d="M308 84 Q356 60 404 84 Q452 108 500 84 L500 168 Q452 192 404 168 Q356 144 308 168 Z" fill="#e4832b"/>
+<path d="M308 84 Q356 60 404 84 Q452 108 500 84 L500 116 Q452 140 404 116 Q356 92 308 116 Z" fill="#f0a057"/>
+
+<!-- booth -->
+<rect x="160" y="268" width="308" height="606" rx="18" fill="url(#booth)"/>
+<rect x="160" y="268" width="18" height="606" fill="#ffffff" opacity=".55"/>
+<rect x="120" y="212" width="388" height="66" rx="20" fill="url(#roof)"/>
+<rect x="120" y="212" width="388" height="16" rx="8" fill="#8e9aa2"/>
+
+<!-- window -->
+<ellipse cx="314" cy="462" rx="240" ry="230" fill="url(#spill)"/>
+<rect x="196" y="322" width="236" height="278" rx="14" fill="#39434a"/>
+<rect x="210" y="336" width="208" height="250" rx="8" fill="url(#win)"/>
+<!-- what is lit inside: the board of checks -->
+<rect x="242" y="368" width="146" height="182" rx="10" fill="#f6f3ec"/>
+<rect x="266" y="392" width="98" height="14" rx="7" fill="#3d4a52"/>
+<g fill="#b3bec4">
+  <rect x="292" y="428" width="72" height="12" rx="6"/>
+  <rect x="292" y="468" width="72" height="12" rx="6"/>
+  <rect x="292" y="508" width="52" height="12" rx="6"/>
+</g>
+<g fill="#2f9d5b">
+  <rect x="266" y="422" width="20" height="20" rx="6"/>
+  <rect x="266" y="462" width="20" height="20" rx="6"/>
+  <rect x="266" y="502" width="20" height="20" rx="6"/>
+</g>
+<rect x="210" y="336" width="208" height="60" rx="8" fill="#fff" opacity=".22"/>
+
+<!-- pass badge on the booth face -->
+<circle cx="314" cy="720" r="76" fill="#2f9d5b"/>
+<circle cx="314" cy="720" r="76" fill="none" stroke="#1d6c3e" stroke-width="8"/>
+<path d="M272 722 L304 754 L360 690" fill="none" stroke="#fff" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+
+<!-- gate post + arm -->
+<rect x="556" y="596" width="84" height="278" rx="18" fill="url(#steel)"/>
+<rect x="556" y="596" width="14" height="278" fill="#aab4bb" opacity=".7"/>
+<g transform="rotate(-32 598 594)">
+  <rect x="596" y="548" width="404" height="92" rx="30" fill="url(#armw)"/>
+  <g clip-path="url(#armclip)">
+    <g fill="#e4832b">
+      <path d="M640 548 L716 548 L660 640 L584 640 Z"/>
+      <path d="M768 548 L844 548 L788 640 L712 640 Z"/>
+      <path d="M896 548 L972 548 L916 640 L840 640 Z"/>
+    </g>
+  </g>
+  <rect x="596" y="548" width="404" height="92" rx="30" fill="#0d2830" opacity=".18"/>
+  <rect x="596" y="548" width="404" height="92" rx="30" fill="none" stroke="#1b2b31" stroke-width="8" opacity=".3"/>
+  <rect x="608" y="558" width="380" height="18" rx="9" fill="#fff" opacity=".5"/>
+  <rect x="946" y="548" width="54" height="92" rx="27" fill="url(#cap)"/>
+</g>
+<g transform="rotate(-32 598 594)"><rect x="500" y="566" width="104" height="56" rx="20" fill="#39434a"/>
+<rect x="500" y="566" width="104" height="14" rx="7" fill="#59656d"/></g>
+<circle cx="598" cy="594" r="44" fill="#2c343a"/><circle cx="598" cy="594" r="44" fill="none" stroke="#151c21" stroke-width="6"/>
+<circle cx="598" cy="594" r="17" fill="#aab4bb"/>
+
+<!-- arm cast shadow -->
+<ellipse cx="770" cy="878" rx="150" ry="14" fill="#08222a" opacity=".35"/>
+<!-- curb -->
+<rect x="96" y="856" width="832" height="46" rx="16" fill="#33403f"/>
+<rect x="96" y="856" width="832" height="12" rx="6" fill="#4c5c5b"/>
+</svg>

@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Team & Licences · Smiley OS V3.5</title>
+<title>Team & Licenses · Smiley OS V3.5</title>
 <meta name="description" content="Who can legally be scheduled today, and how many CE hours everyone still needs.">
 <link rel="canonical" href="https://www.aexperiences.com/apps/smiley/team.html">
-<meta property="og:title" content="Team & Licences · Smiley OS">
+<meta property="og:title" content="Team & Licenses · Smiley OS">
 <meta property="og:description" content="Who can legally be scheduled today, and how many CE hours everyone still needs.">
 <meta property="og:image" content="https://www.aexperiences.com/Smiley_OS.png">
 <meta property="og:type" content="website">
@@ -22,9 +22,9 @@
 <script>
 (function(){
   var S = window.Smiley;
-  var content = S.mount({ active:"team.html", crumb:"Team & licences" });
+  var content = S.mount({ active:"team.html", crumb:"Team & licenses" });
 
-  content.appendChild(S.page("Team & licences","An expired licence is not a reminder. That person legally cannot work, so they come off the schedule."));
+  content.appendChild(S.page("Team & licenses","An expired license is not a reminder. That person legally cannot work, so they come off the schedule."));
   var cw=S.cannotWork(), ls=S.licenceState();
   if(cw.length) content.appendChild(S.card('<h2>Cannot be scheduled today</h2><div class="blockers"><b>Take these people off the book until it is renewed:</b><ul><li>'+
     cw.map(function(l){ return S.esc(l.member.name)+' — '+S.esc(l.label)+' expired '+Math.abs(l.days)+' days ago'; }).join('</li><li>')+'</li></ul></div>','urgent'));
@@ -37,8 +37,8 @@
           return S.tag(l.label+" · "+(l.state==="expired"?"expired":S.dayLabel(l.expires)),b); }).join(" "):'<span class="mut">—</span>')+
         '</td></tr>'; }).join("")+'</tbody></table></div>'));
 
-  content.appendChild(S.card('<h2>Continuing education</h2><p class="sub">Hours logged against what the licence renewal will ask for.</p>'+
-    '<div class="tablewrap"><table><thead><tr><th>Name</th><th>Licence</th><th class="right">Hours logged</th><th class="right">Needed</th><th>Progress</th></tr></thead><tbody>'+
+  content.appendChild(S.card('<h2>Continuing education</h2><p class="sub">Hours logged against what the license renewal will ask for.</p>'+
+    '<div class="tablewrap"><table><thead><tr><th>Name</th><th>License</th><th class="right">Hours logged</th><th class="right">Needed</th><th>Progress</th></tr></thead><tbody>'+
     ls.filter(function(l){ return l.ceNeeded>0; }).map(function(l){
       var have=l.ceHave||0, need=l.ceNeeded;
       return '<tr><td>'+S.esc(l.member.name)+'</td><td class="mut">'+S.esc(l.label)+'</td>'+

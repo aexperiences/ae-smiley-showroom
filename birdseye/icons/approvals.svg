@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="100%" height="100%">
+<defs>
+<linearGradient id="gapp" x1="0" y1="0" x2="0.35" y2="1">
+<stop offset="0%" stop-color="#a8b48c"/><stop offset="48%" stop-color="#5f7040"/><stop offset="100%" stop-color="#26301a"/></linearGradient>
+<linearGradient id="glare" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#fff" stop-opacity=".22"/><stop offset="42%" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="pap" x1="0" y1="0" x2="0.3" y2="1">
+<stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#e7ebe2"/></linearGradient>
+<linearGradient id="stmp" x1="0" y1="0" x2="0.3" y2="1">
+<stop offset="0%" stop-color="#4d5a65"/><stop offset="100%" stop-color="#232c34"/></linearGradient>
+</defs>
+<rect width="1024" height="1024" fill="url(#gapp)"/><rect width="1024" height="1024" fill="url(#glare)"/>
+<ellipse cx="512" cy="898" rx="350" ry="26" fill="#131a0c" opacity=".5"/>
+<rect x="96" y="700" width="832" height="60" rx="16" fill="#5a4630"/>
+<rect x="96" y="700" width="832" height="14" rx="7" fill="#7a6142"/>
+<g transform="rotate(4 700 560)">
+<rect x="600" y="420" width="250" height="300" rx="12" fill="#dfe4d8"/>
+</g>
+<g transform="rotate(-3 440 520)">
+<rect x="260" y="320" width="380" height="400" rx="14" fill="url(#pap)"/>
+<rect x="292" y="356" width="220" height="20" rx="10" fill="#3a4750"/>
+<rect x="292" y="396" width="300" height="12" rx="6" fill="#aeb8a4"/>
+<rect x="292" y="422" width="280" height="12" rx="6" fill="#aeb8a4"/>
+<rect x="292" y="448" width="300" height="12" rx="6" fill="#aeb8a4"/>
+<rect x="292" y="474" width="180" height="12" rx="6" fill="#aeb8a4"/>
+<g transform="rotate(-9 450 590)">
+<rect x="316" y="548" width="270" height="82" rx="14" fill="none" stroke="#39a85a" stroke-width="9"/>
+<path d="M348 590 L376 618 L432 556" fill="none" stroke="#39a85a" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="458" y="578" width="104" height="20" rx="10" fill="#39a85a"/>
+</g>
+<rect x="292" y="662" width="140" height="12" rx="6" fill="#c9d1bf"/>
+</g>
+<g transform="rotate(8 730 480)">
+<rect x="656" y="300" width="150 " height="60" rx="24" fill="#8b6a44"/>
+<rect x="700" y="352" width="62" height="120" rx="18" fill="#a5814f"/>
+<path d="M640 470 Q640 448 668 448 L794 448 Q822 448 822 470 L822 520 L640 520 Z" fill="url(#stmp)"/>
+<rect x="628" y="516" width="206" height="34" rx="10" fill="#e4832b"/>
+</g>
+</svg>

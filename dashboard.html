@@ -56,8 +56,8 @@
 
   var stop=[];
   if(k.verifyFlags) stop.push('<b>'+k.verifyFlags+' booked '+(k.verifyFlags===1?'visit':'visits')+'</b> will be denied or surprise the patient — <a href="insurance.html">Insurance Check</a>');
-  if(k.cannotWork) stop.push('<b>'+k.cannotWork+' '+(k.cannotWork===1?'person':'people')+'</b> cannot legally be scheduled today — <a href="team.html">Team &amp; Licences</a>');
-  if(k.complianceOverdue) stop.push('<b>'+k.complianceOverdue+'</b> compliance '+(k.complianceOverdue===1?'item is':'items are')+' overdue — <a href="sterile.html">Sterilisation &amp; OSHA</a>');
+  if(k.cannotWork) stop.push('<b>'+k.cannotWork+' '+(k.cannotWork===1?'person':'people')+'</b> cannot legally be scheduled today — <a href="team.html">Team &amp; Licenses</a>');
+  if(k.complianceOverdue) stop.push('<b>'+k.complianceOverdue+'</b> compliance '+(k.complianceOverdue===1?'item is':'items are')+' overdue — <a href="sterile.html">Sterilization &amp; OSHA</a>');
   if(stop.length) content.appendChild(S.card('<h2>Before anything else</h2><div class="blockers"><b>These stop work, they do not just annoy you.</b><ul><li>'+stop.join('</li><li>')+'</li></ul></div>','urgent'));
 
   if(k.ortho){
@@ -65,7 +65,7 @@
     content.appendChild(S.card('<h2>Ortho contracts</h2><p class="sub">A signed case is not production. It earns monthly, in arrears, across the treatment term.</p><div class="stats">'+
       S.stat("Active cases", o.active, "of "+o.cases+" on the books")+
       S.stat("Contracted", S.money(o.contracted), "total signed value")+
-      S.stat("Recognised", S.money(o.recognised), "actually earned so far")+
+      S.stat("Recognized", S.money(o.recognised), "actually earned so far")+
       S.stat("Unearned", S.money(o.unearned), "treatment still owed to patients", "watch")+
       S.stat("Behind on payments", S.money(o.behind), "against treatment already given", o.behind>0?"bad":"good")+
       '</div><p class="sub"><a href="ortho.html">Open the ortho ledger →</a></p>'));

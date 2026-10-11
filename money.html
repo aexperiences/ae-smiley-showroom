@@ -46,7 +46,7 @@
     S.stat("Hygiene production", S.pct(S.hygieneShare(wk,"completed")), "benchmark "+S.BENCH.hygieneShare.v+"% (30–33%)", S.hygieneShare(wk,"completed")>=30?"good":"watch")+
     S.stat("Broken appointments", S.brokenAppointments(wk).length, S.money(S.brokenCost(wk))+" of production", S.brokenAppointments(wk).length?"watch":"good")+
     '</div>'+S.srcNote(S.BENCH.hygieneShare.src)+
-    '<p class="sub">A cancelled appointment normally just vanishes from the book. Here it keeps its production value, so you can see what the week actually cost.</p>'));
+    '<p class="sub">A canceled appointment normally just vanishes from the book. Here it keeps its production value, so you can see what the week actually cost.</p>'));
 
   content.appendChild(S.card('<h2>Fee schedule</h2><p class="sub">Real CDT codes. Change a fee here and every estimate, treatment plan and claim in the system moves with it.</p>'+
     '<div class="tablewrap"><table><thead><tr><th>Code</th><th>Plain English</th><th>Category</th><th class="right">Fee</th><th>Limits</th></tr></thead><tbody>'+

@@ -100,7 +100,7 @@
   function needsDoctor(cd){ return DOCTOR_ONLY.indexOf(codeCat(cd))>=0; }
 
   var COMPLIANCE = [
-    {k:"spore",   label:"Autoclave spore test",       cadence:"Weekly",     penalty:"State board inspection finding; sterilisation log is the first thing pulled."},
+    {k:"spore",   label:"Autoclave spore test",       cadence:"Weekly",     penalty:"State board inspection finding; sterilization log is the first thing pulled."},
     {k:"osha",    label:"OSHA bloodborne pathogens",  cadence:"Annual",     penalty:"OSHA citation and fine — this one carries real money."},
     {k:"hipaa",   label:"HIPAA training + risk assessment", cadence:"Annual", penalty:"OCR penalty; the risk assessment is what they ask for first."},
     {k:"xray",    label:"Radiography equipment inspection", cadence:"Every 2 years", penalty:"State radiation control; machine can be red-tagged."},
@@ -109,13 +109,13 @@
   ];
 
   var LICENCES = [
-    {k:"dds", label:"DDS licence",            ceHours:30, ceYears:2},
-    {k:"rdh", label:"RDH licence",            ceHours:24, ceYears:2},
+    {k:"dds", label:"DDS license",            ceHours:30, ceYears:2},
+    {k:"rdh", label:"RDH license",            ceHours:24, ceYears:2},
     {k:"da",  label:"Dental assistant — x-ray cert", ceHours:8, ceYears:2},
     {k:"cpr", label:"CPR / BLS",              ceHours:0,  ceYears:2}
   ];
 
-  /* Benchmarks. SOURCED, and labelled with the source on screen — never invented.
+  /* Benchmarks. SOURCED, and labeled with the source on screen — never invented.
      A practice will compare itself to these, so a made-up number here becomes a
      made-up business decision downstream. */
   var BENCH = {
@@ -128,7 +128,7 @@
   };
 
   var REPLACES = ["The recall list living in one person's head","Insurance verification by phone, one patient at a time",
-    "A whiteboard of unscheduled treatment","Paper sterilisation logs in a binder",
+    "A whiteboard of unscheduled treatment","Paper sterilization logs in a binder",
     "Chasing the patient portion after the EOB arrives","Spreadsheet for provider production"];
 
   /* ----------------------------------------------------------------- SEED --
@@ -224,7 +224,7 @@
      delivered over 18 to 30 months, against a LIFETIME maximum the plan pays in
      instalments. Booking the whole contract as production on the day it is signed
      is how a practice reads a record month and then cannot make payroll. So the
-     contract sits in its own ledger and recognises monthly, in arrears. */
+     contract sits in its own ledger and recognizes monthly, in arrears. */
   var ORTHO_CDT = [
     {c:"D8660", n:"Pre-ortho visit",              fee:145,  cat:"Ortho"},
     {c:"D8080", n:"Full braces — adolescent",     fee:5800, cat:"Ortho", contract:true, months:24},
@@ -544,7 +544,7 @@
       var a=ageOf(p);
       if(a!=null && a>k.ageMax) blockers.push("Age: this plan covers "+k.n.toLowerCase()+" to age "+k.ageMax+"; patient is "+a+".");
     }
-    if(plan.waitMajor && k.cat==="Major") notes.push("This plan has a "+plan.waitMajor+"-month wait on major work — confirm the enrolment date.");
+    if(plan.waitMajor && k.cat==="Major") notes.push("This plan has a "+plan.waitMajor+"-month wait on major work — confirm the enrollment date.");
     if(plan.downgrades && k.downgradeTo)
       notes.push("Downgrade: the plan pays at the "+code(k.downgradeTo).n.toLowerCase()+" rate. The patient owes the difference and should be told before the appointment.");
     if(plan.annualMax!=null){
@@ -656,7 +656,7 @@
 
   /* ------------------------------------------------ ORTHO CONTRACT LEDGER --
      The whole reason ortho lives in its own ledger. A signed contract is NOT
-     revenue. It is recognised straight-line over the treatment term, in arrears,
+     revenue. It is recognized straight-line over the treatment term, in arrears,
      and the plan's share arrives as an initial payment plus monthly instalments
      against a LIFETIME cap — not the annual maximum the rest of the practice
      lives under. */
@@ -683,7 +683,7 @@
   }
   function orthoIssues(o){
     var out=[], p=ptById(o.pt);
-    if(monthsElapsed(o) > o.months) out.push("Past the contracted term by "+(monthsElapsed(o)-o.months)+" months — the contract stopped recognising but the chair time has not stopped.");
+    if(monthsElapsed(o) > o.months) out.push("Past the contracted term by "+(monthsElapsed(o)-o.months)+" months — the contract stopped recognizing but the chair time has not stopped.");
     if(orthoBehind(o) > 400) out.push("Behind by "+money(orthoBehind(o))+" against treatment already delivered.");
     if(p){
       var b=orthoBenefit(p.plan), a=ageOf(p);
@@ -812,7 +812,7 @@
     var r=d.compliance.filter(function(x){return x.k===k;})[0];
     if(r){ r.last=iso(TODAY); r.by=by||null; } else d.compliance.push({k:k,last:iso(TODAY),by:by||null}); }); }
 
-  /* Licences and CE. An expired licence is not a reminder — that person legally
+  /* Licenses and CE. An expired license is not a reminder — that person legally
      cannot work, so they come off the schedule. */
   function licenceState(){
     var out=[];
@@ -895,7 +895,7 @@
     + "the opportunity to read this document in full. I may request a paper copy at no charge.";
   var DOC_TEMPLATES = [
     {id:"consent-tx", name:"Treatment consent", who:"Patient",
-     body:"I authorise {{PRACTICE}} to perform the treatment explained to me, including {{PROC}}. The risks, benefits and alternatives — including the option of no treatment — have been explained and I have had my questions answered."},
+     body:"I authorize {{PRACTICE}} to perform the treatment explained to me, including {{PROC}}. The risks, benefits and alternatives — including the option of no treatment — have been explained and I have had my questions answered."},
     {id:"financial", name:"Financial agreement", who:"Patient / guarantor",
      body:"I understand that my dental benefit is a contract between me and my plan, not between the plan and {{PRACTICE}}. Any estimate given is an estimate only. I am responsible for the balance the plan does not pay, including amounts denied for frequency, annual maximum or downgrade."},
     {id:"hipaa-ack", name:"Privacy practices acknowledgement", who:"Patient",
@@ -950,8 +950,8 @@
     claims:    {name:"Claims & aging",           mo:79, build:640},
     money:     {name:"Production & collection",  mo:79, build:640},
     ortho:     {name:"Ortho module",             mo:99, build:900},
-    sterile:   {name:"Sterilisation & OSHA",     mo:49, build:380},
-    team:      {name:"Team, licences & CE",      mo:49, build:380},
+    sterile:   {name:"Sterilization & OSHA",     mo:49, build:380},
+    team:      {name:"Team, licenses & CE",      mo:49, build:380},
     portal:    {name:"Patient portal",           mo:59, build:460},
     sign:      {name:"e-Sign",                   mo:49, build:380}
   };
@@ -993,7 +993,7 @@
 
   var SEATS = [
     {dept:"Front desk",  head:"Marisa", aes:["Verification","Recall","Collections"]},
-    {dept:"Clinical",    head:"Owen",   aes:["Scheduling","Sterilisation","Charting"]},
+    {dept:"Clinical",    head:"Owen",   aes:["Scheduling","Sterilization","Charting"]},
     {dept:"Billing",     head:"Delia",  aes:["Claims","Appeals","Aging"]},
     {dept:"Growth",      head:"Ivo",    aes:["Case acceptance","Reactivation","Reviews"]}
   ];
@@ -1037,8 +1037,8 @@
       {h:"money.html",     l:"Production & Collection", i:"◭", room:"money"},
       {h:"portal.html",    l:"Patient Portal",    i:"☗", room:"portal"}]},
     {g:"THE PRACTICE", items:[
-      {h:"sterile.html",   l:"Sterilisation & OSHA", i:"⚕", room:"sterile"},
-      {h:"team.html",      l:"Team & Licences",   i:"★", room:"team"},
+      {h:"sterile.html",   l:"Sterilization & OSHA", i:"⚕", room:"sterile"},
+      {h:"team.html",      l:"Team & Licenses",   i:"★", room:"team"},
       {h:"sign.html",      l:"e-Sign",            i:"✍", room:"sign"},
       {h:"org.html",       l:"Agent Org · Bus",   i:"❖"}]}
   ];
@@ -1140,7 +1140,7 @@
       '<button class="linkbtn" id="goLiveBtn">Start with a clean slate</button></div>');
   }
   function footer(){ return el('<div class="ae-credit"><a href="https://www.aexperiences.com/" class="ae-triad" aria-label="AETRIAD Powered - Accelerated Experiences LLC"><img src="/marks/aetriad-powered.png" alt="AETRIAD Powered" style="height:30px;width:auto;vertical-align:middle"></a><br>Smiley OS is a '+
-    'white-label product — your practice name and colours replace ours.</div>'); }
+    'white-label product — your practice name and colors replace ours.</div>'); }
   function toast(m){ var w=document.getElementById("toast-wrap"); if(!w) return;
     var t=el('<div class="toast">'+esc(m)+'</div>'); w.appendChild(t);
     setTimeout(function(){ t.classList.add("out"); setTimeout(function(){ t.remove(); },400); },2600); }
@@ -1201,15 +1201,15 @@
     {t:"Unscheduled treatment is the money already in the building", k:"case acceptance unscheduled treatment",
      b:"Treatment you diagnosed and presented but nobody booked. Most practices never total it. Treatment Plans totals it and shows why each one stalled, because 'they said they would call' is not a reason you can work."},
     {t:"Ortho is a contract, not a procedure", k:"ortho orthodontic contract lifetime",
-     b:"A $5,800 case is not $5,800 of production the day it is signed. It recognises straight-line over the treatment term, in arrears. The plan's share comes from a LIFETIME orthodontic maximum paid in instalments, not the annual maximum the rest of the practice lives under. Booking it as production on signing day is how a practice reads a record month and then cannot make payroll."},
+     b:"A $5,800 case is not $5,800 of production the day it is signed. It recognizes straight-line over the treatment term, in arrears. The plan's share comes from a LIFETIME orthodontic maximum paid in instalments, not the annual maximum the rest of the practice lives under. Booking it as production on signing day is how a practice reads a record month and then cannot make payroll."},
     {t:"Turning the ortho module on and off", k:"ortho module switch tier",
      b:"Ortho is a module. It ships switched on in Grandsuite and can be added to any tier. A practice that does not do ortho never sees the room, and a practice that starts doing aligners switches it on without changing systems."},
     {t:"Scope is enforced, not suggested", k:"hygienist scope doctor exam",
      b:"A hygienist cannot diagnose or restore, and a recall visit is not complete until the doctor's exam is recorded. Smiley OS will not let the visit check out without it, because the exam is also billable and it is the most commonly missed charge in the practice."},
-    {t:"Only compliance with a real inspector behind it", k:"osha hipaa sterilisation spore compliance",
+    {t:"Only compliance with a real inspector behind it", k:"osha hipaa sterilization spore compliance",
      b:"Weekly spore testing, annual OSHA bloodborne pathogens, HIPAA training and risk assessment, radiography equipment inspection, the EPA amalgam separator record, and the emergency drug kit. Each one shows what actually happens if it lapses. We left out the things nobody inspects."},
-    {t:"An expired licence removes somebody from the schedule", k:"licence expired CE credentials",
-     b:"Not a reminder — that person legally cannot work. Team & Licences shows who cannot be scheduled today and how many CE hours each person still needs."},
+    {t:"An expired license removes somebody from the schedule", k:"licence expired CE credentials",
+     b:"Not a reminder — that person legally cannot work. Team & Licenses shows who cannot be scheduled today and how many CE hours each person still needs."},
     {t:"Claims aging uses the buckets the industry reads", k:"claims aging AR denial appeal",
      b:"0–30, 31–60, 61–90, 90+. Denials are grouped by reason so you can see whether you have twelve problems or one problem twelve times."},
     {t:"Collection rate is measured against what was collectable", k:"collection rate benchmark",
@@ -1225,9 +1225,9 @@
     {t:"The Approval Desk is the brake", k:"approval ghost mode",
      b:"Anything that spends money, sends to a patient, or changes a fee waits for a named person. Nothing leaves the building on its own."},
     {t:"Broken appointments are costed", k:"broken cancellation no show",
-     b:"A cancelled appointment normally just vanishes from the book. Here it keeps its production value so you can see what the week actually cost you."},
-    {t:"White-label", k:"branding white label logo colours",
-     b:"Your practice name, your colours, your domain. The Accelerated Experiences credit sits quietly in the footer."},
+     b:"A canceled appointment normally just vanishes from the book. Here it keeps its production value so you can see what the week actually cost you."},
+    {t:"White-label", k:"branding white label logo colors",
+     b:"Your practice name, your colors, your domain. The Accelerated Experiences credit sits quietly in the footer."},
     {t:"Three ways to look at the same day", k:"view views switch ledger board line layout look display change appearance theme", c:"The same information, drawn three ways, and you pick which one you want. LEDGER is what loads first: the whole day on one page with nothing hidden, the way a morning report sits on a desk. BOARD hangs the day on a time rail with the money sitting on each piece of work, which is what you want when you are running the day. LINE has no menu at all; you talk to it and it answers, and it is built for a phone in a truck. Switch whenever you like from the menu. It is the same information underneath all three, so nothing moves and nothing is lost when you change, and the view you leave it on is the one that comes back next time you sign in."},
     {t:"The menu, and finding anything fast", k:"menu navigation nav find search where is rooms open go to shortcut keyboard", c:"The Menu button sits at the bottom of the screen next to Hold to talk, and it slides out from the left. Every room in the system is in it, grouped, with a count beside the ones that have something waiting on you. There is a search box at the top: type a job, a client, an invoice number or a room name. On a keyboard, press K from anywhere to open it and escape to close it. The menu is in all three views, including Line."}
   ];
@@ -1238,7 +1238,7 @@
       cleaning:"hygiene",hygienist:"hygiene",prophy:"hygiene",
       insurance:"insurance",claim:"claims",denied:"denial",reject:"denial",
       braces:"ortho",aligner:"ortho",orthodontic:"ortho",
-      sterilize:"sterilisation",autoclave:"sterilisation",spore:"sterilisation",
+      sterilize:"sterilization",autoclave:"sterilization",spore:"sterilization",
       privacy:"hipaa",security:"hipaa",safe:"storage",data:"storage",
       cancel:"broken",noshow:"broken","no-show":"broken",
       recare:"recall",reactivation:"recall",overdue:"recall",
@@ -1400,7 +1400,7 @@
 
     /* --- bars: top rows by value --- */
     /* A label field can legitimately hold a foreign key ("client":"c1") rather than a
-       name, which renders a chart labelled c1, c5, c8 — useless. If the engine exposes
+       name, which renders a chart labeled c1, c5, c8 — useless. If the engine exposes
        its own lookup, resolve through it. */
     function human(v){
       if(typeof v!=='string' || !/^[a-z]{1,3}\d+$/.test(v)) return v;
@@ -1712,3 +1712,24 @@
   else boot();
 
 })(window);
+
+/* BIRDSEYE:BEGIN — added by machines/birdseye/convert.py. Wraps Smiley.mount() so every page gets the
+   Birdseye shell (header, floor plan, dock, More sheet, helper tab). Legacy functions are untouched.
+   To undo: `python3 convert.py undo <repo>` (or delete from BEGIN to END). */
+(function () {
+  var G = window["Smiley"]; if (!G || typeof G.mount !== 'function' || G.__birdseye) return; G.__birdseye = true;
+  var me = document.currentScript, base = me && me.src ? me.src.replace(/[^\/]*(\?.*)?$/, '') : '';
+  var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = base + 'birdseye/birdseye.css'; document.head.appendChild(l);
+  var ready = false, queue = [];
+  function load(src, cb) { var s = document.createElement('script'); s.src = src; s.onload = cb; s.onerror = cb; document.head.appendChild(s); }
+  load(base + 'birdseye/birdseye-shell.js', function () { load(base + 'birdseye.config.js', function () { ready = true; queue.splice(0).forEach(function (f) { f(); }); }); });
+  var legacyMount = G.mount;
+  G.mount = function (o) {
+    document.documentElement.classList.add('bs-on', 'bs-pending');
+    var c = legacyMount.apply(this, arguments);
+    function go() { try { if (window.BirdseyeShell && window.BIRDSEYE) window.BirdseyeShell.adopt({ config: window.BIRDSEYE, active: o && o.active, content: c }); } catch (e) { if (window.console) console.error('[birdseye]', e); } document.documentElement.classList.remove('bs-pending'); }
+    if (ready) go(); else queue.push(go);
+    return c;
+  };
+})();
+/* BIRDSEYE:END */

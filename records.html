@@ -44,31 +44,37 @@
 (function () {
   var T=window.Smiley;
   var c=T.mount({active:"records.html",crumb:"Records"});
-  var KEY="smiley_records_v1";
+  var KEY="smiley_records_v2";
 
-  /* The filing plan — one cabinet per real thing the firm keeps. */
+  /* The filing plan — one cabinet per thing a dental practice is required to keep. */
   var CABINETS=[
-    {k:"waivers",ic:"📄",name:"Waivers & consent",desc:"Signed per-session waivers, health screenings, ID copies."},
-    {k:"licences",ic:"⛨",name:"Licences & certs",desc:"Bloodborne cards, artist registrations, shop licence."},
-    {k:"health",ic:"♥",name:"Health department",desc:"Inspections, spore test results, corrective actions."},
-    {k:"booth",ic:"⚖",name:"Booth agreements",desc:"Artist rental contracts, splits, guest-artist terms."},
-    {k:"flash",ic:"◉",name:"Flash & designs",desc:"Flash sheets, custom drawings, who owns what."},
-    {k:"portfolio",ic:"📷",name:"Portfolio",desc:"Healed photos and releases to publish them."},
-    {k:"insurance",ic:"🛡",name:"Insurance",desc:"Liability policy, COIs, incident reports."},
-    {k:"money",ic:"💵",name:"Money",desc:"Price list, deposits, booth-rent ledger, tax filings."}
+    {k:"consent",ic:"📄",name:"Consent & HIPAA",desc:"Signed treatment consents, HIPAA acknowledgments, financial agreements."},
+    {k:"licences",ic:"⛨",name:"Licenses & CE",desc:"DDS, RDH and assistant licenses, CPR cards, CE certificates."},
+    {k:"safety",ic:"♥",name:"Sterilization & OSHA logs",desc:"Spore tests, OSHA and HIPAA training, X-ray and amalgam separator inspections."},
+    {k:"plans",ic:"🛡",name:"Insurance & EOBs",desc:"Plan contracts, fee schedules, EOBs and claim correspondence."},
+    {k:"lab",ic:"◉",name:"Lab slips",desc:"Crown, bridge and appliance prescriptions and due dates."},
+    {k:"money",ic:"💵",name:"Money",desc:"Fee schedule, deposits, payroll and tax filings."}
   ];
 
-  /* Seeded records — real McArthur artifacts where they exist, honestly labeled. */
-  var SEED=[
-    {cab:"waivers",name:"Signed waiver — Tegan Moreau",kind:"pdf",tag:"sot",who:"Mira Halloway",when:"2026-07-24",note:""},
-    {cab:"licences",name:"Bloodborne cert — S. Bell",kind:"pdf",tag:"",who:"Mira Halloway",when:"2025-06-14",note:"EXPIRED"},
-    {cab:"health",name:"Panhandle Health inspection — pass",kind:"pdf",tag:"sot",who:"Mira Halloway",when:"2026-04-18",note:""},
-    {cab:"health",name:"Autoclave spore test — weekly log",kind:"csv",tag:"sot",who:"Mira Halloway",when:"2026-07-27",note:""},
-    {cab:"booth",name:"Booth rental — Wren Ashby",kind:"pdf",tag:"sot",who:"Mira Halloway",when:"2026-02-03",note:""},
-    {cab:"flash",name:"Flash wall inventory — current",kind:"csv",tag:"sot",who:"Mira Halloway",when:"2026-07-26",note:""},
-    {cab:"insurance",name:"Liability policy — 2026",kind:"pdf",tag:"sot",who:"Mira Halloway",when:"2026-01-08",note:""},
-    {cab:"money",name:"Price list & deposit policy — 2026",kind:"pdf",tag:"sot",who:"Mira Halloway",when:"2026-03-02",note:""}
-  ];
+  /* Seeded records — built from this practice's own book (team licenses, the safety log, claims), never typed in. */
+  var SEED=(function(){
+    var D=T.db(), out=[], today=T.TODAY?new Date(T.TODAY):new Date(), iso=function(d){return d.toISOString().slice(0,10);};
+    var om=(D.team||[]).filter(function(m){return /office manager/i.test(m.role);})[0];
+    var who=om?om.name:"";
+    var LBL={dds:"DDS license",rdh:"RDH license",da:"Assistant registration",cpr:"CPR card"};
+    (D.team||[]).forEach(function(m){ Object.keys(m.lic||{}).forEach(function(k){
+      var exp=m.lic[k], past=exp && exp<iso(today);
+      out.push({cab:"licences",name:(LBL[k]||k.toUpperCase())+" — "+m.name,kind:"pdf",tag:past?"":"sot",who:who,when:exp||"",note:past?"EXPIRED":"Expires "+exp});
+    }); });
+    var CL={}; (T.COMPLIANCE||[]).forEach(function(c){CL[c.k]=c;});
+    (D.compliance||[]).forEach(function(c){ var d=CL[c.k]; if(!d) return;
+      out.push({cab:"safety",name:d.label+" — "+d.cadence.toLowerCase()+" log",kind:"pdf",tag:"sot",who:T.memberName?T.memberName(c.by):who,when:c.last||"",note:""});
+    });
+    (D.claims||[]).slice(0,6).forEach(function(c){
+      out.push({cab:"plans",name:"EOB — "+(T.ptName?T.ptName(c.pt):c.pt)+" · "+(c.codes||[]).join(", "),kind:"pdf",tag:c.status==="Denied"?"":"sot",who:who,when:c.sub||"",note:c.status});
+    });
+    return out;
+  })();
 
   function load(){ try{ var d=JSON.parse(sessionStorage.getItem(KEY)); if(d&&d.length) return d; }catch(e){} return SEED.slice(); }
   function persist(){ try{ sessionStorage.setItem(KEY,JSON.stringify(FILES)); }catch(e){} }
