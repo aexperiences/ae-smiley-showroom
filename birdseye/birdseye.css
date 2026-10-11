@@ -198,6 +198,11 @@ html.bs-on .bs-lg.bs-lopen:not(.bs-lno) > :not(.bs-view){animation:bs-lin .55s v
 /* ---- the helper: a tab on the right edge, a drawer that slides out ---- */
 .bs-tab{position:fixed;right:0;top:46%;z-index:58;width:26px;height:84px;border:1px solid var(--bs-rule);border-right:0;background:var(--bs-red);color:#fff8ee;border-radius:8px 0 0 8px;cursor:pointer;padding:0;transition:width .22s var(--bs-spring)}
 .bs-tab:hover{width:32px}
+/* the helper in the header: shown where the edge tab would sit on the floor plan (phones, narrow laptops) */
+.bs-ask{display:none;appearance:none;border:0;cursor:pointer;flex:none;height:38px;padding:0 12px;border-radius:12px;background:var(--bs-red);color:#fff8ee;font:800 11px/1 var(--bs-sans);letter-spacing:.14em;text-transform:uppercase;box-shadow:0 6px 14px -8px var(--bs-red2)}
+.bs-ask:active{transform:scale(.94)}
+@media (max-width:1000px){ .bs-tab{display:none!important} .bs-ask{display:block} }
+@media (max-width:640px){ .bs-ask{height:34px;padding:0 9px;font-size:10px;letter-spacing:.1em} }
 .bs-tab span{display:block;writing-mode:vertical-rl;transform:rotate(180deg);font:800 11px/1 var(--bs-sans);letter-spacing:.22em;text-transform:uppercase}
 .bs-drawer{position:fixed;top:0;right:0;bottom:0;z-index:62;width:min(400px,92vw);background:var(--bs-card);color:var(--bs-ink);border-left:1px solid var(--bs-rule);box-shadow:-20px 0 50px -20px rgba(0,0,0,.35);transform:translateX(105%);transition:transform .4s var(--bs-spring);display:flex;flex-direction:column;font-family:var(--bs-sans)}
 .bs-drawer.on{transform:none}

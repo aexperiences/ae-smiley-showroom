@@ -193,6 +193,7 @@
       '<div class="bs-brand"><a href="' + attr(hrefOf("__home")) + '" aria-label="Birdseye"><img class="bs-osicon" src="' + attr(b.icon) + '" alt=""></a><span class="bs-names"><a class="bs-sys" href="' + attr(hrefOf("__home")) + '">' + esc(b.name) + '</a><button type="button" class="bs-house" id="bsHouse" aria-label="The business name — tap to change it"></button></span></div>' +
       '<span class="bs-sp"></span>' +
       '<label class="bs-seat"><span class="bs-lbl">Viewing as</span><select id="bsSeat" aria-label="Viewing as"></select></label>' +
+      (C.helper ? '<button type="button" class="bs-ask" id="bsAsk" aria-controls="bsDrawer" aria-label="Ask ' + esc(C.helper.name) + ' — your helper" title="Ask ' + esc(C.helper.name) + '">Ask</button>' : "") +
       '<button type="button" class="bs-iconbtn" id="bsTwin" aria-label="Switch to the dark twin">◐</button>' +
       "</div>";
     document.body.insertBefore(top, document.body.firstChild);
@@ -213,6 +214,8 @@
     top.querySelector("#bsHouse").onclick = function () { BS.renameHouse(); };
     top.querySelector("#bsTwin").onclick = function () { var all = Object.assign({}, SKINS, C.skins || {}), k = all[skinKey()].twin; BS.setSkin(k); toast(all[k].name); };
     if (els.tab) { els.tab.onclick = function () { openDrawer(!els.drawer.classList.contains("on")); }; paintDrawer(); }
+    /* on a phone or a narrow laptop the helper lives in the header (#bsAsk), so the edge tab never sits on the plan */
+    var ask = top.querySelector("#bsAsk"); if (ask && els.drawer) ask.onclick = function () { openDrawer(!els.drawer.classList.contains("on")); };
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape") { openSheet(false); openDrawer(false); closeModal(); }
       if ((e.key === "k" || e.key === "K") && !/input|textarea|select/i.test((e.target || {}).tagName || "")) openSheet(!els.sheet.classList.contains("up"));

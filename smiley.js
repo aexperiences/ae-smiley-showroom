@@ -18,7 +18,33 @@
   /* DATES. new Date("2026-07-27") is UTC midnight, which reads as the 26th anywhere
      behind UTC. A dental schedule off by one day is worse than no schedule. Local
      noon, and format from local parts — never toISOString(). */
-  var TODAY = new Date("2026-07-27T12:00:00");
+  /* TODAY IS THE REAL TODAY. The sample book was written as the week of Sun Jul 26 2026, seen on Monday the 27th (PIN).
+     Its week is laid onto the current week: every literal date moves by the same whole number of weeks (SHIFT), so
+     each job, visit or class keeps its weekday and "due Wednesday", "three days over" and "this week" read as
+     designed; dates computed from TODAY already follow it. A book saved in an earlier week is moved the same way
+     when it loads (rebase), so a returning visitor's story stays intact. Holidays and birthdays stay put.
+     On a Monday the showroom reads exactly as written; on a day the business is closed, today is quiet. */
+  var PIN = new Date("2026-07-27T12:00:00");
+  var TODAY = (function(){ var n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate(), 12, 0, 0); })();
+  function iso10(d){ return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  function weekSunday(d){ var x = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12); x.setDate(x.getDate() - x.getDay()); return x; }
+  function weeksBetween(a, b){ return Math.round((weekSunday(b) - weekSunday(a)) / 604800000); }
+  var SHIFT_DAYS = 7 * weeksBetween(PIN, TODAY);
+  function SHIFT(s, n){ n = n === undefined ? SHIFT_DAYS : n; if (!n || typeof s !== "string") return s;
+    var m = /^(\d{4})-(\d{2})-(\d{2})(.*)$/.exec(s); if (!m) return s;
+    var d = new Date(+m[1], +m[2] - 1, +m[3], 12); d.setDate(d.getDate() + n); return iso10(d) + m[4]; }
+  function rebase(o, n){
+    if (Array.isArray(o)) { for (var i = 0; i < o.length; i++) o[i] = rebase(o[i], n); return o; }
+    if (o && typeof o === "object") { Object.keys(o).forEach(function (k) { if (k !== "holidays" && k !== "dob" && k !== "born") o[k] = rebase(o[k], n); }); return o; }
+    return typeof o === "string" && /^\d{4}-\d{2}-\d{2}(T[\d:.]+Z?)?$/.test(o) ? SHIFT(o, n) : o; }
+  window.AOS_SHIFT = SHIFT;
+  var __read0 = read, __write0 = write, THIS_WEEK = iso10(weekSunday(TODAY));
+  read = function () { var d = __read0(); if (d && d._wk !== THIS_WEEK) {
+      var n = 7 * weeksBetween(d._wk ? new Date(d._wk + "T12:00:00") : PIN, TODAY);
+      if (n) rebase(d, n); d._wk = THIS_WEEK; delete d._day;
+      try { (typeof STORE !== "undefined" ? STORE : localStorage).setItem(KEY, JSON.stringify(d)); } catch (e) {} }
+    return d; };
+  write = function (d) { if (d && !d._wk) d._wk = THIS_WEEK; return __write0.apply(this, arguments); };
   function now(){ return Date.now(); }
   function iso(d){ var m=d.getMonth()+1, day=d.getDate();
     return d.getFullYear()+"-"+(m<10?"0":"")+m+"-"+(day<10?"0":"")+day; }
