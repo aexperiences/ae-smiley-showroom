@@ -6,7 +6,7 @@
   window.BIRDSEYE = {
     id: "smiley", engine: "Smiley", routing: "multipage", home: "dashboard.html",
     trade: "Independent dental practice (general dentistry + hygiene, ortho as a module)",
-    brand: {"name": "Smiley OS", "short": "Smiley", "iconFile": "Smiley_OS.png", "version": "V. Birdseye 1.0", "line": "Mothership", "icon": "birdseye/os-icon.png", "aos": "birdseye/marks/aos-business.png", "aeMark": "birdseye/marks/ae-mark.png", "store": "https://aexperiences.studio/store.html"},
+    brand: {"name": "Smiley OS", "short": "Smiley", "iconFile": "Smiley_OS.png", "version": "V. Birdseye 1.0", "line": "Mothership", "icon": "birdseye/os-icon.png", "aos": "birdseye/marks/aos-business.png", "aeMark": "birdseye/marks/ae-mark.png", "birdseyeIcon": "birdseye/marks/birdseye.png", "store": "https://aexperiences.studio/store.html"},
     houseNoun: "practice",
     houseName: function(E,D,H,S){ return (D.practice.name); },
     today: function(E,D,H,S){ return (E.TODAY); },
