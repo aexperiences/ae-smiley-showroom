@@ -1066,6 +1066,7 @@
       {h:"portal.html",    l:"Patient Portal",    i:"☗", room:"portal"}]},
     {g:"THE PRACTICE", items:[
       {h:"sterile.html",   l:"Sterilization & OSHA", i:"⚕", room:"sterile"},
+      {h:"aimos.html",     l:"Supply Room",       i:"▦", icon:"icons/aimos-supplies.svg"},
       {h:"team.html",      l:"Team & Licenses",   i:"★", room:"team"},
       {h:"sign.html",      l:"e-Sign",            i:"✍", room:"sign"},
       {h:"org.html",       l:"Agent Org · Bus",   i:"❖"}]}

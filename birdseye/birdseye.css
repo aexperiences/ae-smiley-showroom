@@ -44,6 +44,9 @@ html.bs-on #toast-wrap{bottom:96px!important}
 .bs-osicon{width:38px;height:38px;border-radius:10px;flex:none;box-shadow:0 2px 6px rgba(0,0,0,.18)}
 .bs-names{display:flex;flex-direction:column;min-width:0;gap:2px}
 .bs-sys{text-decoration:none;color:var(--bs-ink);font:400 20px/1 var(--bs-serif);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bs-ver{font:600 11px/1.1 var(--bs-sans);letter-spacing:.04em;color:var(--bs-mut,var(--bs-ink2));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* with a version line under the name (Oct 16 2026): on a phone the name may take two lines and the seat picker gives up room, so nothing is cut off */
+@media (max-width:640px){ .bs-top:has(.bs-has-ver) .bs-seat select{max-width:104px} .bs-has-ver .bs-sys{white-space:normal;font-size:16px;line-height:1.05} .bs-has-ver .bs-ver{white-space:normal} }
 .bs-house{appearance:none;background:none;border:0;padding:2px 4px;margin-left:-4px;border-radius:8px;cursor:pointer;text-align:left;min-width:0;flex:0 1 auto;font:700 11px/1.1 var(--bs-sans);letter-spacing:.06em;text-transform:uppercase;color:var(--bs-red);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:42vw}
 .bs-sp{flex:1}
 .bs-seat{display:flex;align-items:center;gap:6px;font:700 11px/1 var(--bs-sans);letter-spacing:.08em;text-transform:uppercase;color:var(--bs-mut)}

@@ -7,7 +7,7 @@
    original Birdseye, the helper tab on the right edge). Depends on nothing else.
 
    Driven entirely by one config object, window.BIRDSEYE (see MACHINE.md for the schema):
-     brand{name, short, icon, aos, aeMark, version, line, store}, id, engine, routing,
+     brand{name, short, icon, aos, aeMark, version, versionLine, line, store},   versionLine (Oct 16 2026, Anthony): the version on its own line UNDER the name, e.g. "Birdseye Founder 1.0" id, engine, routing,
      home, glanceRoute, houseName, houseNoun, wings[], rooms[], seats{}, defaultSeat,
      figures{}, center(), glance(), needs(), bus(), helper{}, skins, defaultSkin, today()
 
@@ -17,6 +17,7 @@
    Nothing here sends, spends, publishes or deletes. A figure comes from the system's own
    data or the cell shows its blurb — never an invented number.
    ============================================================================= */
+/* THE BIRDSEYE ICON (Anthony, Oct 16 2026): the middle square and the dock's Birdseye button wear the Phoenix — his crimson-and-gold bird — in every system; brand.birdseyeIcon overrides. */
 (function () {
   "use strict";
   var BS = window.BirdseyeShell = { version: "1.0" };
@@ -198,7 +199,7 @@
     var top = document.createElement("div"); top.className = "bs-top"; top.id = "bsTop"; top.setAttribute("role", "banner");
     top.innerHTML = '<div class="bs-in">' +
       '<a class="bs-aos" href="' + attr(hrefOf("__home")) + '" aria-label="Birdseye — home"><img src="' + attr(b.aos) + '" alt="Accelerated Operating Systems"></a>' +
-      '<div class="bs-brand"><a href="' + attr(hrefOf("__home")) + '" aria-label="Birdseye"><img class="bs-osicon" src="' + attr(b.icon) + '" alt=""></a><span class="bs-names"><a class="bs-sys" href="' + attr(hrefOf("__home")) + '">' + esc(b.name) + '</a><button type="button" class="bs-house" id="bsHouse" aria-label="The business name — tap to change it"></button></span></div>' +
+      '<div class="bs-brand"><a href="' + attr(hrefOf("__home")) + '" aria-label="Birdseye"><img class="bs-osicon" src="' + attr(b.icon) + '" alt=""></a><span class="bs-names' + (b.versionLine ? ' bs-has-ver' : '') + '"><a class="bs-sys" href="' + attr(hrefOf("__home")) + '">' + esc(b.name) + '</a>' + (b.versionLine ? '<span class="bs-ver">' + esc(b.versionLine) + '</span>' : '') + '<button type="button" class="bs-house" id="bsHouse" aria-label="The business name — tap to change it"></button></span></div>' +
       '<span class="bs-sp"></span>' +
       '<label class="bs-seat"><span class="bs-lbl">Viewing as</span><select id="bsSeat" aria-label="Viewing as"></select></label>' +
       (C.helper ? '<button type="button" class="bs-ask" id="bsAsk" aria-controls="bsDrawer" aria-label="Ask ' + esc(C.helper.name) + ' — your helper" title="Ask ' + esc(C.helper.name) + '">Ask</button>' : "") +
@@ -234,7 +235,7 @@
   function isHomePage() { var f = (location.pathname.split("/").pop() || "index.html"); return f === C.home || (f === "" && C.home === "index.html"); }
 
   function paintHeader() {
-    var hn = document.getElementById("bsHouse"); if (hn) hn.textContent = houseName() + (C.brand.version ? " · " + C.brand.version : "");
+    var hn = document.getElementById("bsHouse"); if (hn) hn.textContent = houseName() + (C.brand.version && !C.brand.versionLine ? " · " + C.brand.version : "");
     var sel = document.getElementById("bsSeat"); if (sel) sel.value = seatKey();
   }
 
@@ -254,7 +255,7 @@
   function paintDock() {
     var two = dockRooms(), d = els.dock;
     d.innerHTML = '<span class="bs-glide" aria-hidden="true"></span>' + dlink("__home") + (two[0] ? dlink(two[0]) : "<span></span>") +
-      '<a href="' + attr(hrefOf("__glance")) + '" data-k="__glance" id="bsPrime" class="bs-prime' + (mode === "glance" ? " on" : "") + '" aria-label="Birdseye — everything at a glance"><img class="bs-pl" src="' + attr(C.brand.icon) + '" alt="' + esc(C.brand.short || C.brand.name) + '"><span>Birdseye</span></a>' +
+      '<a href="' + attr(hrefOf("__glance")) + '" data-k="__glance" id="bsPrime" class="bs-prime' + (mode === "glance" ? " on" : "") + '" aria-label="Birdseye — everything at a glance"><img class="bs-pl" src="' + attr(C.brand.birdseyeIcon || "/icons/rooms/birdseye.png") + '" alt="' + esc(C.brand.short || C.brand.name) + '"><span>Birdseye</span></a>' +
       (two[1] ? dlink(two[1]) : "<span></span>") + '<button type="button" id="bsMore" data-k="__more" aria-haspopup="dialog" aria-controls="bsSheet">' + MORE + "<span>More</span></button>";
     d.querySelector("#bsMore").onclick = function () { openSheet(!els.sheet.classList.contains("up")); };
     var inDock = mode === "home" || ["__glance"].concat(two).indexOf(active) >= 0 || mode === "glance";
@@ -365,7 +366,7 @@
     var pr = planRooms(), s = seat();
     var cen = call(C.center, seat()) || {};
     if (!moneyOK(cen.big) || !moneyOK(cen.line)) cen = { big: "—", line: "" };
-    var center = '<a class="bs-cell bs-cc" href="' + attr(hrefOf("__glance")) + '" data-k="__glance"><img class="bs-lock" src="' + attr(C.brand.icon) + '" alt=""><b>Birdseye</b>' +
+    var center = '<a class="bs-cell bs-cc" href="' + attr(hrefOf("__glance")) + '" data-k="__glance"><img class="bs-lock" src="' + attr(C.brand.birdseyeIcon || "/icons/rooms/birdseye.png") + '" alt=""><b>Birdseye</b>' +
       '<span class="bs-big' + (cen.tone ? " " + esc(cen.tone) : "") + '">' + esc(bad(cen.big) ? "—" : (cen.big == null ? "" : cen.big)) + "</span><i>" + esc(bad(cen.line) ? "" : (cen.line || "")) + "</i></a>";
     var cells = pr.big.map(cell); cells.splice(4, 0, center);
     var prime = s.prime ? '<a class="bs-act" id="bsAct" href="' + attr(s.prime.href || (s.prime.room ? hrefOf(s.prime.room) : "#")) + '">' + (s.prime.room ? icon(s.prime.room, "bs-ai") : "") + "<span>" + esc(s.prime.label) + "</span><em>›</em></a>" : "";
