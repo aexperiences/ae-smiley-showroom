@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="100%" height="100%">
+<defs>
+<linearGradient id="tile" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0%" stop-color="#f2a28a"/><stop offset="46%" stop-color="#b0402e"/><stop offset="100%" stop-color="#330e08"/></linearGradient>
+<linearGradient id="glare" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff" stop-opacity=".22"/><stop offset="44%" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<radialGradient id="halo" cx="0.5" cy="0.46" r="0.42"><stop offset="0%" stop-color="#ffe2a6" stop-opacity=".30"/><stop offset="100%" stop-color="#ffe2a6" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="1024" height="1024" fill="url(#tile)"/>
+<rect width="1024" height="1024" fill="url(#halo)"/>
+<g fill="#e0a83a" opacity=".13"><polygon points="512,470 463,-88 561,-88"/><polygon points="512,470 690,112 733,136"/><polygon points="512,470 971,149 1020,233"/><polygon points="512,470 911,446 911,494"/><polygon points="512,470 1020,707 971,791"/><polygon points="512,470 733,804 690,828"/><polygon points="512,470 561,1028 463,1028"/><polygon points="512,470 334,828 291,804"/><polygon points="512,470 53,791 4,707"/><polygon points="512,470 113,494 113,446"/><polygon points="512,470 4,233 53,149"/><polygon points="512,470 291,136 334,112"/></g>
+<rect width="1024" height="1024" fill="url(#glare)"/>
+<rect x="110" y="700" width="804" height="40" rx="18" fill="#f2c27a"/><rect x="140" y="740" width="744" height="160" rx="12" fill="#8a4d1f"/><ellipse cx="512" cy="930" rx="380" ry="20" fill="#000" opacity=".4"/>
+<g transform="rotate(-6 512 520)">
+ <rect x="280" y="300" width="440" height="420" rx="24" fill="#2b2724"/>
+ <rect x="300" y="300" width="420" height="400" rx="18" fill="#c8102e"/>
+ <rect x="300" y="300" width="40" height="400" fill="#8a0b1f"/>
+ <rect x="380" y="380" width="280" height="40" rx="12" fill="#e0a83a"/>
+ <rect x="380" y="450" width="220" height="20" rx="10" fill="#fffaf0" opacity=".8"/>
+ <circle cx="520" cy="580" r="60" fill="#fffaf0"/><circle cx="500" cy="572" r="18" fill="#f4a820"/><circle cx="540" cy="584" r="18" fill="#f4a820"/>
+ <path d="M640 300 L640 220 L670 244 L700 220 L700 300" fill="#e0a83a"/>
+ <rect x="300" y="696" width="420" height="22" fill="#f4ede2"/>
+</g>
+</svg>

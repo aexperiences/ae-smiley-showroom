@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="100%" height="100%">
+<defs>
+<linearGradient id="tile" x1="0" y1="0" x2="0.35" y2="1">
+<stop offset="0%" stop-color="#a99c86"/><stop offset="46%" stop-color="#6b6151"/><stop offset="100%" stop-color="#221e18"/></linearGradient>
+<linearGradient id="glare" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#fff" stop-opacity=".20"/><stop offset="44%" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="pap" x1="0" y1="0" x2="0.3" y2="1">
+<stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#eceee9"/></linearGradient>
+<linearGradient id="pap2" x1="0" y1="0" x2="0.3" y2="1">
+<stop offset="0%" stop-color="#fbfdfb"/><stop offset="100%" stop-color="#e4ebe4"/></linearGradient>
+</defs>
+<rect width="1024" height="1024" fill="url(#tile)"/><rect width="1024" height="1024" fill="url(#glare)"/>
+<ellipse cx="512" cy="900" rx="352" ry="30" fill="#150f08" opacity=".55"/>
+
+<!-- the spreadsheet, behind -->
+<g transform="rotate(8 660 500)">
+  <rect x="456" y="176" width="472" height="616" rx="20" fill="#241f18" opacity=".45" transform="translate(12 16)"/>
+  <rect x="456" y="176" width="472" height="616" rx="20" fill="url(#pap2)"/>
+  <rect x="456" y="176" width="472" height="76" rx="20" fill="#2f9d5b"/>
+  <rect x="456" y="230" width="472" height="22" fill="#2f9d5b"/>
+  <g stroke="#c6d2c8" stroke-width="5">
+    <path d="M456 322 H928"/><path d="M456 392 H928"/><path d="M456 462 H928"/>
+    <path d="M456 532 H928"/><path d="M456 602 H928"/><path d="M456 672 H928"/><path d="M456 742 H928"/>
+    <path d="M574 252 V792"/><path d="M692 252 V792"/><path d="M810 252 V792"/>
+  </g>
+  <g fill="#8fb79c" opacity=".85">
+    <rect x="486" y="200" width="66" height="26" rx="6" fill="#eafaf0"/>
+    <rect x="604" y="200" width="66" height="26" rx="6" fill="#eafaf0"/>
+    <rect x="722" y="200" width="66" height="26" rx="6" fill="#eafaf0"/>
+    <rect x="840" y="200" width="58" height="26" rx="6" fill="#eafaf0"/>
+  </g>
+  <g fill="#9fb0a5">
+    <rect x="486" y="276" width="62" height="16" rx="8"/><rect x="604" y="276" width="54" height="16" rx="8"/>
+    <rect x="486" y="346" width="70" height="16" rx="8"/><rect x="722" y="346" width="48" height="16" rx="8"/>
+    <rect x="486" y="416" width="54" height="16" rx="8"/><rect x="840" y="416" width="46" height="16" rx="8"/>
+    <rect x="604" y="486" width="62" height="16" rx="8"/><rect x="722" y="556" width="54" height="16" rx="8"/>
+  </g>
+</g>
+
+<!-- the document, in front -->
+<g transform="rotate(-6 400 520)">
+  <rect x="112" y="200" width="470" height="628" rx="22" fill="#241f18" opacity=".45" transform="translate(12 16)"/>
+  <rect x="112" y="200" width="470" height="628" rx="22" fill="url(#pap)"/>
+  <rect x="112" y="200" width="470" height="70" rx="22" fill="#3f6ea8"/>
+  <rect x="112" y="248" width="470" height="22" fill="#3f6ea8"/>
+  <rect x="156" y="316" width="250" height="30" rx="15" fill="#3a4750"/>
+  <g fill="#c3cbd0">
+    <rect x="156" y="382" width="382" height="18" rx="9"/>
+    <rect x="156" y="422" width="330" height="18" rx="9"/>
+    <rect x="156" y="462" width="382" height="18" rx="9"/>
+  </g>
+  <rect x="156" y="528" width="176" height="24" rx="12" fill="#5a6770"/>
+  <g fill="#c3cbd0">
+    <rect x="190" y="586" width="316" height="16" rx="8"/>
+    <rect x="190" y="624" width="284" height="16" rx="8"/>
+    <rect x="190" y="662" width="316" height="16" rx="8"/>
+  </g>
+  <g fill="#e4832b">
+    <circle cx="168" cy="594" r="9"/><circle cx="168" cy="632" r="9"/><circle cx="168" cy="670" r="9"/>
+  </g>
+  <g fill="#c3cbd0">
+    <rect x="156" y="726" width="250" height="16" rx="8"/>
+  </g>
+</g>
+
+<!-- save chip -->
+<g transform="translate(770 754)">
+  <circle cx="0" cy="0" r="104" fill="#150f08" opacity=".45" transform="translate(6 10)"/>
+  <circle cx="0" cy="0" r="104" fill="#e4832b"/>
+  <circle cx="0" cy="0" r="104" fill="none" stroke="#a8560c" stroke-width="9"/>
+  <path d="M-46 -50 L30 -50 L52 -28 L52 50 q0 12 -12 12 L-46 62 q-12 0 -12 -12 L-58 -38 q0 -12 12 -12 Z" fill="#fdf3e7"/>
+  <rect x="-34" y="-50" width="56" height="40" rx="6" fill="#c26a1c"/>
+  <rect x="-34" y="6" width="72" height="42" rx="6" fill="#c26a1c"/>
+  <rect x="-24" y="16" width="52" height="8" rx="4" fill="#fdf3e7"/>
+  <rect x="-24" y="32" width="36" height="8" rx="4" fill="#fdf3e7"/>
+</g>
+</svg>

@@ -1,3 +1,5 @@
+/* Android: never let Chrome enlarge text on its own (Oct 19 2026, Doug is on Android) */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 /* =============================================================================
    THE BIRDSEYE SHELL — the look. Accelerated Experiences LLC · Oct 11 2026.
    Studio scheme light by default (cream, red and gold; Instrument Serif headings,
@@ -265,3 +267,7 @@ html.bs-on .bs-lg.bs-lopen:not(.bs-lno) > :not(.bs-view){animation:bs-lin .55s v
 @media (hover:hover){ .bs-cell:hover{transform:translateY(-3px);border-color:var(--bs-red)} .bs-cell:hover .bs-ci{transform:translateY(-2px) scale(1.08) rotate(-2deg)} .bs-go:hover,.bs-rr:hover{background:color-mix(in srgb,var(--bs-red) 5%,transparent)} }
 @media (prefers-reduced-motion:reduce){ .bs-cell,.bs-page,.bs-dock,.bs-sheet,.bs-wb,.bs-rooms,.bs-chev,.bs-glide,.bs-drawer{animation:none!important;transition:none!important} }
 @media print{ .bs-dock,.bs-sheet,.bs-scrim,.bs-tab,.bs-drawer{display:none!important} }
+
+/* Oct 19 2026 — the Owner's Manual is a room now (office-rooms/ae-rooms.js). The legacy floating "?" button is built by manual.js
+   AFTER adopt() hides the old chrome, so it slipped through on some pages. Hide it by rule, not by timing. */
+.manualbtn,.man-fab,.manualpanel,.man-panel,.man-scrim{display:none!important}

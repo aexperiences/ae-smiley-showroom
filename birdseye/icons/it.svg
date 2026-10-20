@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+<defs>
+<linearGradient id="git" x1="0" y1="0" x2="0.65" y2="1">
+<stop offset="0%" stop-color="#79d8e6"/><stop offset="55%" stop-color="#1e7f96"/><stop offset="100%" stop-color="#072c37"/></linearGradient>
+<radialGradient id="glit" cx="32%" cy="6%" r="80%">
+<stop offset="0%" stop-color="#ffffff" stop-opacity=".26"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+
+</defs>
+<rect x="0" y="0" width="1024" height="1024" fill="url(#git)"/>
+<g id="art" transform="translate(-64.78,-69.22) scale(2.2184)">
+
+
+<!-- stand -->
+<rect x="238" y="342" width="36" height="48" fill="#8a949c"/>
+<rect x="196" y="384" width="120" height="20" rx="10" fill="#b6bfc6"/>
+<rect x="196" y="384" width="120" height="7" rx="3.5" fill="#d6dde2"/>
+
+<!-- monitor -->
+<rect x="86" y="124" width="340" height="230" rx="26" fill="#2a1810" opacity=".30" transform="translate(8,12)"/>
+<rect x="86" y="124" width="340" height="230" rx="26" fill="#c9d2d8"/>
+<rect x="86" y="124" width="340" height="230" rx="26" fill="#faf6ee" transform="translate(0,-4)"/>
+<rect x="104" y="138" width="304" height="192" rx="14" fill="#0d1a20"/>
+<rect x="104" y="138" width="304" height="192" rx="14" fill="#16303a" opacity=".55"/>
+
+<!-- grid -->
+<g stroke="#3d6f7e" stroke-width="2" opacity=".35">
+  <path d="M104 186 L408 186 M104 234 L408 234 M104 282 L408 282"/>
+  <path d="M164 138 L164 330 M224 138 L224 330 M284 138 L284 330 M344 138 L344 330"/>
+</g>
+
+<!-- pulse -->
+<path d="M126 250 L166 250 L182 250 L196 218 L212 282 L228 172 L246 288 L262 250 L292 250 L306 250 L318 226 L332 274 L346 250 L386 250" fill="none" stroke="#4ad07a" stroke-width="16" opacity=".18"
+      stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M126 250 L166 250 L182 250 L196 218 L212 282 L228 172 L246 288 L262 250 L292 250 L306 250 L318 226 L332 274 L346 250 L386 250" fill="none" stroke="#4ad07a" stroke-width="7"
+      stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="386" cy="250" r="16" fill="#4ad07a" opacity=".22"/>
+<circle cx="386" cy="250" r="7.5" fill="#4ad07a"/>
+
+<!-- system status row -->
+<g>
+  <rect x="124" y="296" width="76" height="20" rx="10" fill="#0a2a22"/>
+  <circle cx="136" cy="306" r="6" fill="#4ad07a"/>
+  <rect x="148" y="302" width="42" height="8" rx="4" fill="#4ad07a" opacity=".45"/>
+
+  <rect x="210" y="296" width="76" height="20" rx="10" fill="#0a2a22"/>
+  <circle cx="222" cy="306" r="6" fill="#4ad07a"/>
+  <rect x="234" y="302" width="42" height="8" rx="4" fill="#4ad07a" opacity=".45"/>
+
+  <rect x="296" y="296" width="76" height="20" rx="10" fill="#332208"/>
+  <circle cx="308" cy="306" r="6" fill="#e8b23a"/>
+  <rect x="320" y="302" width="42" height="8" rx="4" fill="#e8b23a" opacity=".45"/>
+</g>
+
+<!-- header chip -->
+<rect x="124" y="154" width="96" height="14" rx="7" fill="#5f9bab" opacity=".55"/>
+<circle cx="392" cy="161" r="7" fill="#4ad07a"/>
+
+<!-- screen gloss -->
+<path d="M104 152 A14 14 0 0 1 118 138 L242 138 L134 330 L104 330 Z" fill="#fff" opacity=".05"/>
+
+</g>
+<rect x="0" y="0" width="1024" height="1024" fill="url(#glit)"/>
+
+</svg>

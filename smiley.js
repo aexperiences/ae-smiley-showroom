@@ -1051,7 +1051,9 @@
       {h:"contacts.html",  l:"Contacts",       i:"☎"},
       {h:"connect.html",   l:"Connect · Video",i:"◉"},
       {h:"records.html",   l:"Records · Filing",i:"▤"},
-      {h:"approvals.html", l:"Approval Desk",  i:"✓"}]},
+      {h:"approvals.html", l:"Approval Desk",  i:"✓"},
+      {h:"masterlist.html",l:"Master List",    i:"✎"},
+      {h:"mail.html",      l:"Mail",           i:"✉"}]},
     {g:"THE DAY", items:[
       {h:"schedule.html",  l:"Schedule & Chairs", i:"▦", room:"schedule"},
       {h:"chairside.html", l:"Chairside",         i:"⛨", room:"chairside"},
@@ -1068,8 +1070,15 @@
       {h:"sterile.html",   l:"Sterilization & OSHA", i:"⚕", room:"sterile"},
       {h:"aimos.html",     l:"Supply Room",       i:"▦", icon:"icons/aimos-supplies.svg"},
       {h:"team.html",      l:"Team & Licenses",   i:"★", room:"team"},
+      {h:"hr.html",        l:"HR · People Ops",   i:"☷"},
       {h:"sign.html",      l:"e-Sign",            i:"✍", room:"sign"},
-      {h:"org.html",       l:"Agent Org · Bus",   i:"❖"}]}
+      {h:"documents.html", l:"Documents",         i:"▤"},
+      {h:"law.html",       l:"Law · Contracts",   i:"⚖"},
+      {h:"org.html",       l:"Agent Org · Bus",   i:"❖"}]},
+    {g:"THE HOUSE", items:[
+      {h:"manual.html",    l:"Owner's Manual",    i:"?"},
+      {h:"it.html",        l:"IT · System Health",i:"♥"},
+      {h:"skins.html",     l:"Skins",             i:"◐"}]}
   ];
   /* The chassis stylesheet targets .sidebar / .nav-group / .navlink .ic / .navlink .lb
      and .navlink.active. This used to emit .rail / .navgroup / .on, so the sidebar
