@@ -345,7 +345,7 @@
         sheet('<h3>' + esc(f.name) + '</h3><p class="ar-sub">' + esc(f.cat) + ' · ' + esc(f.who) + ' · ' + nice(f.date) + '</p><div class="ar-big">' + chip(f.status) + '<span>' + (f.status === "Draft" ? "Not sent. Only you can see a draft." : f.status === "Out for signature" ? "Waiting on a signature." : "Filed in the cabinet.") + '</span></div>' +
           '<div class="ar-two">' + (f.status === "Draft" ? '<button type="button" class="ar-btn ar-pri" data-file-file>File it</button>' : '<button type="button" class="ar-btn" data-file-dl>Download</button>') + '<button type="button" class="ar-btn" data-file-del>Remove</button></div><button type="button" class="ar-btn ar-wide ar-quiet" data-x>Close</button>', function (x) {
             if (x.hasAttribute("data-file-file")) { f.status = "Filed"; save(); closeSheet(); render(); toast("Filed.", "ok"); }
-            if (x.hasAttribute("data-file-dl")) { toast("In the live system this downloads the PDF. The showroom keeps the sample.", "ok"); }
+            if (x.hasAttribute("data-file-dl")) { toast("Nothing downloads in the showroom — the sample stays here.", "ok"); }
             if (x.hasAttribute("data-file-del")) { D.files = D.files.filter(function (y) { return y !== f; }); save(); closeSheet(); render(); toast("Removed from the cabinet.", "ok"); }
           }, f.name);
         return true;
@@ -417,7 +417,7 @@
     make: function () { return { items: (SEED.items || []).map(function (x) { return { id: uid(), text: x[0], note: x[1] || "", pri: x[2] || "Soon", done: !!x[3] }; }), pri: "Now" }; },
     render: function () {
       var PRIS = ["Now", "Soon", "Someday"], open = D.items.filter(function (i) { return !i.done; });
-      root.innerHTML = head('<div class="ar-by">🔒 Private to the ' + esc(SEED.who || "owner") + '. Nobody else sees this room.</div>') +
+      root.innerHTML = head('<div class="ar-by">🔒 On the ' + esc(SEED.who || "owner") + '\'s menus only — the other seats don\'t get this room.</div>') +
         stats(PRIS.map(function (p) { var n = open.filter(function (i) { return i.pri === p; }).length; return { v: n, l: p.toLowerCase(), tone: p === "Now" && n ? "watch" : "" }; }).concat([{ v: D.items.length - open.length, l: "crossed off", tone: "good" }])) +
         '<section class="ar-card ar-add"><input id="mlT" maxlength="140" placeholder="Write it down before it wakes you up at 2am…"><div class="ar-chips">' + PRIS.map(function (p) { return '<button type="button" class="ar-chipb' + (D.pri === p ? " on" : "") + '" data-pri="' + p + '">' + p + '</button>'; }).join("") + '</div><button type="button" class="ar-btn ar-pri" data-add>Add</button></section>' +
         PRIS.map(function (p) {
@@ -426,7 +426,7 @@
             return '<div class="ar-ml' + (i.done ? " done" : "") + '"><button type="button" class="ar-box" data-tgl="' + i.id + '" aria-label="' + (i.done ? "Undo" : "Done") + '">' + (i.done ? "✓" : "") + '</button><span class="ar-x"><b>' + esc(i.text) + '</b>' + (i.note ? '<small>' + esc(i.note) + '</small>' : "") + '</span><button type="button" class="ar-del" data-mv="' + i.id + '" title="Move">⇅</button><button type="button" class="ar-del" data-del="' + i.id + '" aria-label="Remove">×</button></div>';
           }).join(""));
         }).join("") +
-        card("Private means private", '<p class="ar-note">Not a job board and not the Approval Desk — this is the napkin in your pocket, kept where you actually run the ' + esc(C.house || "business") + '. Staff seats, the portal and the agents never see it.</p>') + foot();
+        card("Kept to the owner", '<p class="ar-note">Not a job board and not the Approval Desk — this is the napkin in your pocket, kept where you actually run the ' + esc(C.house || "business") + '. Staff seats don\'t get it on their menus, the client portal never shows it, and the agent org never reads it.</p>') + foot();
     },
     click: function (b) {
       if (b.hasAttribute("data-pri")) { D.pri = b.getAttribute("data-pri"); save(); render(); return true; }
@@ -459,7 +459,7 @@
         '<article class="ar-read">' + (cur ? '<div class="ar-rh"><button type="button" class="ar-btn ar-sm ar-back-btn" data-msg-close>‹ Back</button><h2>' + esc(cur.subj) + '</h2><p class="ar-sub">' + esc(cur.box === "Sent" ? "To " : "From ") + esc(cur.from) + ' · ' + stamp(cur.ts) + '</p></div><div class="ar-body">' + esc(cur.body).replace(/\n/g, "<br>") + '</div>' +
           '<div class="ar-two"><button type="button" class="ar-btn ar-pri" data-reply>Reply</button><button type="button" class="ar-btn" data-star>' + (cur.star ? "Unstar" : "★ Star") + '</button></div>' + (cur.box !== "Archive" ? '<button type="button" class="ar-btn ar-wide" data-arch>Archive</button>' : "")
           : '<div class="ar-empty"><b>' + esc(D.box) + '</b><span>Pick a message to read it.</span></div>') + '</article></div>' +
-        foot(SEED.honest || "The showroom mailbox never sends anything. In the live system this is your real business inbox.");
+        foot(SEED.honest || "The showroom mailbox never sends anything.");
       root.querySelector(".ar-mail").classList.toggle("reading", !!cur);
     },
     click: function (b) {

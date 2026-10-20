@@ -18,7 +18,7 @@
    whether each seat's stated confidence is honest, and a seat earns autonomy there or not at all.
 
    HONEST BRAIN. A showroom is public and holds no AI key, so here the seats reason locally from this system's own
-   data — rules, not a language model — and the page says so. In a live system the same chain runs on the hub's model.
+   data — rules, not a language model — and the page says so. The mothership's org runs the same chain on a model.
 
    Reads two engine shapes: rich  SEATS = { coo, depts:[{key,name,gate,dh,ae,pace,lensA,lensB}] }  (Abode, Targeted …)
                             simple BRAIN = {name,role,line} + SEATS = [{dept, dh|head, ae|aes, focus}]  (Toolbelt …)
@@ -84,9 +84,9 @@
   function roomsFor(d) {
     var B = cfg(); if (!B) return [];
     var pin = C.map && (C.map[d.name] || C.map[d.key]);   /* an explicit department → rooms map beats word-matching */
-    if (pin) return pin.map(function (k) { return B.rooms.filter(function (r) { return r.k === k; })[0]; }).filter(Boolean);
+    if (pin) return pin.filter(function (k) { return k !== "masterlist"; }).map(function (k) { return B.rooms.filter(function (r) { return r.k === k; })[0]; }).filter(Boolean);
     var want = words(d.name + " " + d.focus + " " + d.dh.line + " " + d.ae.line);
-    var scored = B.rooms.filter(function (r) { return !r.hidden && r.k !== "org"; }).map(function (r) {
+    var scored = B.rooms.filter(function (r) { return !r.hidden && r.k !== "org" && r.k !== "masterlist"; })   /* the owner's private list is never evidence */.map(function (r) {
       var have = words(r.label + " " + (r.blurb || "") + " " + r.k + " " + ((B.wings.filter(function (w) { return w.k === r.wing; })[0] || {}).name || ""));
       var s = 0; want.forEach(function (w) { have.forEach(function (h) { if (h === w || (w.length > 4 && h.indexOf(w.slice(0, 5)) === 0)) s++; }); });
       if (String(r.label).toLowerCase().indexOf(d.name.toLowerCase()) > -1) s += 4;
@@ -205,7 +205,7 @@
           '<div class="ao-triad"><div class="ao-tl">Triad</div>' + seatCard(d.key + ":pace", "pace") + seatCard(d.key + ":a", "lens") + seatCard(d.key + ":b", "lens") + '</div>' +
           '<button type="button" class="ao-btn ao-sm ao-wide" data-dsweep="' + esc(d.key) + '">Sweep ' + esc(d.name) + '</button></div>';
       }).join("") + '</div>' +
-      '<p class="ao-honest"><b>How the seats think here:</b> this showroom is public and holds no AI key, so every seat reasons locally from this system\'s own records — the routing, the gates, the contract and the bus are the real mechanism; the language model is not running. In a live system the same chain runs on the hub\'s model. That is the honest line.</p>';
+      '<p class="ao-honest"><b>How the seats think here:</b> this showroom is public and holds no AI key, so every seat reasons locally from this system\'s own records — the routing, the gates, the contract and the bus are the real mechanism; the language model is not running. The mothership\'s org runs this same chain on a language model; this showroom does not. That is the honest line.</p>';
   }
   function busRow(m) {
     return '<div class="ao-ev k-' + esc(m.kind.toLowerCase()) + '"><span class="ao-ts">' + stamp(m.ts) + '</span><span class="ao-route"><b>' + esc(m.from) + '</b> → <b>' + esc(m.to) + '</b> <i>' + esc(m.kind) + ' · ' + esc(m.dir) + '</i></span><span class="ao-tx">' + esc(m.text) + '</span></div>';
@@ -224,14 +224,14 @@
     return '<article class="ao-proof ' + (p.state === "Waiting" ? "" : "done") + '"><div class="ao-ph"><span class="ao-stance s-' + esc(c.stance.replace(/ /g, "").toLowerCase()) + '">' + esc(c.stance) + '</span><b>' + esc(p.deptName) + '</b><span class="ao-conf ' + (p.passed ? "ok" : "low") + '">' + c.confidence + '% · ' + (p.passed ? "cleared " + p.gate + "%" : "needs a human") + '</span><small>' + (p.auto ? "Autopilot" : "Asked") + " · " + stamp(p.ts) + '</small></div>' +
       '<p class="ao-q">' + esc(p.q) + '</p><ul class="ao-reasons">' + c.reasons.map(function (r) { return '<li><i class="' + r.tag + '">' + r.tag + '</i>' + esc(r.t) + '</li>'; }).join("") + '</ul>' +
       '<div class="ao-opts">' + p.options.map(function (o, i) { return '<span><b>' + String.fromCharCode(65 + i) + '.</b> ' + esc(o[0]) + ' <small>' + esc(o[1]) + '</small></span>'; }).join("") + '</div>' +
-      (p.state === "Waiting" ? '<div class="ao-acts"><button type="button" class="ao-btn ao-pri ao-sm" data-approve="' + p.id + '">Approve → Hall of Records</button><button type="button" class="ao-btn ao-sm" data-return="' + p.id + '">Return to ' + esc(seat.name || "the seat") + '</button>' + (p.room ? '<a class="ao-btn ao-sm" href="' + esc(p.room) + '">Open ' + esc(p.roomLabel) + ' ›</a>' : "") + '</div>' : '<div class="ao-acts"><span class="ao-done">' + esc(p.state) + '</span></div>') + '</article>';
+      (p.state === "Waiting" ? '<div class="ao-acts"><button type="button" class="ao-btn ao-pri ao-sm" data-approve="' + p.id + '">Approve &amp; record</button><button type="button" class="ao-btn ao-sm" data-return="' + p.id + '">Return to ' + esc(seat.name || "the seat") + '</button>' + (p.room ? '<a class="ao-btn ao-sm" href="' + esc(p.room) + '">Open ' + esc(p.roomLabel) + ' ›</a>' : "") + '</div>' : '<div class="ao-acts"><span class="ao-done">' + esc(p.state) + '</span></div>') + '</article>';
   }
   function tabProof() {
     var w = D.proof.filter(function (p) { return p.state === "Waiting"; }), d = D.proof.filter(function (p) { return p.state !== "Waiting"; });
-    return '<section class="ao-card"><h2>Proofing Area <span class="ao-pill">Ghost Mode gate</span></h2><p class="ao-sub">Where drafts wait for you. Seats propose; only you dispose. Approve files it to the Hall of Records; Return sends it back to the seat. Nothing publishes, sends, spends, or files-as-final until you approve it here.</p>' +
+    return '<section class="ao-card"><h2>Proofing Area <span class="ao-pill">Ghost Mode gate</span></h2><p class="ao-sub">Where drafts wait for you. Seats propose; only you dispose. Approve records it as decided; Return sends it back to the seat. Nothing publishes, sends, spends, or files-as-final until you approve it here.</p>' +
       (w.length ? w.map(proofCard).join("") : '<p class="ao-sub">Nothing waiting. Press <b>Run the org</b> and every department will sweep its rooms and bring you what it finds.</p>') + '</section>' +
       (d.length ? '<section class="ao-card"><h2>Decided</h2>' + d.slice(0, 12).map(proofCard).join("") + '</section>' : "") +
-      (D.hall.length ? '<section class="ao-card"><h2>Hall of Records</h2>' + D.hall.slice(0, 12).map(function (h) { return '<div class="ao-ev"><span class="ao-ts">' + stamp(h.ts) + '</span><span class="ao-tx"><b>' + esc(h.dept) + '</b> — ' + esc(h.stance) + ' · ' + h.conf + '% · approved by ' + esc(FOUNDER) + '</span></div>'; }).join("") + '</section>' : "");
+      (D.hall.length ? '<section class="ao-card"><h2>Decision record <span class="ao-pill">this browser</span></h2>' + D.hall.slice(0, 12).map(function (h) { return '<div class="ao-ev"><span class="ao-ts">' + stamp(h.ts) + '</span><span class="ao-tx"><b>' + esc(h.dept) + '</b> — ' + esc(h.stance) + ' · ' + h.conf + '% · approved by ' + esc(FOUNDER) + '</span></div>'; }).join("") + '</section>' : "");
   }
   function tabSot() {
     var B = cfg() || {}, sys = (E.db && E.db().systems) || E.SYSTEMS || [];
@@ -296,7 +296,7 @@
     p.state = ok ? "Approved" : "Returned"; var r = D.record[p.seat] = D.record[p.seat] || { a: 0, r: 0, conf: 0 }; r[ok ? "a" : "r"]++; r.conf += p.contract.confidence;
     if (ok) D.hall.unshift({ ts: Date.now(), dept: p.deptName, stance: p.contract.stance, conf: p.contract.confidence });
     bus(FOUNDER, ORG.coo.name, ok ? "TASK" : "QUESTION", "DOWN", (ok ? "Approved: " : "Returned: ") + p.deptName + " — " + p.contract.stance);
-    save(); render(); toast(ok ? "Approved and filed to the Hall of Records." : "Returned to " + (ORG.seats[p.seat] || {}).name + ".", "ok");
+    save(); render(); toast(ok ? "Approved and recorded." : "Returned to " + (ORG.seats[p.seat] || {}).name + ".", "ok");
   }
   root.addEventListener("click", function (e) {
     var b = e.target.closest("button"); if (!b) return;
