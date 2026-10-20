@@ -1177,7 +1177,7 @@
       'The practice, team and patients below are a realistic sample book. '+
       '<button class="linkbtn" id="goLiveBtn">Start with a clean slate</button></div>');
   }
-  function footer(){ return el('<div class="ae-credit"><a href="https://www.aexperiences.com/" class="ae-triad" aria-label="AETRIAD Powered - Accelerated Experiences LLC"><img src="/marks/aetriad-powered.png" alt="AETRIAD Powered" style="height:30px;width:auto;vertical-align:middle"></a><br>Smiley OS is a '+
+  function footer(){ return el('<div class="ae-credit"><a href="https://www.aexperiences.com/" class="ae-triad" aria-label="AOS — Accelerated Experiences LLC"><img src="/marks/aos-badge.png" alt="AOS — Accelerated Operating Systems" style="height:30px;width:auto;vertical-align:middle"></a><br>Smiley OS is a '+
     'white-label product — your practice name and colors replace ours.</div>'); }
   function toast(m){ var w=document.getElementById("toast-wrap"); if(!w) return;
     var t=el('<div class="toast">'+esc(m)+'</div>'); w.appendChild(t);
