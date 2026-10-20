@@ -29,6 +29,13 @@
     var me = document.currentScript, src = me && me.src ? me.src.replace(/[^\/]*(\?.*)?$/, "") + "ae-app-scroll.js" : "birdseye/ae-app-scroll.js";
     var s = document.createElement("script"); s.id = "aeAppScrollJs"; s.src = src; (document.head || document.documentElement).appendChild(s);
   })();
+  /* THE ICON SKIN MACHINE (Anthony, Oct 20 2026): "not individual switches, actual whole icon skin swipe outs."
+     An icon skin swaps EVERY room icon and the system's own product icon at once. House (the drawn library) is the
+     default and is never touched. The sets live beside this file: iconsets/sets.json lists the sets this system
+     carries in full, and iconsets/<set>/<room key>.webp + os-icon.webp hold the art. A missing file falls back to
+     the House icon on its own (data-house). The Phoenix on Birdseye is a mark and never swaps. */
+  var ICONBASE = (function () { var me = document.currentScript; return me && me.src ? me.src.replace(/[^\/]*(\?.*)?$/, "") + "iconsets/" : "birdseye/iconsets/"; })();
+  BS.iconBase = ICONBASE;
   var C = null, E = null, built = false, mode = "home", active = null, mountEl = null;
   var els = {};
 
@@ -103,9 +110,16 @@
   };
   BS.houseName = houseName;
   function label(r) { return String(r.label || r.k).replace(/^The /, ""); }
+  function iconSet() { var k = ls("birdseye:" + C.id + ":icons"); return k && k !== "house" && /^[a-z0-9-]+$/.test(k) ? k : ""; }
+  function isrc(k, house) { var s = iconSet(); return s && house ? ICONBASE + s + "/" + k + ".webp" : house; }
+  function iimg(cls, k, house, extra) { var src = isrc(k, house); return '<img class="' + cls + '" src="' + attr(src) + '"' + (src !== house ? ' data-house="' + attr(house) + '"' : "") + (extra || "") + ' alt="">'; }
+  BS.iconSet = function () { return iconSet() || "house"; };
+  BS.setIcons = function (k) { ls("birdseye:" + C.id + ":icons", k || "house"); location.reload(); };
+  BS.iconSets = function () { return fetch(ICONBASE + "sets.json", { cache: "no-cache" }).then(function (r) { return r.ok ? r.json() : { sets: [] }; }).catch(function () { return { sets: [] }; }); };
+  document.addEventListener("error", function (e) { var t = e.target; if (t && t.tagName === "IMG" && t.getAttribute("data-house")) { var h = t.getAttribute("data-house"); t.removeAttribute("data-house"); t.src = h; } }, true);
   function icon(k, cls) {
-    var src = k === "__home" || k === "__glance" ? C.brand.icon : (room(k) || {}).icon;
-    if (src) return '<img class="' + (cls || "bs-ric") + '" src="' + attr(src) + '" alt="" loading="lazy">';
+    var house = k === "__home" || k === "__glance" ? C.brand.icon : (room(k) || {}).icon;
+    if (house) return iimg(cls || "bs-ric", k === "__home" || k === "__glance" ? "os-icon" : k, house, ' loading="lazy"');
     var g = (room(k) || {}).glyph || "◇";
     return '<span class="' + (cls || "bs-ric") + ' bs-glyph" aria-hidden="true">' + esc(g) + "</span>";
   }
@@ -199,7 +213,7 @@
     var top = document.createElement("div"); top.className = "bs-top"; top.id = "bsTop"; top.setAttribute("role", "banner");
     top.innerHTML = '<div class="bs-in">' +
       '<a class="bs-aos" href="' + attr(hrefOf("__home")) + '" aria-label="Birdseye — home"><img src="' + attr(b.aos) + '" alt="Accelerated Operating Systems"></a>' +
-      '<div class="bs-brand"><a href="' + attr(hrefOf("__home")) + '" aria-label="Birdseye"><img class="bs-osicon" src="' + attr(b.icon) + '" alt=""></a><span class="bs-names' + (b.versionLine ? ' bs-has-ver' : '') + '"><a class="bs-sys" href="' + attr(hrefOf("__home")) + '">' + esc(b.name) + '</a>' + (b.versionLine ? '<span class="bs-ver">' + esc(b.versionLine) + '</span>' : '') + '<button type="button" class="bs-house" id="bsHouse" aria-label="The business name — tap to change it"></button></span></div>' +
+      '<div class="bs-brand"><a href="' + attr(hrefOf("__home")) + '" aria-label="Birdseye">' + iimg("bs-osicon", "os-icon", b.icon) + '</a><span class="bs-names' + (b.versionLine ? ' bs-has-ver' : '') + '"><a class="bs-sys" href="' + attr(hrefOf("__home")) + '">' + esc(b.name) + '</a>' + (b.versionLine ? '<span class="bs-ver">' + esc(b.versionLine) + '</span>' : '') + '<button type="button" class="bs-house" id="bsHouse" aria-label="The business name — tap to change it"></button></span></div>' +
       '<span class="bs-sp"></span>' +
       '<label class="bs-seat"><span class="bs-lbl">Viewing as</span><select id="bsSeat" aria-label="Viewing as"></select></label>' +
       (C.helper ? '<button type="button" class="bs-ask" id="bsAsk" aria-controls="bsDrawer" aria-label="Ask ' + esc(C.helper.name) + ' — your helper" title="Ask ' + esc(C.helper.name) + '">Ask</button>' : "") +
@@ -323,15 +337,30 @@
     var all = Object.assign({}, SKINS, C.skins || {}), cur = skinKey();
     function sw(k) { var s = all[k], v = s.v; return '<button type="button" class="bs-skin' + (k === cur ? " on" : "") + '" data-s="' + attr(k) + '" style="background:' + v.paper + ";color:" + v.ink + '"><span class="bs-skp"><i style="background:' + v.card + '"></i><i style="background:' + v.char + '"></i><i style="background:' + v.red + '"></i><i style="background:' + v.gold + '"></i></span><b>' + esc(s.name) + "</b><small>" + esc(s.note) + "</small></button>"; }
     var keys = Object.keys(all), light = keys.filter(function (k) { return !all[k].dark; }), dark = keys.filter(function (k) { return all[k].dark; });
-    modal("<h3>Skins</h3><p class=\"bs-mut\">" + keys.length + " skins. The ◐ button at the top flips any skin to its twin.</p><h4>Light</h4><div class=\"bs-skins\">" + light.map(sw).join("") + "</div><h4>Dark</h4><div class=\"bs-skins\">" + dark.map(sw).join("") + "</div>", function (box) {
+    modal("<h3>Skins</h3><div id=\"bsIconSets\"></div><p class=\"bs-mut\">" + keys.length + " colour skins. The ◐ button at the top flips any skin to its twin.</p><h4>Light</h4><div class=\"bs-skins\">" + light.map(sw).join("") + "</div><h4>Dark</h4><div class=\"bs-skins\">" + dark.map(sw).join("") + "</div>", function (box) {
       box.querySelectorAll("[data-s]").forEach(function (b) { b.onclick = function () { BS.setSkin(b.getAttribute("data-s")); toast(all[b.getAttribute("data-s")].name + " — on."); closeModal(); }; });
+      iconPicker(box.querySelector("#bsIconSets"));
     });
   }
+  /* the icon skins — whole sets, one tap; House first */
+  function iconPicker(el) {
+    if (!el) return;
+    BS.iconSets().then(function (j) {
+      var sets = [{ k: "house", name: "House", note: "the drawn library · the default" }].concat((j && j.sets) || []), cur = BS.iconSet();
+      if (sets.length < 2) return;
+      el.innerHTML = "<h4>Icons</h4><div class=\"bs-isets\">" + sets.map(function (s) {
+        var pic = s.k === "house" ? C.brand.icon : ICONBASE + s.k + "/os-icon.webp";
+        return '<button type="button" class="bs-iset' + (s.k === cur ? " on" : "") + '" data-i="' + attr(s.k) + '"><img src="' + attr(pic) + '" alt=""><b>' + esc(s.name) + "</b><small>" + esc(s.note || "") + "</small></button>";
+      }).join("") + "</div>";
+      el.querySelectorAll("[data-i]").forEach(function (b) { b.onclick = function () { BS.setIcons(b.getAttribute("data-i")); }; });
+    });
+  }
+  BS.iconPicker = iconPicker;
 
   /* the helper — a hidden tab on the right edge; everything still works by hand */
   function paintDrawer() {
     var h = C.helper;
-    els.drawer.innerHTML = '<div class="bs-dh"><img src="' + attr(C.brand.icon) + '" alt=""><div><b>' + esc(h.name) + "</b><span>" + esc(h.role || "Ask in plain words. Nothing happens without your tap.") + '</span></div><button type="button" class="bs-iconbtn" id="bsDX" aria-label="Close the helper">✕</button></div>' +
+    els.drawer.innerHTML = '<div class="bs-dh">' + iimg("", "os-icon", C.brand.icon) + '<div><b>' + esc(h.name) + "</b><span>" + esc(h.role || "Ask in plain words. Nothing happens without your tap.") + '</span></div><button type="button" class="bs-iconbtn" id="bsDX" aria-label="Close the helper">✕</button></div>' +
       '<div class="bs-dlog" id="bsDLog"><p class="bs-mut">' + esc(h.hello || ("Ask " + h.name + " anything about " + houseName() + ".")) + "</p></div>" +
       '<form class="bs-dform" id="bsDForm"><input id="bsDQ" type="text" placeholder="Ask ' + esc(h.name) + '…" aria-label="Ask ' + esc(h.name) + '"><button type="submit" class="bs-btn bs-a">Ask</button></form>';
     els.drawer.querySelector("#bsDX").onclick = function () { openDrawer(false); };

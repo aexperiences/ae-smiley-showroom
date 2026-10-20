@@ -271,3 +271,13 @@ html.bs-on .bs-lg.bs-lopen:not(.bs-lno) > :not(.bs-view){animation:bs-lin .55s v
 /* Oct 19 2026 — the Owner's Manual is a room now (office-rooms/ae-rooms.js). The legacy floating "?" button is built by manual.js
    AFTER adopt() hides the old chrome, so it slipped through on some pages. Hide it by rule, not by timing. */
 .manualbtn,.man-fab,.manualpanel,.man-panel,.man-scrim{display:none!important}
+
+/* THE ICON SKIN MACHINE (Oct 20 2026) — the icon-set picker, in the Skins sheet and the Skins room. Phone first. */
+.bs-isets{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin:0 0 14px}
+.bs-iset{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;padding:10px;border-radius:14px;border:1.5px solid rgba(127,127,127,.25);background:var(--bs-card,#fffdf8);color:var(--bs-ink,#1e1813);cursor:pointer;font:inherit;min-height:44px}
+.bs-iset img{width:64px;height:64px;border-radius:15px;box-shadow:0 4px 10px -6px rgba(40,28,16,.55)}
+.bs-iset b{font:400 17px/1.1 var(--bs-serif,Georgia,serif)}
+.bs-iset small{font-size:11px;opacity:.72}
+.bs-iset.on{border-color:var(--bs-red,#a8312a);box-shadow:0 0 0 3px rgba(168,49,42,.14)}
+.ar-isets h4{margin:0 0 8px;font:800 11px/1.2 var(--bs-sans,system-ui);letter-spacing:.14em;text-transform:uppercase;opacity:.75}
+@media(max-width:520px){.bs-isets{grid-template-columns:repeat(2,1fr)}.bs-iset img{width:56px;height:56px}}

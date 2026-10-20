@@ -502,9 +502,11 @@
       var light = keys.filter(function (k) { return !dark(k); }), night = keys.filter(dark);
       root.innerHTML = head('<div class="ar-by">Now wearing <b>' + esc(all[cur].name) + '</b> · ' + plural(keys.length, "skin") + ', every one with a light or dark twin</div>') +
         '<div class="ar-hero plain"><b>' + esc(all[cur].name) + '</b><span>One tap repaints every room, the floor plan, the dock and the helper — on this device, right now.</span><button type="button" class="ar-btn" data-twin>Flip to the ' + (dark(cur) ? "light" : "dark") + ' twin ◐</button></div>' +
+        '<div id="arIconSets" class="ar-isets"></div>' +   /* the Icon Skin Machine (Oct 20 2026): whole icon sets, one tap */
         card("Light", '<div class="ar-skins">' + light.map(sw).join("") + '</div>') +
         card("Dark", '<div class="ar-skins">' + night.map(sw).join("") + '</div>') +
         card("Why a skin and not a theme", '<p class="ar-note">' + esc(SEED.why || "A skin is the whole look at once — paper, ink, cards, the accent and the gold — tuned so every number stays readable. The Studio skin (cream, red and gold) is what a new system wakes up in. Each person picks their own; it is remembered on their device.") + '</p>');
+      if (BS.iconPicker) BS.iconPicker(document.getElementById("arIconSets"));
     },
     click: function (b) {
       var BS = shell(); if (!BS) return true;
