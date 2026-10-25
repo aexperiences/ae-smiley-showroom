@@ -233,7 +233,7 @@
       '<span class="bs-sp"></span>' +
       '<label class="bs-seat"><span class="bs-lbl">Viewing as</span><select id="bsSeat" aria-label="Viewing as"></select></label>' +
       (C.helper ? '<button type="button" class="bs-ask" id="bsAsk" aria-controls="bsDrawer" aria-label="Ask ' + esc(C.helper.name) + ' — your helper" title="Ask ' + esc(C.helper.name) + '">Ask</button>' : "") +
-      '<button type="button" class="bs-iconbtn" id="bsTwin" aria-label="Switch to the dark twin">◐</button>' +
+      '<button type="button" class="bs-iconbtn bs-look" id="bsTwin" aria-label="Look: icons and colors" title="Icons and colors">' + LOOK + '</button>' +
       "</div>";
     document.body.insertBefore(top, document.body.firstChild);
     var tail = document.createElement("div"); tail.className = "bs-tail";
@@ -253,7 +253,9 @@
     top.querySelector("#bsHouse").onclick = function () { BS.renameHouse(); };
     top.querySelector("#bsBack").onclick = goBack;
     window.addEventListener("popstate", function () { setTimeout(paintBack, 0); });
-    top.querySelector("#bsTwin").onclick = function () { var all = Object.assign({}, SKINS, C.skins || {}), k = all[skinKey()].twin; BS.setSkin(k); toast(all[k].name); };
+    /* THE LOOK BUTTON (Oct 25 2026, Anthony: "I still cannot find how to switch out my icons" / "i cant find them on the computer
+       either"). The header button opens Icons first, then light or night, then every color skin, on every screen. */
+    top.querySelector("#bsTwin").onclick = function () { skinPicker(); };
     if (els.tab) { els.tab.onclick = function () { openDrawer(!els.drawer.classList.contains("on")); }; paintDrawer(); }
     /* on a phone or a narrow laptop the helper lives in the header (#bsAsk), so the edge tab never sits on the plan */
     var ask = top.querySelector("#bsAsk"); if (ask && els.drawer) ask.onclick = function () { openDrawer(!els.drawer.classList.contains("on")); };
@@ -351,21 +353,25 @@
     grab.addEventListener("pointermove", function (e) { if (my0 == null) return; dy = Math.max(0, e.clientY - my0); s.style.transform = "translateY(" + dy + "px)"; });
     grab.addEventListener("pointerup", function () { if (my0 == null) return; s.classList.remove("drag"); if (dy > 90 || dy < 4) openSheet(false); else s.style.transform = ""; my0 = null; });
   }
+  var LOOK = '<svg viewBox="0 0 24 24" aria-hidden="true" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5a8.5 8.5 0 100 17c1.2 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.3-.3-.4-.5-.8-.5-1.3 0-.9.8-1.7 1.7-1.7h2a4 4 0 004-4c0-3.9-3.8-7-8.5-7z"/><circle cx="7.5" cy="11" r="1.2" fill="currentColor" stroke="none"/><circle cx="10" cy="7.3" r="1.2" fill="currentColor" stroke="none"/><circle cx="14.5" cy="7.3" r="1.2" fill="currentColor" stroke="none"/></svg>';
   function skinPicker() {
     var all = Object.assign({}, SKINS, C.skins || {}), cur = skinKey();
     function sw(k) { var s = all[k], v = s.v; return '<button type="button" class="bs-skin' + (k === cur ? " on" : "") + '" data-s="' + attr(k) + '" style="background:' + v.paper + ";color:" + v.ink + '"><span class="bs-skp"><i style="background:' + v.card + '"></i><i style="background:' + v.char + '"></i><i style="background:' + v.red + '"></i><i style="background:' + v.gold + '"></i></span><b>' + esc(s.name) + "</b><small>" + esc(s.note) + "</small></button>"; }
     var keys = Object.keys(all), light = keys.filter(function (k) { return !all[k].dark; }), dark = keys.filter(function (k) { return all[k].dark; });
-    modal("<h3>Skins</h3><div id=\"bsIconSets\"></div><p class=\"bs-mut\">" + keys.length + " colour skins. The ◐ button at the top flips any skin to its twin.</p><h4>Light</h4><div class=\"bs-skins\">" + light.map(sw).join("") + "</div><h4>Dark</h4><div class=\"bs-skins\">" + dark.map(sw).join("") + "</div>", function (box) {
+    var tw = all[cur] && all[cur].twin && all[all[cur].twin] ? all[cur].twin : "";
+    modal("<h3>Look</h3><div id=\"bsIconSets\"><h4>Icons</h4><p class=\"bs-mut\">Loading the icon sets…</p></div>" + (tw ? "<button type=\"button\" class=\"bs-btn bs-twin\" id=\"bsTwinGo\">◐ Switch to " + esc(all[tw].name) + "</button>" : "") + "<h4>Colors</h4><p class=\"bs-mut\">" + keys.length + " color skins, each with a light or night twin.</p><h4>Light</h4><div class=\"bs-skins\">" + light.map(sw).join("") + "</div><h4>Dark</h4><div class=\"bs-skins\">" + dark.map(sw).join("") + "</div>", function (box) {
       box.querySelectorAll("[data-s]").forEach(function (b) { b.onclick = function () { BS.setSkin(b.getAttribute("data-s")); toast(all[b.getAttribute("data-s")].name + " — on."); closeModal(); }; });
       iconPicker(box.querySelector("#bsIconSets"));
+      var tg = box.querySelector("#bsTwinGo"); if (tg) tg.onclick = function () { BS.setSkin(tw); toast(all[tw].name + " — on."); closeModal(); };
     });
   }
+  BS.lookPicker = function () { skinPicker(); };
   /* the icon skins — whole sets, one tap; House first */
   function iconPicker(el) {
     if (!el) return;
     BS.iconSets().then(function (j) {
       var sets = [{ k: "house", name: "House", note: "the drawn library · the default" }].concat((j && j.sets) || []), cur = BS.iconSet();
-      if (sets.length < 2) return;
+      if (sets.length < 2) { el.innerHTML = "<h4>Icons</h4><p class=\"bs-mut\">This system has one icon set so far.</p>"; return; }
       el.innerHTML = "<h4>Icons</h4><div class=\"bs-isets\">" + sets.map(function (s) {
         var pic = s.k === "house" ? C.brand.icon : ICONBASE + s.k + "/os-icon.webp";
         return '<button type="button" class="bs-iset' + (s.k === cur ? " on" : "") + '" data-i="' + attr(s.k) + '"><img src="' + attr(pic) + '" alt=""><b>' + esc(s.name) + "</b><small>" + esc(s.note || "") + "</small></button>";

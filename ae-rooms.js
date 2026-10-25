@@ -531,7 +531,8 @@
                 card("Light", '<div class="ar-skins">' + light.map(sw).join("") + '</div>') +
         card("Dark", '<div class="ar-skins">' + night.map(sw).join("") + '</div>') +
         card("Why a skin and not a theme", '<p class="ar-note">' + esc(SEED.why || "A skin is the whole look at once — paper, ink, cards, the accent and the gold — tuned so every number stays readable. A new system wakes up in its own colors, picked for its trade. Each person picks their own; it is remembered on their device.") + '</p>');
-      if (BS.iconPicker) BS.iconPicker(document.getElementById("arIconSets"));
+      /* some systems load the header engine a moment late (Toolbelt): wait for it, so the Icon Skins card is never empty */
+      (function pick(n) { var S2 = shell(), el = document.getElementById("arIconSets"); if (!el) return; if (S2 && S2.iconPicker) S2.iconPicker(el); else if (n < 40) setTimeout(function () { pick(n + 1); }, 200); })(0);
     },
     click: function (b) {
       var BS = shell(); if (!BS) return true;

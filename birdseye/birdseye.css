@@ -292,3 +292,7 @@ html.bs-on .bs-lg.bs-lopen:not(.bs-lno) > :not(.bs-view){animation:bs-lin .55s v
 .bs-back:active{transform:scale(.94)}
 .bs-back[hidden]{display:none}
 @media (max-width:640px){ .bs-has-back .bs-aos{display:none} }
+
+/* the Look button + the twin switch inside the Look sheet (Oct 25 2026) */
+.bs-look svg{display:block}
+.bs-twin{display:block;width:100%;margin:2px 0 16px;padding:12px;border-radius:12px;border:1px solid var(--bs-rule);background:var(--bs-card);color:var(--bs-ink);font:700 14px/1 var(--bs-sans);cursor:pointer}
