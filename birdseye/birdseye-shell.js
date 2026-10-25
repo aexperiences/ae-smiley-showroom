@@ -206,12 +206,28 @@
   /* ---------------- the chrome: header, dock, sheet, helper tab, footer ---------------- */
   var GRID = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="5" height="5" rx="1.4"/><rect x="9.5" y="3" width="5" height="5" rx="1.4" class="b"/><rect x="16" y="3" width="5" height="5" rx="1.4"/><rect x="3" y="9.5" width="5" height="5" rx="1.4" class="b"/><rect x="9.5" y="9.5" width="5" height="5" rx="1.4"/><rect x="16" y="9.5" width="5" height="5" rx="1.4" class="b"/><rect x="3" y="16" width="5" height="5" rx="1.4"/><rect x="9.5" y="16" width="5" height="5" rx="1.4" class="b"/><rect x="16" y="16" width="5" height="5" rx="1.4"/></svg>';
   var MORE = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2.2"/><circle cx="12" cy="12" r="2.2"/><circle cx="19" cy="12" r="2.2"/></svg>';
+  /* BACK, ON EVERY SCREEN (Anthony, Oct 24 2026: "Back buttons or key on every screen in the system, including mail and
+     inside the inbox to get back"). The header carries a back arrow everywhere but the home screen. It steps back through
+     what you opened in this system (a room, a message, a compose sheet: rooms that open screens inside themselves push
+     them onto the browser history, so the phone's own back swipe works too). With nothing behind you in this system, it
+     takes you home instead of out of the system. On a keyboard, Alt+Left does the same through the browser. */
+  var BACK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function inSystem(u) { try { var a = new URL(u, location.href), base = location.pathname.replace(/[^\/]*$/, ""); return a.origin === location.origin && a.pathname.indexOf(base) === 0; } catch (e) { return false; } }
+  function canStepBack() { return !!(history.state && history.state.bsIn) || (!!document.referrer && inSystem(document.referrer) && history.length > 1); }
+  function goBack() { if (canStepBack()) history.back(); else location.href = hrefOf("__home"); }
+  function paintBack() {
+    var b = document.getElementById("bsBack"); if (!b) return;
+    var home = isHomePage() && mode === "home" && !(history.state && history.state.bsIn);
+    b.hidden = home; document.documentElement.classList.toggle("bs-has-back", !home);
+  }
+  BS.back = goBack; BS.paintBack = function () { paintBack(); };
   function build() {
     if (built) return; built = true;
     document.documentElement.classList.add("bs-on");
     var b = C.brand;
     var top = document.createElement("div"); top.className = "bs-top"; top.id = "bsTop"; top.setAttribute("role", "banner");
     top.innerHTML = '<div class="bs-in">' +
+      '<button type="button" class="bs-back" id="bsBack" aria-label="Back" title="Back">' + BACK + '</button>' +
       '<a class="bs-aos" href="' + attr(hrefOf("__home")) + '" aria-label="Birdseye — home"><img src="' + attr(b.aos) + '" alt="Accelerated Operating Systems"></a>' +
       '<div class="bs-brand"><a href="' + attr(hrefOf("__home")) + '" aria-label="Birdseye">' + iimg("bs-osicon", "os-icon", b.icon) + '</a><span class="bs-names' + (b.versionLine ? ' bs-has-ver' : '') + '"><a class="bs-sys" href="' + attr(hrefOf("__home")) + '">' + esc(b.name) + '</a>' + (b.versionLine ? '<span class="bs-ver">' + esc(b.versionLine) + '</span>' : '') + '<button type="button" class="bs-house" id="bsHouse" aria-label="The business name — tap to change it"></button></span></div>' +
       '<span class="bs-sp"></span>' +
@@ -235,6 +251,8 @@
     sel.innerHTML = Object.keys(C.seats).map(function (k) { return '<option value="' + attr(k) + '">' + esc(C.seats[k].label) + "</option>"; }).join("");
     sel.onchange = function () { BS.setSeat(sel.value); };
     top.querySelector("#bsHouse").onclick = function () { BS.renameHouse(); };
+    top.querySelector("#bsBack").onclick = goBack;
+    window.addEventListener("popstate", function () { setTimeout(paintBack, 0); });
     top.querySelector("#bsTwin").onclick = function () { var all = Object.assign({}, SKINS, C.skins || {}), k = all[skinKey()].twin; BS.setSkin(k); toast(all[k].name); };
     if (els.tab) { els.tab.onclick = function () { openDrawer(!els.drawer.classList.contains("on")); }; paintDrawer(); }
     /* on a phone or a narrow laptop the helper lives in the header (#bsAsk), so the edge tab never sits on the plan */
@@ -244,7 +262,7 @@
       if ((e.key === "k" || e.key === "K") && !/input|textarea|select/i.test((e.target || {}).tagName || "")) openSheet(!els.sheet.classList.contains("up"));
     });
     window.addEventListener("resize", function () { var t = els.dock.querySelector(".on:not(.bs-prime)"); placeGlide(t); });
-    if (C.routing !== "hash") window.addEventListener("hashchange", function () { if (isHomePage()) { mode = location.hash === "#glance" ? "glance" : "home"; render(); paintDock(); window.scrollTo(0, 0); } });
+    if (C.routing !== "hash") window.addEventListener("hashchange", function () { if (isHomePage()) { mode = location.hash === "#glance" ? "glance" : "home"; render(); paintDock(); paintBack(); window.scrollTo(0, 0); } });
   }
   function isHomePage() { var f = (location.pathname.split("/").pop() || "index.html"); return f === C.home || (f === "" && C.home === "index.html"); }
 
@@ -463,7 +481,7 @@
     var title = mode === "home" ? "Birdseye" : mode === "glance" ? "At a glance" : ((room(active) || {}).label || "");
     document.title = title + " · " + houseName() + " · " + C.brand.name;
   }
-  function paintAll() { paintHeader(); paintDock(); render(); if (els.drawer && C.helper) paintDrawer(); }
+  function paintAll() { paintHeader(); paintDock(); paintBack(); render(); if (els.drawer && C.helper) paintDrawer(); }
   BS.refresh = paintAll;
 
   /* ---------------- public: mount ---------------- */

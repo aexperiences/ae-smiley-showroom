@@ -16,6 +16,12 @@
   var OS = C.os || "os", KIND = C.kind || "manual", SEED = C.seed || {};
   var KEY = "ae-room:" + OS + ":" + KIND;
   var YOU = C.you || "You";
+  /* A FIRM'S OWN BOOK (Oct 24 2026): when the engine is running a firm's own copy (E.own() — Buttress first), the room
+     opens without the sample firm's letters, files and envelopes (its templates and articles stay: they are tools), and
+     everything it saves goes into the firm's book, so the whole team sees the same cabinet. */
+  var OWNED = !!(E.own && E.own());
+  var SAMPLE_LISTS = { documents: ["files"], mail: ["mail"], sign: ["envelopes"], masterlist: ["items"], hr: ["people", "timeoff", "reviews", "onboarding"], it: ["devices", "services", "backups", "log"], law: ["matters", "contracts", "deadlines"] };
+  if (OWNED) { SEED = Object.assign({}, SEED); (SAMPLE_LISTS[KIND] || []).forEach(function (k) { if (Array.isArray(SEED[k])) SEED[k] = []; }); KEY = "ae-room-own:" + OS + ":" + KIND; }
 
   /* ---------------- helpers ---------------- */
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
@@ -32,9 +38,15 @@
   function stamp(ts) { var t = new Date(ts), n = until(iso(t)); return (n === 0 ? "" : nice(iso(t)) + " · ") + clock(ts); }
   function plural(n, one, many) { return n + " " + (n === 1 ? one : (many || one + "s")); }
   function toast(m, k) { if (E.toast) return E.toast(m, k); var w = document.getElementById("arToast"); if (!w) { w = document.createElement("div"); w.id = "arToast"; document.body.appendChild(w); } w.textContent = m; w.className = "on"; clearTimeout(w._t); w._t = setTimeout(function () { w.className = ""; }, 2800); }
-  function load(make) { try { var d = JSON.parse(localStorage.getItem(KEY)); if (d && d.v === 1) return d; } catch (e) {} var f = make(); f.v = 1; return f; }
+  function load(make) {
+    if (OWNED) { try { var b = E.db(), r = b && b.rooms && b.rooms[KIND]; if (r && r.v === 1) return JSON.parse(JSON.stringify(r)); } catch (e) {} }
+    try { var d = JSON.parse(localStorage.getItem(KEY)); if (d && d.v === 1) return d; } catch (e) {} var f = make(); f.v = 1; return f;
+  }
   var D, MAKE;
-  function save() { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) {} }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) {}
+    if (OWNED && E.save) { try { var copy = JSON.parse(JSON.stringify(D)); E.save(function (x) { x.rooms = x.rooms || {}; x.rooms[KIND] = copy; }); } catch (e) {} }
+  }
   function reset() { D = MAKE(); D.v = 1; save(); }
   function log(text) { (D.log = D.log || []).unshift({ ts: Date.now(), who: YOU, text: text }); D.log = D.log.slice(0, 40); }
   function shell() { return window.BirdseyeShell; }
@@ -444,11 +456,21 @@
   };
 
   /* ---------------- 8. MAIL ---------------- */
+  /* A FIRM'S OWN MAIL (Oct 24 2026): in a firm's own copy the Mail room is the real thing (ae-mail.js, the firm's own
+     mailbox through /api/os-mail). The showroom keeps the sample mailbox below. */
+  function ownMail() {
+    var go = function () { window.AEMail.mount(root, { E: E, os: OS, code: E.own(), toast: toast }); };
+    if (window.AEMail) return go();
+    var sc = document.createElement("script"); sc.src = "ae-mail.js?v=1"; sc.onload = go;
+    sc.onerror = function () { root.innerHTML = '<p class="ar-note">Mail did not load. Check your connection and reload.</p>'; };
+    document.head.appendChild(sc);
+  }
   ROOMS.mail = {
     make: function () {
       return { box: "Inbox", open: null, msgs: (SEED.mail || []).map(function (m, i) { return { id: uid(), box: m[5] || "Inbox", from: m[0], subj: m[1], body: m[2], ts: Date.now() - (m[3] || i * 2) * 3600000, tag: m[4] || "", read: i > 2, star: false }; }) };
     },
     render: function () {
+      if (OWNED) { if (!ROOMS.mail._own) { ROOMS.mail._own = 1; ownMail(); } return; }
       var BOX = ["Inbox", "Starred", "Sent", "Drafts", "Archive"];
       var unread = D.msgs.filter(function (m) { return m.box === "Inbox" && !m.read; }).length;
       var list = D.msgs.filter(function (m) { return D.box === "Starred" ? m.star : m.box === D.box; }).sort(function (a, b) { return b.ts - a.ts; });
@@ -465,6 +487,7 @@
       root.querySelector(".ar-mail").classList.toggle("reading", !!cur);
     },
     click: function (b) {
+      if (OWNED) return false;
       if (b.hasAttribute("data-box")) { D.box = b.getAttribute("data-box"); D.open = null; save(); render(); return true; }
       if (b.hasAttribute("data-msg")) { D.open = b.getAttribute("data-msg"); var m = D.msgs.filter(function (x) { return x.id === D.open; })[0]; if (m) m.read = true; save(); render(); var r = root.querySelector(".ar-read"); if (r && window.innerWidth <= 720) r.scrollIntoView({ block: "start" }); return true; }
       if (b.hasAttribute("data-msg-close")) { D.open = null; save(); render(); return true; }
