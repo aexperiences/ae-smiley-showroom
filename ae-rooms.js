@@ -102,6 +102,8 @@
       (SEED.articles || []).forEach(function (a) { arts.push({ t: a[0], c: a[1], g: a[2] || "" }); });
       (SEED.limits || []).length && arts.push({ t: "What this system does not do", c: SEED.limits.join(" "), g: "Straight answers" });
       var B = cfg(), rooms = B ? B.rooms.filter(function (r) { return !r.hidden; }) : [];
+      /* the Birdseye config loads after this room on some systems, which printed "0 rooms" (Oct 24 2026): draw again once it is here */
+      if (!B && !ROOMS.manual._polling) { ROOMS.manual._polling = 1; (function poll(n) { if (cfg()) { ROOMS.manual._polling = 0; ROOMS.manual.render(); } else if (n < 40) setTimeout(function () { poll(n + 1); }, 200); })(0); }
       var wings = B ? B.wings : [];
       var q = (ROOMS.manual.q || "").toLowerCase().trim();
       var words = q.split(/\s+/).filter(function (w) { return w.length > 2; });
@@ -501,11 +503,11 @@
       }
       var light = keys.filter(function (k) { return !dark(k); }), night = keys.filter(dark);
       root.innerHTML = head('<div class="ar-by">Now wearing <b>' + esc(all[cur].name) + '</b> · ' + plural(keys.length, "skin") + ', every one with a light or dark twin</div>') +
+        card("Icon Skins", '<p class="ar-note">Swap every room icon in one tap. House is your drawn set.</p><div id="arIconSets" class="ar-isets"></div>') +   /* the Icon Skin Machine (Oct 20 2026); at the top and titled (Anthony, Oct 24 2026) */
         '<div class="ar-hero plain"><b>' + esc(all[cur].name) + '</b><span>One tap repaints every room, the floor plan, the dock and the helper — on this device, right now.</span><button type="button" class="ar-btn" data-twin>Flip to the ' + (dark(cur) ? "light" : "dark") + ' twin ◐</button></div>' +
-        '<div id="arIconSets" class="ar-isets"></div>' +   /* the Icon Skin Machine (Oct 20 2026): whole icon sets, one tap */
-        card("Light", '<div class="ar-skins">' + light.map(sw).join("") + '</div>') +
+                card("Light", '<div class="ar-skins">' + light.map(sw).join("") + '</div>') +
         card("Dark", '<div class="ar-skins">' + night.map(sw).join("") + '</div>') +
-        card("Why a skin and not a theme", '<p class="ar-note">' + esc(SEED.why || "A skin is the whole look at once — paper, ink, cards, the accent and the gold — tuned so every number stays readable. The Studio skin (cream, red and gold) is what a new system wakes up in. Each person picks their own; it is remembered on their device.") + '</p>');
+        card("Why a skin and not a theme", '<p class="ar-note">' + esc(SEED.why || "A skin is the whole look at once — paper, ink, cards, the accent and the gold — tuned so every number stays readable. A new system wakes up in its own colors, picked for its trade. Each person picks their own; it is remembered on their device.") + '</p>');
       if (BS.iconPicker) BS.iconPicker(document.getElementById("arIconSets"));
     },
     click: function (b) {

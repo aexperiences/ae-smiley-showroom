@@ -177,7 +177,7 @@
   };
   BS.SKINS = SKINS;
   /* the legacy chassis variables a skin also repaints, so a room's own body follows the skin */
-  var LEGACY = { paper: ["--paper", "--bg"], card: ["--card"], ink: ["--ink"], ink2: ["--ink-2", "--ink2"], mut: ["--mut"], rule: ["--line", "--rule"], rule2: ["--line-2", "--rule2", "--sunk"] };
+  var LEGACY = { paper: ["--paper", "--bg"], card: ["--card", "--field"], ink: ["--ink"], ink2: ["--ink-2", "--ink2"], mut: ["--mut"], rule: ["--line", "--rule"], rule2: ["--line-2", "--rule2", "--sunk"] };
   function skinKey() { var all = Object.assign({}, SKINS, C.skins || {}); var k = ls("birdseye:" + C.id + ":skin"); return k && all[k] ? k : (C.defaultSkin && all[C.defaultSkin] ? C.defaultSkin : "studio"); }
   function applySkin() {
     var all = Object.assign({}, SKINS, C.skins || {}), sk = all[skinKey()], root = document.documentElement;
@@ -249,7 +249,7 @@
   function isHomePage() { var f = (location.pathname.split("/").pop() || "index.html"); return f === C.home || (f === "" && C.home === "index.html"); }
 
   function paintHeader() {
-    var hn = document.getElementById("bsHouse"); if (hn) hn.textContent = houseName() + (C.brand.version && !C.brand.versionLine ? " · " + C.brand.version : "");
+    var hn = document.getElementById("bsHouse"); if (hn) hn.innerHTML = esc(houseName()) + (C.brand.version && !C.brand.versionLine ? '<span class="bs-hver"> · ' + esc(C.brand.version) + "</span>" : "");
     var sel = document.getElementById("bsSeat"); if (sel) sel.value = seatKey();
   }
 

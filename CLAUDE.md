@@ -4,7 +4,7 @@ This is one of the business operating systems of **Accelerated Experiences LLC**
 `aexperiences.studio/apps/<id>/`. Every Claude session that opens it follows these, every time:
 
 1. **The rules live in the hub:** `aexperiences/aehub` → `system-sot.md` (the Constitution). Load it first.
-2. **THE SKEPTIC MACHINE runs before every close-out log** (Constitution Art. XIX, The Ten #13): `aehub/machines/skeptic/`.
+2. **THE SKEPTIC MACHINE runs before every close-out log** (Constitution Art. XXVI, The Ten #13): `aehub/machines/skeptic/`.
    Check every claim you wrote against this repo's code or the live site, recount every number, check your lane,
    re-run the proof on a settled deploy. **The gate must say PASS before the log is written.**
 3. **Say nothing under 70% confidence** (85% when disagreeing). A room existing is not proof of a feature you describe.

@@ -55,6 +55,9 @@ html.bs-on #toast-wrap{bottom:96px!important}
 .bs-seat select{font:600 13px/1 var(--bs-sans);color:var(--bs-ink);background:var(--bs-card);border:1px solid var(--bs-rule);border-radius:10px;padding:8px 26px 8px 10px;max-width:190px}
 .bs-iconbtn{appearance:none;border:1px solid var(--bs-rule);background:var(--bs-card);color:var(--bs-ink);width:38px;height:38px;border-radius:12px;cursor:pointer;font-size:17px;display:grid;place-items:center;flex:none}
 @media (max-width:640px){ .bs-top .bs-in{gap:8px;padding:8px 10px} .bs-aos img{height:26px} .bs-osicon{width:32px;height:32px} .bs-sys{font-size:17px} .bs-seat .bs-lbl{display:none} .bs-seat select{max-width:150px;padding:7px 18px 7px 7px;font-size:12px} .bs-house{max-width:34vw;font-size:10px} }
+/* phone header (Oct 24 2026): the system name and the business name were cut to "Buttres…" / "YOUR FIR…" at 390px.
+   The seat picker gives up width and both names may wrap to a second line instead of being cut. */
+@media (max-width:640px){ .bs-top .bs-seat select, .bs-top:has(.bs-has-ver) .bs-seat select{max-width:100px;width:100px;font-size:12px;padding:7px 18px 7px 6px} .bs-hver{display:none} .bs-sys{white-space:normal;overflow:visible;text-overflow:clip;font-size:16px;line-height:1.05} .bs-house{white-space:normal;overflow:visible;text-overflow:clip;max-width:none;line-height:1.15} }
 @media (max-width:380px){ .bs-aos{display:none} }
 @media (max-width:560px){ .bs-plan .bs-cell b{font-size:12.5px;letter-spacing:0;overflow-wrap:normal;word-break:normal;-webkit-hyphens:auto;hyphens:auto} .bs-plan{gap:6px} .bs-cell{padding:10px 4px} }
 
@@ -281,3 +284,4 @@ html.bs-on .bs-lg.bs-lopen:not(.bs-lno) > :not(.bs-view){animation:bs-lin .55s v
 .bs-iset.on{border-color:var(--bs-red,#a8312a);box-shadow:0 0 0 3px rgba(168,49,42,.14)}
 .ar-isets h4{margin:0 0 8px;font:800 11px/1.2 var(--bs-sans,system-ui);letter-spacing:.14em;text-transform:uppercase;opacity:.75}
 @media(max-width:520px){.bs-isets{grid-template-columns:repeat(2,1fr)}.bs-iset img{width:56px;height:56px}}
+#arIconSets h4{display:none} /* the room titles it "Icon Skins" itself (Oct 24 2026) */
