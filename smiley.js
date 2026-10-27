@@ -977,6 +977,7 @@
     ins:       {name:"Insurance verification",   mo:89, build:700},
     claims:    {name:"Claims & aging",           mo:79, build:640},
     money:     {name:"Production & collection",  mo:79, build:640},
+    books:     {name:"Books",                    mo:59, build:460},
     ortho:     {name:"Ortho module",             mo:99, build:900},
     sterile:   {name:"Sterilization & OSHA",     mo:49, build:380},
     team:      {name:"Team, licenses & CE",      mo:49, build:380},
@@ -988,10 +989,10 @@
       includes:["schedule","chairside","recall","treat","money","sterile","team","sign"],
       blurb:"One doctor, one or two hygiene chairs — the whole system for a practice where the owner is also the office manager."},
     practice:  {name:"Elite", mo:1100, build:0,
-      includes:["schedule","chairside","recall","treat","ins","claims","money","sterile","team","portal","sign"],
+      includes:["schedule","chairside","recall","treat","ins","claims","money","books","sterile","team","portal","sign"],
       blurb:"Two to four operatories with an office manager and a treatment coordinator. Insurance verification and claims aging come in here."},
     grandsuite:{name:"Mothership", mo:1500, build:0,
-      includes:["schedule","chairside","recall","treat","ins","claims","money","ortho","sterile","team","portal","sign"],
+      includes:["schedule","chairside","recall","treat","ins","claims","money","books","ortho","sterile","team","portal","sign"],
       blurb:"Multi-provider, multi-location, ortho module switched on, dedicated environment and a branded patient portal."}
   };
   function tier(){ return db().tier||"grandsuite"; }
@@ -1065,6 +1066,7 @@
     {g:"MONEY", items:[
       {h:"claims.html",    l:"Claims & Aging",    i:"◧", room:"claims"},
       {h:"money.html",     l:"Production & Collection", i:"◭", room:"money"},
+      {h:"books.html",     l:"Books",                   i:"▤", room:"books"},
       {h:"portal.html",    l:"Patient Portal",    i:"☗", room:"portal"}]},
     {g:"THE PRACTICE", items:[
       {h:"sterile.html",   l:"Sterilization & OSHA", i:"⚕", room:"sterile"},

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Books · Smiley OS V3.5</title>
+<meta name="description" content="The practice's books, kept from the chair and the claims: production, the PPO write-off, what was collected, what is still owed, and ortho money that has not been earned yet. One click to hand it to your accountant.">
+<link rel="canonical" href="https://www.aexperiences.com/apps/smiley/books.html">
+<meta property="og:title" content="Books · Smiley OS">
+<meta property="og:description" content="Production, write-off, collected, owed and unearned ortho — kept from the chair and the claims.">
+<meta property="og:image" content="https://www.aexperiences.com/Smiley_OS.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<link rel="apple-touch-icon" href="https://www.aexperiences.com/Smiley_OS.png">
+<meta name="theme-color" content="#0e7c93">
+<link rel="stylesheet" href="smiley.css">
+</head>
+<body>
+<script src="smiley.js"></script>
+<script src="manual.js"></script>
+<script>
+(function(){
+  var S = window.Smiley;
+  var content = S.mount({ active:"books.html", crumb:"Books" });
+
+  content.appendChild(S.page("Books","Kept from the chair and the claims. Production is not income, and a write-off is not a loss: the books keep the three apart."));
+
+  var wk=S.lastWeek(), m=S.weekMoney(wk,"completed");
+  var collectable=m.fee-m.writeOff;
+  content.appendChild(S.card('<h2>Week of '+S.dayLabel(wk)+'</h2><p class="sub">The week that finished.</p>'+
+    '<div class="tablewrap"><table><tbody>'+
+    '<tr><td><b>Gross production</b></td><td class="right mono"><b>'+S.money(m.fee)+'</b></td></tr>'+
+    '<tr><td class="mut">Less: PPO write-off (never collectable)</td><td class="right mono">−'+S.money(m.writeOff)+'</td></tr>'+
+    '<tr><td><b>Net production</b></td><td class="right mono"><b>'+S.money(collectable)+'</b></td></tr>'+
+    '<tr><td class="mut">Owed by insurance plans</td><td class="right mono">'+S.money(m.planPays)+'</td></tr>'+
+    '<tr><td class="mut">Owed by patients</td><td class="right mono">'+S.money(m.patient)+'</td></tr>'+
+    '</tbody></table></div>'));
+
+  var ag=S.aging(), ar=S.arTotal(), rate=S.collectionRate();
+  content.appendChild(S.card('<h2>Cash</h2><div class="stats">'+
+    S.stat("Collection rate", S.pct(rate), "of what was collectable", rate<95?"watch":"good")+
+    S.stat("Owed to the practice", S.money(ar), "every open claim and balance", ar>5000?"bad":"watch")+
+    S.stat("Over 90 days", S.money(ag["90+"]), "the hardest money to get", ag["90+"]>0?"bad":"good")+
+    S.stat("Denied", S.money(S.deniedValue()), "worth appealing")+
+    '</div><div class="tablewrap"><table><thead><tr><th>Age</th><th class="right">Owed</th></tr></thead><tbody>'+
+    ["0-30","31-60","61-90","90+"].map(function(b){ return '<tr><td>'+b+' days</td><td class="right mono">'+S.money(ag[b])+'</td></tr>'; }).join("")+
+    '</tbody></table></div>'));
+
+  var o=S.orthoTotals();
+  if(o.cases) content.appendChild(S.card('<h2>Ortho contracts</h2><p class="sub">An ortho case is paid ahead of the work. Money collected before the month it covers is not earned yet, so the books carry it as owed treatment, not income.</p>'+
+    '<div class="tablewrap"><table><tbody>'+
+    '<tr><td>Contracted</td><td class="right mono">'+S.money(o.contracted)+'</td></tr>'+
+    '<tr><td>Earned so far</td><td class="right mono">'+S.money(o.recognised)+'</td></tr>'+
+    '<tr><td>Not earned yet</td><td class="right mono"><b>'+S.money(o.unearned)+'</b></td></tr>'+
+    '<tr><td>Collected</td><td class="right mono">'+S.money(o.collected)+'</td></tr>'+
+    '<tr><td>Behind on payments</td><td class="right mono">'+S.money(o.behind)+'</td></tr>'+
+    '</tbody></table></div>'));
+
+  var claims=S.db().claims.slice().sort(function(a,b){ return (b.aging||0)-(a.aging||0); });
+  content.appendChild(S.card('<h2>The ledger</h2><p class="sub">Every claim, oldest first.</p><div class="tablewrap"><table>'+
+    '<thead><tr><th>Patient</th><th>Submitted</th><th>Status</th><th class="right">Billed</th><th class="right">Allowed</th><th class="right">Plan</th><th class="right">Patient</th><th class="right">Days</th></tr></thead><tbody>'+
+    claims.map(function(c){ return '<tr><td><b>'+S.esc(S.ptName(c.pt))+'</b></td><td class="mono">'+S.esc(S.dayLabel(c.sub))+'</td>'+
+      '<td>'+S.tag(c.status, c.status==="Denied"?"bad":(c.status==="Paid"?"good":"watch"))+'</td>'+
+      '<td class="right mono">'+S.money(c.billed)+'</td><td class="right mono">'+S.money(c.allowed)+'</td>'+
+      '<td class="right mono">'+S.money(c.plan)+'</td><td class="right mono">'+S.money(c.patient)+'</td><td class="right mono">'+(c.aging||0)+'</td></tr>'; }).join("")+
+    '</tbody></table></div>'));
+
+  var exp=S.card('<h2>Send it to your accountant</h2><p class="sub">One file, every claim: patient, date, status, billed, allowed, plan, patient and days open. QuickBooks, Xero or a spreadsheet all open it.</p>'+
+    '<button class="btn" id="booksCsv">Download the books (CSV)</button>');
+  content.appendChild(exp);
+  exp.querySelector("#booksCsv").onclick=function(){
+    var q=function(v){ v=String(v==null?"":v); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; };
+    var lines=[["Patient","Submitted","Status","Billed","Allowed","Plan","Patient portion","Days open"].join(",")].concat(claims.map(function(c){
+      return [S.ptName(c.pt), c.sub, c.status, c.billed, c.allowed, c.plan, c.patient, c.aging||0].map(q).join(","); }));
+    var a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([lines.join("\n")],{type:"text/csv"}));
+    a.download="smiley-books.csv"; document.body.appendChild(a); a.click(); a.remove();
+    S.toast("Books downloaded.","ok");
+  };
+  content.appendChild(S.card(S.srcNote("Every figure on this page is computed from the visits, claims and ortho contracts in this system. Nothing is estimated and nothing is typed in a second time.")));
+})();
+</script>
+</body>
+</html>
