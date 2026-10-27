@@ -984,10 +984,10 @@
     sign:      {name:"e-Sign",                   mo:49, build:380}
   };
   var TIERS = {
-    solo:      {name:"Core", mo:350, build:0,
+    solo:      {name:"Core", mo:699, build:0,
       includes:["schedule","chairside","recall","treat","money","sterile","team","sign"],
       blurb:"One doctor, one or two hygiene chairs — the whole system for a practice where the owner is also the office manager."},
-    practice:  {name:"Elite", mo:750, build:0,
+    practice:  {name:"Elite", mo:1100, build:0,
       includes:["schedule","chairside","recall","treat","ins","claims","money","sterile","team","portal","sign"],
       blurb:"Two to four operatories with an office manager and a treatment coordinator. Insurance verification and claims aging come in here."},
     grandsuite:{name:"Mothership", mo:1500, build:0,
@@ -1154,7 +1154,7 @@
       '<b>'+money(t.mo)+'/mo</b></div>'+
       (adds.length?'<div class="tt-line add"><span>+ '+adds.length+' room'+(adds.length>1?'s':'')+' added</span><b>+'+money(pr.mo-t.mo>0?pr.mo-t.mo:0)+'/mo</b></div>':'')+
       (offs.length?'<div class="tt-line off"><span>− '+offs.length+' room'+(offs.length>1?'s':'')+' removed</span><b>−'+money(t.mo-pr.mo>0?t.mo-pr.mo:0)+'/mo</b></div>':'')+
-      '<div class="tt-line grand"><span>Your build</span><b>'+money(pr.mo)+'/mo licensed</b></div></div>'));
+      '<div class="tt-line grand"><span>White-label build</span><b>'+money(pr.mo)+'/mo licensed</b></div></div>'));
     bar.appendChild(menu);
 
     var pill=bar.querySelector("#tierPill");
