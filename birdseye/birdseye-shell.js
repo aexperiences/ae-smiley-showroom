@@ -116,7 +116,13 @@
      "house". C.iconKeep lists keys that never swap because they are logos (e.g. ["os-icon"] where the app icon is a mark). */
   function iconDefault() { return C.iconDefault === undefined ? "porcelain" : (C.iconDefault || "house"); }
   function iconSet() { var k = ls("birdseye:" + C.id + ":icons"); if (!k || !/^[a-z0-9-]+$/.test(k)) k = iconDefault(); return k !== "house" ? k : ""; }
-  function isrc(k, house) { var s = iconSet(); return s && house && (C.iconKeep || []).indexOf(k) < 0 ? ICONBASE + s + "/" + k + ".webp" : house; }
+  /* THE PRODUCT'S OWN ICON IS HOUSE, ALWAYS (Anthony, Oct 26 2026: "if it says lil ninja on the app, its the house brand, but
+     inside all the other apps that are not brands or products get porcelain … if it is a brand name or product room, that icon
+     stays house"). The app's own icon and every product room (AE Connect, AIMOS, AE Comply, ESPO Cutlabs, Blastpack, Market
+     Narc, ND OS) never swap, in any set; C.iconKeep adds more. */
+  var KEEP = ["os-icon", "connect", "aimos", "comply", "cutlabs", "blastpack", "marketnarc", "ndos"];
+  function kept(k) { return KEEP.indexOf(k) >= 0 || (C.iconKeep || []).indexOf(k) >= 0; }
+  function isrc(k, house) { var s = iconSet(); return s && house && !kept(k) ? ICONBASE + s + "/" + k + ".webp" : house; }
   function iimg(cls, k, house, extra) { var src = isrc(k, house); return '<img class="' + cls + '" src="' + attr(src) + '"' + (src !== house ? ' data-house="' + attr(house) + '"' : "") + (extra || "") + ' alt="">'; }
   BS.iconSet = function () { return iconSet() || "house"; };
   BS.setIcons = function (k) { ls("birdseye:" + C.id + ":icons", k || "house"); location.reload(); };
@@ -380,7 +386,7 @@
       sets.forEach(function (s) { if (s.k === dk) s.note = (s.note ? s.note + " · " : "") + "the default"; });
       if (sets.length < 2) { el.innerHTML = "<h4>Icons</h4><p class=\"bs-mut\">This system has one icon set so far.</p>"; return; }
       el.innerHTML = "<h4>Icons</h4><div class=\"bs-isets\">" + sets.map(function (s) {
-        var pic = s.k === "house" || (C.iconKeep || []).indexOf("os-icon") >= 0 ? C.brand.icon : ICONBASE + s.k + "/os-icon.webp";
+        var pr = (C.rooms || []).filter(function (r) { return r.icon && !kept(r.k) && !r.hidden; })[0], pic = pr ? (s.k === "house" ? pr.icon : ICONBASE + s.k + "/" + pr.k + ".webp") : C.brand.icon;
         return '<button type="button" class="bs-iset' + (s.k === cur ? " on" : "") + '" data-i="' + attr(s.k) + '"><img src="' + attr(pic) + '" alt=""><b>' + esc(s.name) + "</b><small>" + esc(s.note || "") + "</small></button>";
       }).join("") + "</div>";
       el.querySelectorAll("[data-i]").forEach(function (b) { b.onclick = function () { BS.setIcons(b.getAttribute("data-i")); }; });
