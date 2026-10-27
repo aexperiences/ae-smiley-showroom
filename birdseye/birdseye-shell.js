@@ -110,8 +110,13 @@
   };
   BS.houseName = houseName;
   function label(r) { return String(r.label || r.k).replace(/^The /, ""); }
-  function iconSet() { var k = ls("birdseye:" + C.id + ":icons"); return k && k !== "house" && /^[a-z0-9-]+$/.test(k) ? k : ""; }
-  function isrc(k, house) { var s = iconSet(); return s && house ? ICONBASE + s + "/" + k + ".webp" : house; }
+  /* PORCELAIN IS THE DEFAULT (Anthony, Oct 26 2026: "change all of the OS systems default to porcelain, make the house and
+     paperworks alternate … anything that is a logo does not change"). A system with no choice saved wears C.iconDefault
+     ("porcelain" unless its config says otherwise; "house" where the set is not drawn yet). Choosing House is saved as
+     "house". C.iconKeep lists keys that never swap because they are logos (e.g. ["os-icon"] where the app icon is a mark). */
+  function iconDefault() { return C.iconDefault === undefined ? "porcelain" : (C.iconDefault || "house"); }
+  function iconSet() { var k = ls("birdseye:" + C.id + ":icons"); if (!k || !/^[a-z0-9-]+$/.test(k)) k = iconDefault(); return k !== "house" ? k : ""; }
+  function isrc(k, house) { var s = iconSet(); return s && house && (C.iconKeep || []).indexOf(k) < 0 ? ICONBASE + s + "/" + k + ".webp" : house; }
   function iimg(cls, k, house, extra) { var src = isrc(k, house); return '<img class="' + cls + '" src="' + attr(src) + '"' + (src !== house ? ' data-house="' + attr(house) + '"' : "") + (extra || "") + ' alt="">'; }
   BS.iconSet = function () { return iconSet() || "house"; };
   BS.setIcons = function (k) { ls("birdseye:" + C.id + ":icons", k || "house"); location.reload(); };
@@ -370,10 +375,12 @@
   function iconPicker(el) {
     if (!el) return;
     BS.iconSets().then(function (j) {
-      var sets = [{ k: "house", name: "House", note: "the drawn library · the default" }].concat((j && j.sets) || []), cur = BS.iconSet();
+      var dk = iconDefault(), all2 = [{ k: "house", name: "House", note: "the drawn library" }].concat((j && j.sets) || []), cur = BS.iconSet();
+      var sets = all2.filter(function (s) { return s.k === dk; }).concat(all2.filter(function (s) { return s.k !== dk; }));
+      sets.forEach(function (s) { if (s.k === dk) s.note = (s.note ? s.note + " · " : "") + "the default"; });
       if (sets.length < 2) { el.innerHTML = "<h4>Icons</h4><p class=\"bs-mut\">This system has one icon set so far.</p>"; return; }
       el.innerHTML = "<h4>Icons</h4><div class=\"bs-isets\">" + sets.map(function (s) {
-        var pic = s.k === "house" ? C.brand.icon : ICONBASE + s.k + "/os-icon.webp";
+        var pic = s.k === "house" || (C.iconKeep || []).indexOf("os-icon") >= 0 ? C.brand.icon : ICONBASE + s.k + "/os-icon.webp";
         return '<button type="button" class="bs-iset' + (s.k === cur ? " on" : "") + '" data-i="' + attr(s.k) + '"><img src="' + attr(pic) + '" alt=""><b>' + esc(s.name) + "</b><small>" + esc(s.note || "") + "</small></button>";
       }).join("") + "</div>";
       el.querySelectorAll("[data-i]").forEach(function (b) { b.onclick = function () { BS.setIcons(b.getAttribute("data-i")); }; });
